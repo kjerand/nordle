@@ -1,20 +1,55 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import GamePage from './views/GamePage';
+import MenuPage from './views/MenuPage';
+import React from 'react';
+import { useFonts } from 'expo-font';
+import TutorialPage from './views/TutorialPage';
+import { BACKGROUND } from './utils/constants';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+    const [loaded] = useFonts({
+        Roboto: require('./assets/fonts/RobotoCondensed-Regular.ttf'),
+        Oswald: require('./assets/fonts/Oswald-Light.ttf')
+    });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    if (!loaded) {
+        return null;
+    }
+    return (
+        <NavigationContainer>
+            <Stack.Navigator
+                screenOptions={{
+                    headerStyle: {
+                        backgroundColor: BACKGROUND
+                    },
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                        fontFamily: 'Oswald',
+                        fontSize: 24
+                    },
+                    headerBackTitle: 'Meny',
+                    headerBackTitleStyle: {
+                        fontFamily: 'Oswald',
+                        fontSize: 20
+                    }
+                }}
+            >
+                <Stack.Screen
+                    name="Meny"
+                    options={{
+                        headerShown: false
+                    }}
+                    component={MenuPage}
+                />
+                <Stack.Screen name="Wordle Norge" component={GamePage} />
+                <Stack.Screen name="Hjelp" component={TutorialPage} />
+            </Stack.Navigator>
+            <StatusBar hidden />
+        </NavigationContainer>
+    );
+}
