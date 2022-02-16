@@ -1,5 +1,7 @@
+import solutions from '../assets/solutions.json';
 export const getRandomWord = () => {
-    const words = ['PIANO', 'SPRNG', 'LOFFE', 'LØPER'];
+    let words = solutions.words;
     const index = Math.floor(Math.random() * words.length);
+
     return words[index];
 };

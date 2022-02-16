@@ -7,7 +7,10 @@ const InformationPopup = ({
     message: string;
     showPopup: boolean;
 }) => {
-    return showPopup ? (
+    if (!showPopup) {
+        return <></>;
+    }
+    return (
         <View
             style={{
                 backgroundColor: '',
@@ -25,8 +28,6 @@ const InformationPopup = ({
                 {message}
             </Text>
         </View>
-    ) : (
-        <></>
     );
 };
 

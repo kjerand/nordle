@@ -4,13 +4,13 @@ export const getCharacterColor = (
     row: number,
     col: number,
     currentWord: string,
-    grid: string[][],
+    grid: Letter[][],
     currenLevel: number,
     keyboardStatus?: KeyboardStatus,
     setKeyboardStatus?: CallableFunction
 ): string => {
     if (row < currenLevel) {
-        const letter = grid[row][col];
+        const letter = grid[row][col].char;
         if (letter === currentWord[col]) {
             if (keyboardStatus && setKeyboardStatus) {
                 setKeyboardStatus({

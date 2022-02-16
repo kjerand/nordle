@@ -1,8 +1,8 @@
 export const generateGrid = (length: number, width: number) => {
-    const grid: string[][] = [];
+    const grid: Letter[][] = [];
     [...Array(length)].forEach((_, i) => {
-        const row: string[] = [];
-        [...Array(width)].forEach((_, i) => row.push(''));
+        const row: Letter[] = [];
+        [...Array(width)].forEach((_, i) => row.push({ char: '', status: 0 }));
         grid.push(row);
     });
     return grid;

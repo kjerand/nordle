@@ -1,27 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
-import LetterContainer from './LetterContainer';
+
 import * as Haptics from 'expo-haptics';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+
+import LetterContainer from './LetterContainer';
 import { DARKGRAY, GREEN, KEYBOARD, YELLOW } from '../utils/constants';
-import { getKeyboardColor } from '../utils/getKeyboardColor';
-import { initializeKeyboard } from '../utils/initializeKeyboard';
 
 const COLORS = [KEYBOARD, DARKGRAY, YELLOW, GREEN];
 
 const KeyboardContainer = ({
     onKeyboardPress,
-    keyboardStatus
+    keyboard
 }: {
     onKeyboardPress: CallableFunction;
-    keyboardStatus: KeyboardStatus;
+    keyboard: Letter[][];
 }) => {
-    const [keyboard, setKeyboard] = useState<Letter[][]>(initializeKeyboard());
-    useEffect(() => {
-        //getKeyboardColor(keyboard, keyboardStatus, setKeyboard);
-    }, [keyboardStatus]);
-
     const KeyboardRow = ({ letters }: { letters: Letter[] }) => {
         return (
             <View style={{ flexDirection: 'row' }}>
@@ -47,7 +42,8 @@ const KeyboardContainer = ({
                                     }}
                                     style={{
                                         flex: 1,
-                                        justifyContent: 'center'
+                                        justifyContent: 'center',
+                                        alignContent: 'center'
                                     }}
                                 >
                                     <Text
@@ -85,9 +81,9 @@ const KeyboardContainer = ({
     };
     return (
         <View style={styles.container}>
-            <KeyboardRow letters={keyboard[0]} />
-            <KeyboardRow letters={keyboard[1]} />
-            <KeyboardRow letters={keyboard[2]} />
+            {keyboard.map((row, index) => {
+                return <KeyboardRow letters={row} key={index} />;
+            })}
         </View>
     );
 };

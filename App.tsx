@@ -6,13 +6,16 @@ import MenuPage from './views/MenuPage';
 import React from 'react';
 import { useFonts } from 'expo-font';
 import TutorialPage from './views/TutorialPage';
-import { BACKGROUND } from './utils/constants';
+import { BACKGROUND, FONT, TEXT } from './utils/constants';
+
+import { getCurrentDate } from './utils/getCurrentDate';
+import { Feather } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
     const [loaded] = useFonts({
-        Roboto: require('./assets/fonts/RobotoCondensed-Regular.ttf'),
         Oswald: require('./assets/fonts/Oswald-Light.ttf')
     });
 
@@ -26,28 +29,85 @@ export default function App() {
                     headerStyle: {
                         backgroundColor: BACKGROUND
                     },
-                    headerTintColor: '#fff',
+                    headerTintColor: TEXT,
                     headerTitleStyle: {
                         fontWeight: 'bold',
-                        fontFamily: 'Oswald',
+                        fontFamily: FONT,
                         fontSize: 24
                     },
-                    headerBackTitle: 'Meny',
-                    headerBackTitleStyle: {
-                        fontFamily: 'Oswald',
-                        fontSize: 20
-                    }
+
+                    headerBackTitleVisible: false,
+
+                    animation: 'slide_from_bottom'
                 }}
             >
                 <Stack.Screen
-                    name="Meny"
+                    name="Menu"
                     options={{
                         headerShown: false
                     }}
                     component={MenuPage}
                 />
-                <Stack.Screen name="Wordle Norge" component={GamePage} />
-                <Stack.Screen name="Hjelp" component={TutorialPage} />
+                <Stack.Screen
+                    name="Daily"
+                    component={GamePage}
+                    options={({ navigation }) => ({
+                        headerTitle: getCurrentDate(),
+                        headerLeft: () => (
+                            <Feather
+                                name="home"
+                                size={24}
+                                color={TEXT}
+                                onPress={() => {
+                                    Haptics.impactAsync(
+                                        Haptics.ImpactFeedbackStyle.Medium
+                                    );
+                                    navigation.navigate('Menu');
+                                }}
+                            />
+                        )
+                    })}
+                />
+                <Stack.Screen
+                    name="Standard"
+                    component={GamePage}
+                    options={({ navigation }) => ({
+                        headerTitle: 'Wordle Norge',
+                        headerLeft: () => (
+                            <Feather
+                                name="home"
+                                size={24}
+                                color={TEXT}
+                                onPress={() => {
+                                    Haptics.impactAsync(
+                                        Haptics.ImpactFeedbackStyle.Medium
+                                    );
+                                    navigation.navigate('Menu');
+                                }}
+                            />
+                        )
+                    })}
+                />
+                <Stack.Screen
+                    name="Help"
+                    component={TutorialPage}
+                    options={({ navigation }) => ({
+                        headerTitle: '',
+                        headerLeft: () => (
+                            <Feather
+                                name="home"
+                                size={24}
+                                color={TEXT}
+                                onPress={() => {
+                                    Haptics.impactAsync(
+                                        Haptics.ImpactFeedbackStyle.Medium
+                                    );
+                                    navigation.navigate('Menu');
+                                }}
+                            />
+                        )
+                    })}
+                />
             </Stack.Navigator>
             <StatusBar hidden />
         </NavigationContainer>

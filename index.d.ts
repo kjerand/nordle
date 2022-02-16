@@ -10,3 +10,9 @@ type Letter = {
     char: string;
     status: number;
 };
+
+type Route = {
+    gridLength: number;
+    gridWidth: number;
+    currentWord: string;
+};

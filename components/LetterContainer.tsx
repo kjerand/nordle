@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 const LetterContainer = ({
     color,
@@ -10,20 +10,17 @@ const LetterContainer = ({
     children: JSX.Element;
     keyboard?: boolean;
 }) => {
-    return (
-        <View
-            style={{
-                backgroundColor: color,
-                height: keyboard ? 65 : 60,
-                width: keyboard ? '90%' : '17%',
-                marginHorizontal: keyboard ? 0 : 6,
-                marginVertical: 3,
-                borderRadius: 5
-            }}
-        >
-            {children}
-        </View>
-    );
+    const styles = StyleSheet.create({
+        container: {
+            backgroundColor: color,
+            height: keyboard ? 65 : 60,
+            width: keyboard ? '90%' : '17%',
+            marginHorizontal: keyboard ? 0 : 6,
+            marginVertical: 3,
+            borderRadius: 5
+        }
+    });
+    return <View style={styles.container}>{children}</View>;
 };
 
 export default LetterContainer;
