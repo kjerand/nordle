@@ -3,7 +3,13 @@ import * as Haptics from 'expo-haptics';
 
 import { getRandomWord } from '../utils/getRandomWord';
 import { getDailyWord } from '../utils/getDailyWord';
-import { BACKGROUND, FONT, KEYBOARD, TEXT } from '../utils/constants';
+import {
+    BACKGROUND,
+    FONT,
+    KEYBOARD,
+    SMALLSCREEN,
+    TEXT
+} from '../utils/constants';
 
 import Logo from '../assets/logo.png';
 
@@ -57,7 +63,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: BACKGROUND,
         alignItems: 'center',
-        paddingTop: 40
+        paddingTop: !SMALLSCREEN ? 40 : 0
     },
     imageStyle: {
         height: 300,
@@ -68,7 +74,7 @@ const styles = StyleSheet.create({
         width: '70%',
         backgroundColor: KEYBOARD,
         borderRadius: 4,
-        marginBottom: 40
+        marginBottom: !SMALLSCREEN ? 40 : 20
     },
     textStyle: {
         fontSize: 24,

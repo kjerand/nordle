@@ -6,7 +6,13 @@ import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
 import LetterContainer from './LetterContainer';
-import { DARKGRAY, GREEN, KEYBOARD, YELLOW } from '../utils/constants';
+import {
+    DARKGRAY,
+    GREEN,
+    KEYBOARD,
+    SMALLSCREEN,
+    YELLOW
+} from '../utils/constants';
 
 const COLORS = [KEYBOARD, DARKGRAY, YELLOW, GREEN];
 
@@ -89,7 +95,11 @@ const KeyboardContainer = ({
 };
 
 const styles = StyleSheet.create({
-    container: { flexGrow: 1, justifyContent: 'flex-end', marginBottom: 60 }
+    container: {
+        flexGrow: 1,
+        justifyContent: 'flex-end',
+        marginBottom: !SMALLSCREEN ? 50 : 10
+    }
 });
 
 export default KeyboardContainer;

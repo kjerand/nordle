@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { SMALLSCREEN } from '../utils/constants';
 
 const LetterContainer = ({
     color,
@@ -10,10 +11,25 @@ const LetterContainer = ({
     children: JSX.Element;
     keyboard?: boolean;
 }) => {
+    const height = () => {
+        if (keyboard) {
+            if (!SMALLSCREEN) {
+                return 65;
+            } else {
+                return 50;
+            }
+        } else {
+            if (!SMALLSCREEN) {
+                return 60;
+            } else {
+                return 55;
+            }
+        }
+    };
     const styles = StyleSheet.create({
         container: {
             backgroundColor: color,
-            height: keyboard ? 65 : 60,
+            height: height(),
             width: keyboard ? '90%' : '17%',
             marginHorizontal: keyboard ? 0 : 6,
             marginVertical: 3,

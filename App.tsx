@@ -1,16 +1,18 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar, StyleSheet, Text, View } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import GamePage from './views/GamePage';
-import MenuPage from './views/MenuPage';
 import React from 'react';
-import { useFonts } from 'expo-font';
-import TutorialPage from './views/TutorialPage';
-import { BACKGROUND, FONT, TEXT } from './utils/constants';
+import { StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { getCurrentDate } from './utils/getCurrentDate';
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import { useFonts } from 'expo-font';
+
+import { BACKGROUND, FONT, TEXT } from './utils/constants';
+import { getCurrentDate } from './utils/getCurrentDate';
+
+import GamePage from './views/GamePage';
+import MenuPage from './views/MenuPage';
+import TutorialPage from './views/TutorialPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,9 +37,8 @@ export default function App() {
                         fontFamily: FONT,
                         fontSize: 24
                     },
-
                     headerBackTitleVisible: false,
-
+                    gestureEnabled: false,
                     animation: 'slide_from_bottom'
                 }}
             >

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 
 import LetterContainer from '../components/LetterContainer';
@@ -16,7 +16,8 @@ import {
     DARKGRAY,
     LIGHTGRAY,
     YELLOW,
-    GREEN
+    GREEN,
+    SMALLSCREEN
 } from '../utils/constants';
 import GridBox from '../components/GridBox';
 
@@ -125,11 +126,16 @@ const GamePage = ({
 
         if (!done && !popupLoading) {
             setPopupLoading(true);
-            setTimeout(() => {
+
+            let timer = setTimeout(() => {
                 setPopupLoading(false);
                 setShowPopup(false);
                 setPopupMessage('');
             }, 3000);
+
+            return () => {
+                clearTimeout(timer);
+            };
         }
     };
 
@@ -175,7 +181,7 @@ const styles = StyleSheet.create({
     },
     gridContainer: {
         flexDirection: 'row',
-        marginVertical: 8,
+        marginVertical: !SMALLSCREEN ? 8 : 2,
         width: '100%'
     }
 });
