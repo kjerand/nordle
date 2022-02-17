@@ -1,4 +1,4 @@
-import solutions from '../assets/solutions.json';
+import solutions from '../assets/words/solutions.json';
 export const getRandomWord = () => {
     let words = solutions.words;
     const index = Math.floor(Math.random() * words.length);

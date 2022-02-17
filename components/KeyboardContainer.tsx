@@ -13,6 +13,7 @@ import {
     KEYBOARD,
     SEND,
     SMALLSCREEN,
+    TEXT,
     YELLOW
 } from '../utils/constants';
 
@@ -59,7 +60,7 @@ const KeyboardContainer = ({
                                     <Text
                                         style={{
                                             textAlign: 'center',
-                                            color: 'white',
+                                            color: TEXT,
                                             fontSize: 20
                                         }}
                                     >
@@ -67,14 +68,14 @@ const KeyboardContainer = ({
                                             <Feather
                                                 name="send"
                                                 size={24}
-                                                color="white"
+                                                color={TEXT}
                                             />
                                         )}
                                         {letter.char === '<' && (
                                             <Ionicons
                                                 name="backspace-outline"
                                                 size={24}
-                                                color="white"
+                                                color={TEXT}
                                             />
                                         )}
                                         {letter.char !== '!' &&

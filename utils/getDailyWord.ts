@@ -1,4 +1,4 @@
-import solutions from '../assets/solutions.json';
+import solutions from '../assets/words/solutions.json';
 import { getDayOfYear } from './getDayOfYear';
 export const getDailyWord = () => {
     let words = solutions.words;

@@ -5,19 +5,21 @@ const TutorialPage = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Hvordan spiller man?</Text>
-            <Text style={styles.textStyle}>
-                Wordle er et spill hvor man skal prøve å komme frem til et ord
-                på 5 bokstaver. Når man gjetter på et ord så vil hver bokstav få
-                en farge.
-            </Text>
-            <Text style={styles.textStyle}>
-                Svart bokstav betyr at den ikke er en del av ordet. Gul bokstav
-                betyr at den er en del av ordet, men at den er plassert i feil
-                posisjon. Grønn bokstav betyr at den er en del av ordet og at
-                den er riktig plassert.
-            </Text>
-            <Text style={styles.textStyle}>
-                Det kommer en ny "Dagens oppgave" hver dag ved midnatt.
+            <View style={styles.textContainer}>
+                <Text style={styles.textStyle}>
+                    Wordle er et spill hvor man skal prøve å komme frem til et ord
+                    på 5 bokstaver. Når man gjetter på et ord så vil hver bokstav få
+                    en farge.
+                </Text>
+                <Text style={styles.textStyle}>
+                    Svart bokstav betyr at den ikke er en del av ordet. Gul bokstav
+                    betyr at den er en del av ordet, men at den er plassert i feil
+                    posisjon. Grønn bokstav betyr at den er en del av ordet og at
+                    den er riktig plassert.
+                </Text>
+            </View>
+            <Text style={styles.signature}>
+                Lagd av Kjerand Evje
             </Text>
         </View>
     );
@@ -28,7 +30,8 @@ const styles = StyleSheet.create({
         backgroundColor: BACKGROUND,
         alignItems: 'center',
         paddingTop: 20,
-        paddingBottom: 120
+        paddingBottom: 120,
+        flexGrow: 1
     },
     header: {
         color: TEXT,
@@ -41,8 +44,17 @@ const styles = StyleSheet.create({
         color: TEXT,
         fontSize: 20,
         fontFamily: FONT,
-        marginHorizontal: 30,
         marginBottom: 25
+    },
+    textContainer: {
+        marginHorizontal: 30
+    },
+    signature: {
+        fontSize: 16,
+        fontFamily: FONT,
+        color: TEXT,
+        justifyContent: 'flex-end',
+        marginTop: 'auto'
     }
 });
 export default TutorialPage;

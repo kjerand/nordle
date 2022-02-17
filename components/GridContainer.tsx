@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { TEXT } from '../utils/constants';
 
-const GridBox = ({ letter }: { letter: string }) => {
+const GridContainer = ({ letter }: { letter: string }) => {
     return (
         <View
             style={{
@@ -24,4 +24,4 @@ const GridBox = ({ letter }: { letter: string }) => {
     );
 };
 
-export default GridBox;
+export default GridContainer;

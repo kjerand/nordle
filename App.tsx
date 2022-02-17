@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -22,7 +22,7 @@ export default function App() {
     });
 
     if (!loaded) {
-        return null;
+        return <View style={{ backgroundColor: BACKGROUND, flex: 1 }} />;
     }
     return (
         <NavigationContainer>

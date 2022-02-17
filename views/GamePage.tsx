@@ -4,6 +4,7 @@ import { RouteProp } from '@react-navigation/native';
 
 import LetterContainer from '../components/LetterContainer';
 import KeyboardContainer from '../components/KeyboardContainer';
+import GridContainer from '../components/GridContainer';
 import InformationPopup from '../components/InformationPopup';
 
 import { generateGrid } from '../utils/generateGrid';
@@ -19,7 +20,6 @@ import {
     GREEN,
     SMALLSCREEN
 } from '../utils/constants';
-import GridBox from '../components/GridBox';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
 
@@ -138,7 +138,7 @@ const GamePage = ({
                                         color={COLORS[col.status]}
                                         key={colIndex}
                                     >
-                                        <GridBox letter={col.char} />
+                                        <GridContainer letter={col.char} />
                                     </LetterContainer>
                                 );
                             })}
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     },
     gridContainer: {
         flexDirection: 'row',
-        marginVertical: !SMALLSCREEN ? 6 : 2,
+        marginVertical: !SMALLSCREEN ? 6 : 0,
         width: '100%'
     }
 });
