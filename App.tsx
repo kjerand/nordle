@@ -13,6 +13,7 @@ import { getCurrentDate } from './utils/getCurrentDate';
 import GamePage from './views/GamePage';
 import MenuPage from './views/MenuPage';
 import TutorialPage from './views/TutorialPage';
+import PrivacyPage from './views/PrivacyPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -107,6 +108,15 @@ export default function App() {
                                 }}
                             />
                         )
+                    })}
+                />
+                <Stack.Screen
+                    name="Privacy"
+                    component={PrivacyPage}
+                    options={() => ({
+                        headerTitle: '',
+                        headerBackVisible: true,
+                        animation: 'default'
                     })}
                 />
             </Stack.Navigator>

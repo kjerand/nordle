@@ -13,12 +13,11 @@
         "updates": {
             "fallbackToCacheTimeout": 0
         },
-        "assetBundlePatterns": [ 
-            "assets/images/*",
-            "assets/words/*"],
+        "assetBundlePatterns": ["assets/images/*", "assets/words/*"],
         "ios": {
             "supportsTablet": true,
-            "bundleIdentifier": "com.kjerandevje.wordlenorge"
+            "bundleIdentifier": "com.kjerandevje.wordlenorge",
+            "buildNumber": "1.0.0"
         }
     }
 }

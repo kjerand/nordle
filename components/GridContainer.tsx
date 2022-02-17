@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { TEXT } from '../utils/constants';
+import { FONT, TEXT } from '../utils/constants';
 
 const GridContainer = ({ letter }: { letter: string }) => {
     return (
@@ -14,7 +14,7 @@ const GridContainer = ({ letter }: { letter: string }) => {
                 style={{
                     color: TEXT,
                     textAlign: 'center',
-                    fontFamily: 'Oswald',
+                    fontFamily: FONT,
                     fontSize: 32
                 }}
             >

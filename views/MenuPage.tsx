@@ -16,17 +16,6 @@ import {
 import { useState } from 'react';
 
 const MenuPage = ({ navigation }: { navigation: any }) => {
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-
-    const _cacheResourcesAsync = async () => {
-        const image = require('../assets/images/logo.png');
-
-
-        const cached = Asset.fromModule(image).downloadAsync();
-
-        return Promise.all([cached]);
-    }
-
     const MenuButton = ({
         navigate,
         text,
@@ -55,17 +44,34 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
         );
     };
 
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const cacheResourcesAsync = async (): Promise<void> => {
+        const image = require('../assets/images/logo.png');
+
+        Asset.fromModule(image)
+            .downloadAsync()
+            .then(() => {
+                return;
+            });
+    };
+
     if (isLoading) {
-        return <AppLoading
-            startAsync={async () => _cacheResourcesAsync()}
-            onFinish={() => setIsLoading(false)}
-            onError={console.warn}
-        />
+        return (
+            <AppLoading
+                startAsync={cacheResourcesAsync}
+                onFinish={() => setIsLoading(false)}
+                onError={console.warn}
+            />
+        );
     }
 
     return (
         <View style={styles.container}>
-            <Image source={require('../assets/images/logo.png')} style={styles.imageStyle} />
+            <Image
+                source={require('../assets/images/logo.png')}
+                style={styles.imageStyle}
+            />
             <MenuButton
                 navigate="Daily"
                 text="Dagens oppgave"

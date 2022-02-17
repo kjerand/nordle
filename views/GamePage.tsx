@@ -41,7 +41,7 @@ const GamePage = ({
     const [currentColumn, setCurrentColumn] = useState<number>(0);
 
     const [showPopup, setShowPopup] = useState<boolean>(false);
-    const [popupLoading, setPopupLoading] = useState<boolean>(false);
+    const [popupUpdate, setPopupUpdate] = useState<boolean>(false);
     const [popupMessage, setPopupMessage] = useState<string>('');
 
     const [disabled, setDisabled] = useState<boolean>(false);
@@ -59,11 +59,16 @@ const GamePage = ({
             }, 3000);
             return () => clearTimeout(timer);
         }
-    }, [popupLoading]);
+    }, [popupUpdate]);
 
-    const updateGrid = async () => {
+    const setPopupTimeout = (message: string) => {
+        setPopupUpdate(!popupUpdate);
+        setPopupMessage(message);
+    };
+
+    const updateGrid = () => {
         let empty = false;
-        grid[currentLevel].forEach((letter, index) => {
+        grid[currentLevel].forEach((letter) => {
             if (letter.char === '') empty = true;
         });
         if (empty) {
@@ -72,10 +77,10 @@ const GamePage = ({
         }
 
         let guess = '';
-        grid[currentLevel].forEach((letter, index) => {
+        grid[currentLevel].forEach((letter) => {
             guess += letter.char;
         });
-        const valid = await checkWordValidity(guess);
+        const valid = checkWordValidity(guess);
 
         if (valid) {
             updateColors(
@@ -119,11 +124,6 @@ const GamePage = ({
             }
             setGrid(tmp);
         }
-    };
-
-    const setPopupTimeout = (message: string) => {
-        setPopupLoading(!popupLoading);
-        setPopupMessage(message);
     };
 
     return (
