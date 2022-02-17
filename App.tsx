@@ -35,7 +35,7 @@ export default function App() {
                     headerTitleStyle: {
                         fontWeight: 'bold',
                         fontFamily: FONT,
-                        fontSize: 24
+                        fontSize: 22
                     },
                     headerBackTitleVisible: false,
                     gestureEnabled: false,
@@ -57,7 +57,7 @@ export default function App() {
                         headerLeft: () => (
                             <Feather
                                 name="home"
-                                size={24}
+                                size={26}
                                 color={TEXT}
                                 onPress={() => {
                                     Haptics.impactAsync(

@@ -7,14 +7,16 @@ import { Ionicons } from '@expo/vector-icons';
 
 import LetterContainer from './LetterContainer';
 import {
+    BACKSPACE,
     DARKGRAY,
     GREEN,
     KEYBOARD,
+    SEND,
     SMALLSCREEN,
     YELLOW
 } from '../utils/constants';
 
-const COLORS = [KEYBOARD, DARKGRAY, YELLOW, GREEN];
+const COLORS = [KEYBOARD, DARKGRAY, YELLOW, GREEN, SEND, BACKSPACE];
 
 const KeyboardContainer = ({
     onKeyboardPress,
@@ -44,7 +46,9 @@ const KeyboardContainer = ({
                                         Haptics.impactAsync(
                                             Haptics.ImpactFeedbackStyle.Medium
                                         );
-                                        onKeyboardPress(letter.char);
+                                        onKeyboardPress(
+                                            letter.char.toLocaleLowerCase()
+                                        );
                                     }}
                                     style={{
                                         flex: 1,
@@ -98,7 +102,7 @@ const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         justifyContent: 'flex-end',
-        marginBottom: !SMALLSCREEN ? 50 : 10
+        marginBottom: !SMALLSCREEN ? 40 : 10
     }
 });
 

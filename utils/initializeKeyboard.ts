@@ -27,7 +27,7 @@ export const initializeKeyboard = (): Letter[][] => {
             { char: 'Æ', status: 0 }
         ],
         [
-            { char: '!', status: 0 },
+            { char: '!', status: 4 },
             { char: 'Z', status: 0 },
             { char: 'X', status: 0 },
             { char: 'C', status: 0 },
@@ -35,7 +35,7 @@ export const initializeKeyboard = (): Letter[][] => {
             { char: 'B', status: 0 },
             { char: 'N', status: 0 },
             { char: 'M', status: 0 },
-            { char: '<', status: 0 }
+            { char: '<', status: 5 }
         ]
     ];
 

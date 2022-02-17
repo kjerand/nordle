@@ -18,7 +18,7 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
         navigate,
         text,
         gridLength,
-        daily
+        daily = false
     }: {
         navigate: string;
         text: string;
@@ -47,7 +47,7 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
             <Image source={Logo} style={styles.imageStyle} />
             <MenuButton
                 navigate="Daily"
-                text="Daglig oppgave"
+                text="Dagens oppgave"
                 gridLength={6}
                 daily={true}
             />

@@ -14,11 +14,11 @@ const GridBox = ({ letter }: { letter: string }) => {
                 style={{
                     color: TEXT,
                     textAlign: 'center',
-
+                    fontFamily: 'Oswald',
                     fontSize: 32
                 }}
             >
-                {letter}
+                {letter.toLocaleUpperCase()}
             </Text>
         </View>
     );

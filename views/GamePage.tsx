@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 
@@ -51,16 +51,23 @@ const GamePage = ({
         generateGrid(gridLength, gridWidth)
     );
 
+    useEffect(() => {
+        setShowPopup(true);
+        if (!disabled) {
+            const timer = setTimeout(() => {
+                setShowPopup(false);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [popupLoading]);
+
     const updateGrid = async () => {
         let empty = false;
         grid[currentLevel].forEach((letter, index) => {
             if (letter.char === '') empty = true;
         });
         if (empty) {
-            setPopupTimeout(
-                'Du må fylle ut alle bokstavene før du gjetter!',
-                false
-            );
+            setPopupTimeout('Du må fylle ut alle bokstavene før du gjetter!');
             return;
         }
 
@@ -83,20 +90,14 @@ const GamePage = ({
             setCurrentColumn(0);
 
             if (currentWord === guess.toLocaleLowerCase()) {
-                setPopupTimeout(
-                    'Du tippet riktig! Gå til hovedmenyen for å spille igjen',
-                    true
-                );
                 setDisabled(true);
+                setPopupTimeout('Du tippet riktig!');
             } else if (currentLevel + 1 === gridLength) {
-                setPopupTimeout(
-                    'Du klarte det dessverre ikke denne gangen.',
-                    true
-                );
                 setDisabled(true);
+                setPopupTimeout('Du klarte det dessverre ikke denne gangen.');
             }
         } else {
-            setPopupTimeout('Dette ordet finnes ikke i listene våre', false);
+            setPopupTimeout('Dette ordet finnes ikke i listene våre.');
         }
     };
 
@@ -120,23 +121,9 @@ const GamePage = ({
         }
     };
 
-    const setPopupTimeout = (message: string, done: boolean) => {
-        setShowPopup(true);
+    const setPopupTimeout = (message: string) => {
+        setPopupLoading(!popupLoading);
         setPopupMessage(message);
-
-        if (!done && !popupLoading) {
-            setPopupLoading(true);
-
-            let timer = setTimeout(() => {
-                setPopupLoading(false);
-                setShowPopup(false);
-                setPopupMessage('');
-            }, 3000);
-
-            return () => {
-                clearTimeout(timer);
-            };
-        }
     };
 
     return (
@@ -181,7 +168,7 @@ const styles = StyleSheet.create({
     },
     gridContainer: {
         flexDirection: 'row',
-        marginVertical: !SMALLSCREEN ? 8 : 2,
+        marginVertical: !SMALLSCREEN ? 6 : 2,
         width: '100%'
     }
 });
