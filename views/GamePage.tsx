@@ -19,7 +19,8 @@ import {
     YELLOW,
     GREEN,
     SMALLSCREEN,
-    MEDIUMCREEN
+    MEDIUMCREEN,
+    VERYLARGESCREEN
 } from '../utils/constants';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
@@ -169,7 +170,7 @@ const styles = StyleSheet.create({
     },
     gridContainer: {
         flexDirection: 'row',
-        marginVertical: SMALLSCREEN ? 0 : (MEDIUMCREEN ? 1 : 6),
+        marginVertical: SMALLSCREEN ? 0 : ((MEDIUMCREEN || VERYLARGESCREEN) ? 1 : 6),
         width: '100%'
     }
 });
