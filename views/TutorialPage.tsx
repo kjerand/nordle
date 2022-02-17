@@ -1,8 +1,7 @@
-import { ScrollView, View, Text, StyleSheet, Pressable } from 'react-native';
-import * as Haptics from 'expo-haptics';
+import { View, Text, StyleSheet } from 'react-native';
 import { BACKGROUND, FONT, TEXT } from '../utils/constants';
 
-const TutorialPage = ({ navigation }: { navigation: any }) => {
+const TutorialPage = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Hvordan spiller man?</Text>
@@ -18,21 +17,10 @@ const TutorialPage = ({ navigation }: { navigation: any }) => {
                     plassert i feil posisjon. Grønn bokstav betyr at den er en
                     del av ordet og at den er riktig plassert.
                 </Text>
-
-            </View>
-            <Pressable
-                onPress={() => {
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                    navigation.navigate('Privacy');
-                }}
-            >
-                <Text style={styles.header}>Personvernerklæring</Text>
-            </Pressable>
-            <View style={styles.textContainer}>
                 <Text style={styles.textStyle}>
-                    Du kan lese personvernserklæringen for denne appen ved å
-                    trykke på tittelen over.
+                    Målet er å tippe ordet før man har brukt opp forsøkene sine!
                 </Text>
+
             </View>
             <Text style={styles.signature}>Lagd av Kjerand Evje</Text>
         </View>

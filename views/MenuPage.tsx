@@ -15,8 +15,6 @@ import {
     TEXT
 } from '../utils/constants';
 
-
-
 const MenuPage = ({ navigation }: { navigation: any }) => {
     const MenuButton = ({
         navigate,
