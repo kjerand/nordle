@@ -13,7 +13,7 @@ const InformationPopup = ({
     return (
         <View
             style={{
-                backgroundColor: '',
+                marginTop: 8,
                 alignContent: 'center'
             }}
         >

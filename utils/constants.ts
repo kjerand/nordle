@@ -11,4 +11,6 @@ export const BACKSPACE = '#5c5c5c';
 export const TEXT = '#ededed';
 export const FONT = 'Oswald';
 
-export const SMALLSCREEN = Dimensions.get('window').height < 800;
+export const SMALLSCREEN = Dimensions.get('window').height < 770;
+export const MEDIUMCREEN = Dimensions.get('window').height > 770 && Dimensions.get('window').height < 850;
+export const LARGESCREEN = Dimensions.get('window').height > 850;

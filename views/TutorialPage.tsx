@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, Pressable } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { BACKGROUND, FONT, TEXT } from '../utils/constants';
 
@@ -18,10 +18,7 @@ const TutorialPage = ({ navigation }: { navigation: any }) => {
                     plassert i feil posisjon. Grønn bokstav betyr at den er en
                     del av ordet og at den er riktig plassert.
                 </Text>
-                <Text style={styles.textStyle}>
-                    Målet er å gjette ordet før man har brukt opp forsøkene
-                    sine!
-                </Text>
+
             </View>
             <Pressable
                 onPress={() => {
@@ -47,7 +44,7 @@ const styles = StyleSheet.create({
         backgroundColor: BACKGROUND,
         alignItems: 'center',
         paddingTop: 20,
-        paddingBottom: 70,
+        paddingBottom: 50,
         flexGrow: 1
     },
     header: {
@@ -64,7 +61,7 @@ const styles = StyleSheet.create({
         marginBottom: 15
     },
     textContainer: {
-        marginHorizontal: 30
+        marginHorizontal: 20
     },
     signature: {
         fontSize: 16,
