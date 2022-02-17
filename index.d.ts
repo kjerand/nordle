@@ -1,5 +1,3 @@
-declare module '*.png';
-
 type KeyboardStatus = {
     green: string[];
     yellow: string[];
