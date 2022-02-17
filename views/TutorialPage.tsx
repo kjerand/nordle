@@ -26,7 +26,7 @@ const TutorialPage = ({ navigation }: { navigation: any }) => {
                     navigation.navigate('Privacy');
                 }}
             >
-                <Text style={styles.header}>Personvern</Text>
+                <Text style={styles.header}>Personvernerklæring</Text>
             </Pressable>
             <View style={styles.textContainer}>
                 <Text style={styles.textStyle}>

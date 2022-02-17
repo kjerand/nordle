@@ -1,4 +1,6 @@
 import { View, Text, Pressable, Image, StyleSheet } from 'react-native';
+import { useState } from 'react';
+
 import * as Haptics from 'expo-haptics';
 import { Asset } from 'expo-asset';
 import AppLoading from 'expo-app-loading';
@@ -13,7 +15,7 @@ import {
     TEXT
 } from '../utils/constants';
 
-import { useState } from 'react';
+
 
 const MenuPage = ({ navigation }: { navigation: any }) => {
     const MenuButton = ({

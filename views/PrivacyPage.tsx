@@ -76,7 +76,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: BACKGROUND,
-
         paddingTop: 20,
         paddingBottom: 70,
         flexGrow: 1
@@ -86,7 +85,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontFamily: FONT,
         fontWeight: 'bold',
-        marginBottom: 5
+        marginBottom: 5,
     },
     textStyle: {
         color: TEXT,
@@ -96,7 +95,8 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         marginHorizontal: 20,
-        paddingBottom: 70
+        paddingBottom: 70,
+
     },
     signature: {
         fontSize: 16,

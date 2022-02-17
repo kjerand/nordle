@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 
 import LetterContainer from '../components/LetterContainer';
