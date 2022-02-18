@@ -101,7 +101,11 @@ const GamePage = ({
                 setPopupTimeout('Du tippet riktig!');
             } else if (currentLevel + 1 === gridLength) {
                 setDisabled(true);
-                setPopupTimeout('Du klarte det dessverre ikke denne gangen.');
+                setPopupTimeout(
+                    'Du klarte det ikke. Riktig svar var ' +
+                        currentWord.toLocaleUpperCase() +
+                        '.'
+                );
             }
         } else {
             setPopupTimeout('Dette ordet finnes ikke i listene våre.');
@@ -170,7 +174,11 @@ const styles = StyleSheet.create({
     },
     gridContainer: {
         flexDirection: 'row',
-        marginVertical: SMALLSCREEN ? 0 : ((MEDIUMCREEN || VERYLARGESCREEN) ? 1 : 6),
+        marginVertical: SMALLSCREEN
+            ? 0
+            : MEDIUMCREEN || VERYLARGESCREEN
+            ? 1
+            : 6,
         width: '100%'
     }
 });
