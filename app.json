@@ -1,8 +1,8 @@
 {
     "expo": {
-        "name": "WordleNorge",
-        "slug": "WordleNorge",
-        "version": "1.0.3",
+        "name": "GjettOrdet",
+        "slug": "Gjettordet",
+        "version": "1.0.4",
         "orientation": "portrait",
         "icon": "./assets/images/icon.png",
         "splash": {
@@ -17,7 +17,7 @@
         "ios": {
             "supportsTablet": true,
             "bundleIdentifier": "com.kjerandevje.wordlenorge",
-            "buildNumber": "1.0.3"
+            "buildNumber": "1.0.4"
         }
     }
 }
