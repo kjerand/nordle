@@ -73,7 +73,7 @@ export default function App() {
                     name="Standard"
                     component={GamePage}
                     options={({ navigation }) => ({
-                        headerTitle: 'Wordle Norge',
+                        headerTitle: 'Gjett ordet!',
                         headerLeft: () => (
                             <Feather
                                 name="home"
@@ -109,7 +109,6 @@ export default function App() {
                         )
                     })}
                 />
-
             </Stack.Navigator>
             <StatusBar hidden />
         </NavigationContainer>
