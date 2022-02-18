@@ -1,13 +1,11 @@
 {
     "expo": {
-        "name": "GjettOrdet",
-        "slug": "Gjettordet",
-        "version": "1.0.4",
+        "name": "Gjett ordet!",
+        "slug": "GjettOrdet",
+        "version": "1.0.8",
         "orientation": "portrait",
         "icon": "./assets/images/icon.png",
         "splash": {
-            "image": "./assets/images/splash.png",
-            "resizeMode": "contain",
             "backgroundColor": "#262625"
         },
         "updates": {
@@ -17,7 +15,7 @@
         "ios": {
             "supportsTablet": true,
             "bundleIdentifier": "com.kjerandevje.wordlenorge",
-            "buildNumber": "1.0.4"
+            "buildNumber": "1.0.8"
         }
     }
 }
