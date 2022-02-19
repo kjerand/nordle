@@ -13,6 +13,7 @@ type Route = {
     gridLength: number;
     gridWidth: number;
     currentWord: string;
+    daily?: boolean;
 };
 
 type Theme = { [name: string]: string };

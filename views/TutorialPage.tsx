@@ -1,20 +1,61 @@
-import { View, Text, StyleSheet, Button } from 'react-native';
-import { BACKGROUND, FONT, TEXT } from '../utils/constants';
+import { View, Text, StyleSheet, Button, Pressable } from 'react-native';
+import * as Haptics from 'expo-haptics';
+import {
+    BACKGROUND,
+    BUTTONS,
+    FONT,
+    SMALLSCREEN,
+    TEXT
+} from '../utils/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState } from 'react';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { setTheme } from '../store/theme';
 
 const TutorialPage = () => {
-    const [theme, setTheme] = useState<string>('default');
-    useEffect(() => {
-        AsyncStorage.getItem('@theme').then((data) => {
-            console.log(data)
-        }).catch(() => {
-            setTheme('default');
-        })
-    }, [])
+    const dispatch = useDispatch();
+    const { theme } = useSelector((state: RootStateOrAny) => state.theme);
+
+    const ThemeButton = ({
+        themeValue,
+        text
+    }: {
+        themeValue: string;
+        text: string;
+    }) => {
+        return (
+            <Pressable
+                onPress={() => {
+                    dispatch(setTheme(themeValue));
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                    AsyncStorage.setItem('@theme', themeValue);
+                }}
+                style={[
+                    styles.buttonStyle,
+                    { backgroundColor: BUTTONS[theme] }
+                ]}
+            >
+                <Text
+                    style={{
+                        textAlign: 'center',
+                        justifyContent: 'center',
+                        flex: 1,
+                        color: TEXT,
+                        fontSize: 18,
+                        fontFamily: FONT
+                    }}
+                >
+                    {text}
+                </Text>
+            </Pressable>
+        );
+    };
+
     return (
-        <View style={styles.container}>
-            <Text style={[styles.header}]>Hvordan spiller man?</Text>
+        <View
+            style={[styles.container, { backgroundColor: BACKGROUND[theme] }]}
+        >
+            <Text style={styles.header}>Hvordan spiller man?</Text>
             <View style={styles.textContainer}>
                 <Text style={styles.textStyle}>
                     Dette er et spill hvor man skal prøve å komme frem til et
@@ -31,28 +72,20 @@ const TutorialPage = () => {
                     Målet er å tippe ordet før man har brukt opp forsøkene sine!
                 </Text>
             </View>
+            <Text style={styles.header}>Fargetema</Text>
+            <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
+                <ThemeButton themeValue="default" text="Mørk" />
+                <ThemeButton themeValue="white" text="Lys" />
+                <ThemeButton themeValue="green" text="Grønn" />
+                <ThemeButton themeValue="blue" text="Blå" />
+            </View>
             <Text style={styles.signature}>Lagd av Kjerand Evje</Text>
-            <Button title='Standard' onPress={async () => {
-                try {
-                    await AsyncStorage.setItem('@theme', 'default')
-                } catch (e) {
-                    // saving error
-                }
-            }} />
-            <Button title='Standard' onPress={async () => {
-                try {
-                    await AsyncStorage.setItem('@theme', 'blue')
-                } catch (e) {
-                    // saving error
-                }
-            }} />
-        </View >
+        </View>
     );
 };
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: BACKGROUND,
         alignItems: 'center',
         paddingTop: 20,
         paddingBottom: 50,
@@ -72,7 +105,7 @@ const styles = StyleSheet.create({
         marginBottom: 15
     },
     textContainer: {
-        marginHorizontal: 20
+        marginHorizontal: 30
     },
     signature: {
         fontSize: 16,
@@ -80,6 +113,15 @@ const styles = StyleSheet.create({
         color: TEXT,
         justifyContent: 'flex-end',
         marginTop: 'auto'
+    },
+    buttonStyle: {
+        flex: 1,
+        marginHorizontal: 10,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        padding: 5,
+        borderRadius: 5,
+        marginBottom: !SMALLSCREEN ? 40 : 20
     }
 });
 export default TutorialPage;

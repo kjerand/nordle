@@ -1,5 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, Pressable, Image, StyleSheet } from 'react-native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as Haptics from 'expo-haptics';
 import { Asset } from 'expo-asset';
@@ -9,13 +10,17 @@ import { getRandomWord } from '../utils/getRandomWord';
 import { getDailyWord } from '../utils/getDailyWord';
 import {
     BACKGROUND,
+    BUTTONS,
     FONT,
     KEYBOARD,
     SMALLSCREEN,
     TEXT
 } from '../utils/constants';
+import { useSelector, RootStateOrAny } from 'react-redux';
 
 const MenuPage = ({ navigation }: { navigation: any }) => {
+    const { theme } = useSelector((state: RootStateOrAny) => state.theme);
+
     const MenuButton = ({
         navigate,
         text,
@@ -29,12 +34,16 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
     }) => {
         return (
             <Pressable
-                style={styles.buttonStyle}
+                style={[
+                    styles.buttonStyle,
+                    { backgroundColor: BUTTONS[theme] }
+                ]}
                 onPress={() => {
                     navigation.navigate(navigate, {
                         gridLength: gridLength,
                         gridWidth: 5,
-                        currentWord: daily ? getDailyWord() : getRandomWord()
+                        currentWord: daily ? getDailyWord() : getRandomWord(),
+                        daily: daily
                     });
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                 }}
@@ -67,7 +76,9 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <View
+            style={[styles.container, { backgroundColor: BACKGROUND[theme] }]}
+        >
             <Image
                 source={require('../assets/images/logo.png')}
                 style={styles.imageStyle}
@@ -88,7 +99,7 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: BACKGROUND,
+
         alignItems: 'center',
         paddingTop: !SMALLSCREEN ? 40 : 0
     },
@@ -99,7 +110,6 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         width: '70%',
-        backgroundColor: KEYBOARD,
         borderRadius: 5,
         marginBottom: !SMALLSCREEN ? 40 : 20
     },

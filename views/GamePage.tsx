@@ -23,6 +23,8 @@ import {
     MEDIUMCREEN,
     VERYLARGESCREEN
 } from '../utils/constants';
+import { useSelector, RootStateOrAny } from 'react-redux';
+import { updateWinStreak } from '../utils/updateWinStreak';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
 
@@ -39,11 +41,10 @@ const GamePage = ({
     const { gridLength } = route.params;
     const { gridWidth } = route.params;
     const { currentWord } = route.params;
+    const { daily } = route.params;
 
     const [currentLevel, setCurrentLevel] = useState<number>(0);
     const [currentColumn, setCurrentColumn] = useState<number>(0);
-
-    const [theme, setTheme] = useState<string>('default');
 
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [popupUpdate, setPopupUpdate] = useState<boolean>(false);
@@ -56,32 +57,7 @@ const GamePage = ({
         generateGrid(gridLength, gridWidth)
     );
 
-
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            backgroundColor: BACKGROUND[theme],
-            alignItems: 'center',
-            paddingTop: 10
-        },
-        gridContainer: {
-            flexDirection: 'row',
-            marginVertical: SMALLSCREEN
-                ? 0
-                : MEDIUMCREEN || VERYLARGESCREEN
-                    ? 1
-                    : 6,
-            width: '100%'
-        }
-    });
-
-    useEffect(() => {
-        AsyncStorage.getItem('@theme').then((data) => {
-            console.log(data)
-        }).catch(() => {
-            setTheme('default');
-        })
-    }, [])
+    const { theme } = useSelector((state: RootStateOrAny) => state.theme);
 
     useEffect(() => {
         setShowPopup(true);
@@ -128,13 +104,18 @@ const GamePage = ({
 
             if (currentWord === guess.toLocaleLowerCase()) {
                 setDisabled(true);
-                setPopupTimeout('Du tippet riktig!');
+
+                if (daily) {
+                    updateWinStreak(setPopupTimeout);
+                } else {
+                    setPopupTimeout('Du tippet riktig!');
+                }
             } else if (currentLevel + 1 === gridLength) {
                 setDisabled(true);
                 setPopupTimeout(
                     'Du klarte det ikke. Riktig svar var ' +
-                    currentWord.toLocaleUpperCase() +
-                    '.'
+                        currentWord.toLocaleUpperCase() +
+                        '.'
                 );
             }
         } else {
@@ -163,7 +144,9 @@ const GamePage = ({
     };
 
     return (
-        <View style={styles.container}>
+        <View
+            style={[styles.container, { backgroundColor: BACKGROUND[theme] }]}
+        >
             <View>
                 {grid.map((row, rowIndex) => {
                     return (
@@ -193,8 +176,23 @@ const GamePage = ({
             </View>
         </View>
     );
-
 };
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        paddingTop: 10
+    },
+    gridContainer: {
+        flexDirection: 'row',
+        marginVertical: SMALLSCREEN
+            ? 0
+            : MEDIUMCREEN || VERYLARGESCREEN
+            ? 1
+            : 6,
+        width: '100%'
+    }
+});
 
 export default GamePage;
