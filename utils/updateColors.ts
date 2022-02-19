@@ -6,7 +6,6 @@ export const updateColors = (
     currentLevel: number,
     currentWord: string
 ) => {
-    let letterHasAppeared = false;
     grid[currentLevel].forEach((letter, index) => {
         if (letter.char.toLocaleLowerCase() === currentWord[index]) {
             let tmp = grid;
@@ -24,35 +23,13 @@ export const updateColors = (
             }
         }
 
-
         for (let i = 0; i < remanining.length; i++) {
             if (letter.char.toLocaleLowerCase() === remanining[i]) {
-                let instancesInGuess = 0;
-                let instancesInAnswer = 0;
-                for (let j = 0; j < grid[currentLevel].length; j++) {
-                    if (grid[currentLevel][j].char === letter.char.toLocaleLowerCase())
-                        instancesInGuess++;
-                }
-                for (let j = 0; j < remanining.length; j++) {
-                    if (remanining[j] === letter.char.toLocaleLowerCase())
-                        instancesInAnswer++;
-                }
-
-                if (instancesInGuess % 2 === 0 && instancesInAnswer % 2 !== 0 && !letterHasAppeared) {
-                    let tmp = grid;
-                    tmp[currentLevel][index].status = 2;
-                    setGrid(tmp);
-                    updateKeyboard(setKeyboard, keyboard, 2, letter.char);
-                    letterHasAppeared = true;
-                    return;
-                } else if (instancesInGuess % 2 === 0 && instancesInAnswer % 2 === 0) {
-                    let tmp = grid;
-                    tmp[currentLevel][index].status = 2;
-                    setGrid(tmp);
-                    updateKeyboard(setKeyboard, keyboard, 2, letter.char);
-                    return;
-
-                }
+                let tmp = grid;
+                tmp[currentLevel][index].status = 2;
+                setGrid(tmp);
+                updateKeyboard(setKeyboard, keyboard, 2, letter.char);
+                return;
             }
         }
         let tmp = grid;
