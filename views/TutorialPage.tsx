@@ -1,10 +1,20 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { BACKGROUND, FONT, TEXT } from '../utils/constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
 
 const TutorialPage = () => {
+    const [theme, setTheme] = useState<string>('default');
+    useEffect(() => {
+        AsyncStorage.getItem('@theme').then((data) => {
+            console.log(data)
+        }).catch(() => {
+            setTheme('default');
+        })
+    }, [])
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Hvordan spiller man?</Text>
+            <Text style={[styles.header}]>Hvordan spiller man?</Text>
             <View style={styles.textContainer}>
                 <Text style={styles.textStyle}>
                     Dette er et spill hvor man skal prøve å komme frem til et
@@ -22,7 +32,21 @@ const TutorialPage = () => {
                 </Text>
             </View>
             <Text style={styles.signature}>Lagd av Kjerand Evje</Text>
-        </View>
+            <Button title='Standard' onPress={async () => {
+                try {
+                    await AsyncStorage.setItem('@theme', 'default')
+                } catch (e) {
+                    // saving error
+                }
+            }} />
+            <Button title='Standard' onPress={async () => {
+                try {
+                    await AsyncStorage.setItem('@theme', 'blue')
+                } catch (e) {
+                    // saving error
+                }
+            }} />
+        </View >
     );
 };
 const styles = StyleSheet.create({

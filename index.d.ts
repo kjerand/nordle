@@ -14,3 +14,5 @@ type Route = {
     gridWidth: number;
     currentWord: string;
 };
+
+type Theme = { [name: string]: string };

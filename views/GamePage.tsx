@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LetterContainer from '../components/LetterContainer';
 import KeyboardContainer from '../components/KeyboardContainer';
@@ -42,6 +43,8 @@ const GamePage = ({
     const [currentLevel, setCurrentLevel] = useState<number>(0);
     const [currentColumn, setCurrentColumn] = useState<number>(0);
 
+    const [theme, setTheme] = useState<string>('default');
+
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [popupUpdate, setPopupUpdate] = useState<boolean>(false);
     const [popupMessage, setPopupMessage] = useState<string>('');
@@ -52,6 +55,33 @@ const GamePage = ({
     const [grid, setGrid] = useState<Letter[][]>(
         generateGrid(gridLength, gridWidth)
     );
+
+
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: BACKGROUND[theme],
+            alignItems: 'center',
+            paddingTop: 10
+        },
+        gridContainer: {
+            flexDirection: 'row',
+            marginVertical: SMALLSCREEN
+                ? 0
+                : MEDIUMCREEN || VERYLARGESCREEN
+                    ? 1
+                    : 6,
+            width: '100%'
+        }
+    });
+
+    useEffect(() => {
+        AsyncStorage.getItem('@theme').then((data) => {
+            console.log(data)
+        }).catch(() => {
+            setTheme('default');
+        })
+    }, [])
 
     useEffect(() => {
         setShowPopup(true);
@@ -103,8 +133,8 @@ const GamePage = ({
                 setDisabled(true);
                 setPopupTimeout(
                     'Du klarte det ikke. Riktig svar var ' +
-                        currentWord.toLocaleUpperCase() +
-                        '.'
+                    currentWord.toLocaleUpperCase() +
+                    '.'
                 );
             }
         } else {
@@ -163,24 +193,8 @@ const GamePage = ({
             </View>
         </View>
     );
+
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: BACKGROUND,
-        alignItems: 'center',
-        paddingTop: 10
-    },
-    gridContainer: {
-        flexDirection: 'row',
-        marginVertical: SMALLSCREEN
-            ? 0
-            : MEDIUMCREEN || VERYLARGESCREEN
-            ? 1
-            : 6,
-        width: '100%'
-    }
-});
 
 export default GamePage;
