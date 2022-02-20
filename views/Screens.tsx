@@ -5,18 +5,18 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import { setTheme } from './store/theme';
+import { setTheme } from '../store/theme';
 
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useFonts } from 'expo-font';
 
-import { BACKGROUND, FONT, TEXT } from './utils/constants';
-import { getCurrentDate } from './utils/getCurrentDate';
+import { BACKGROUND, FONT, TEXT } from '../utils/constants';
+import { getCurrentDate } from '../utils/getCurrentDate';
 
-import GamePage from './views/GamePage';
-import MenuPage from './views/MenuPage';
-import TutorialPage from './views/TutorialPage';
+import GamePage from './GamePage';
+import MenuPage from './MenuPage';
+import TutorialPage from './TutorialPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,7 +31,7 @@ export default function Screens() {
     }, []);
 
     const [loaded] = useFonts({
-        Oswald: require('./assets/fonts/Oswald-Light.ttf')
+        Oswald: require('../assets/fonts/Oswald-Light.ttf')
     });
 
     if (!loaded) {
