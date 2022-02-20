@@ -17,7 +17,7 @@ export const updateWinStreak = (setPopupTimeout: CallableFunction) => {
                         parsedStreak + ':' + dayOfYear
                     );
                     setPopupTimeout(
-                        'Riktig ' + parsedStreak + ' dager på rad!'
+                        'Riktig tippet ' + parsedStreak + ' dager på rad!'
                     );
                 } else if (dayOfYear === parsedDay) {
                     AsyncStorage.setItem(
@@ -25,23 +25,23 @@ export const updateWinStreak = (setPopupTimeout: CallableFunction) => {
                         parsedStreak + ':' + dayOfYear
                     );
                     setPopupTimeout(
-                        'Riktig ' +
-                            parsedStreak +
-                            ' ' +
-                            (parsedStreak === 1 ? 'dag' : 'dager') +
-                            ' på rad!'
+                        'Riktig tippet ' +
+                        parsedStreak +
+                        ' ' +
+                        (parsedStreak === 1 ? 'dag' : 'dager') +
+                        ' på rad!'
                     );
                 } else {
                     AsyncStorage.setItem('@streak', '1:' + dayOfYear);
-                    setPopupTimeout('Riktig 1 dag på rad!');
+                    setPopupTimeout('Riktig tippet 1 dag på rad!');
                 }
             } else {
                 AsyncStorage.setItem('@streak', '1:' + dayOfYear);
-                setPopupTimeout('Riktig 1 dag på rad!');
+                setPopupTimeout('Riktig tippet 1 dag på rad!');
             }
         })
         .catch(() => {
             AsyncStorage.setItem('@streak', '1:' + dayOfYear);
-            setPopupTimeout('Riktig 1 dag på rad!');
+            setPopupTimeout('Riktig tippet 1 dag på rad!');
         });
 };

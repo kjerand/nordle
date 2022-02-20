@@ -74,10 +74,11 @@ const TutorialPage = () => {
             </View>
             <Text style={styles.header}>Fargetema</Text>
             <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
-                <ThemeButton themeValue="default" text="Mørk" />
-                <ThemeButton themeValue="white" text="Lys" />
+                <ThemeButton themeValue="default" text="Grå" />
+                <ThemeButton themeValue="black" text="Svart" />
                 <ThemeButton themeValue="green" text="Grønn" />
                 <ThemeButton themeValue="blue" text="Blå" />
+                <ThemeButton themeValue="joker" text="Joker" />
             </View>
             <Text style={styles.signature}>Laget av Kjerand Evje</Text>
         </View>
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         flex: 1,
-        marginHorizontal: 10,
+        marginHorizontal: 5,
         flexDirection: 'row',
         justifyContent: 'center',
         padding: 5,
