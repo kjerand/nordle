@@ -79,7 +79,7 @@ const TutorialPage = () => {
                 <ThemeButton themeValue="green" text="Grønn" />
                 <ThemeButton themeValue="blue" text="Blå" />
             </View>
-            <Text style={styles.signature}>Lagd av Kjerand Evje</Text>
+            <Text style={styles.signature}>Laget av Kjerand Evje</Text>
         </View>
     );
 };

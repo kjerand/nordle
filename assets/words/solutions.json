@@ -53,7 +53,6 @@
         "byene",
         "krypt",
         "juvel",
-        "hypre",
         "advar",
         "baren",
         "barna",
@@ -199,6 +198,13 @@
         "latin",
         "ranes",
         "slett",
-        "tider"
+        "tider",
+        "utdyp",
+        "byhus",
+        "bølge",
+        "koppe",
+        "fnyse",
+        "putte",
+        "plagg"
     ]
 }

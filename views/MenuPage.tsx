@@ -53,28 +53,6 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
         );
     };
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-
-    const cacheResourcesAsync = async (): Promise<void> => {
-        const image = require('../assets/images/logo.png');
-
-        Asset.fromModule(image)
-            .downloadAsync()
-            .then(() => {
-                return;
-            });
-    };
-
-    if (isLoading) {
-        return (
-            <AppLoading
-                startAsync={cacheResourcesAsync}
-                onFinish={() => setIsLoading(false)}
-                onError={console.warn}
-            />
-        );
-    }
-
     return (
         <View
             style={[styles.container, { backgroundColor: BACKGROUND[theme] }]}
