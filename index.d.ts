@@ -15,4 +15,4 @@ type Theme = { [name: string]: string };
 type SavedGame = {
     currGrid: Letter[][];
     currKeyboard: Letter[][];
-}
+};

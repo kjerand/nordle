@@ -57,9 +57,7 @@ const GamePage = ({
         generateGrid(gridLength, gridWidth)
     );
 
-    //const dispatch = useDispatch();
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
-    //const { currGrid, currKeyboard } = useSelector((state: RootStateOrAny) => state.save);
 
     useEffect(() => {
         setShowPopup(true);
@@ -75,40 +73,6 @@ const GamePage = ({
         setPopupUpdate(!popupUpdate);
         setPopupMessage(message);
     };
-
-    /*
-    useEffect(() => {
-        if (daily) {
-            if (currGrid.length > 0) {
-                setGrid(currGrid);
-                setKeyboard(currKeyboard);
-
-                let found = false;
-                currGrid.forEach((row: Letter[], rowIndex: number) => {
-                    row.forEach((letter, colIndex) => {
-                        if (letter.char === '' && !found) {
-
-                            setCurrentLevel(rowIndex);
-                            setCurrentColumn(colIndex);
-
-                            found = true;
-                        }
-                    })
-                });
-
-            }
-            return () => {
-                let tmp: SavedGame = {
-                    currGrid: grid,
-                    currKeyboard: keyboard,
-                }
-                dispatch(setSavedGame(tmp))
-            }
-        }
-
-    }, [])
-    */
-
 
     const updateGrid = () => {
         let empty = false;
@@ -150,8 +114,8 @@ const GamePage = ({
                 setDisabled(true);
                 setPopupTimeout(
                     'Du klarte det ikke. Riktig svar var ' +
-                    currentWord.toUpperCase() +
-                    '.'
+                        currentWord.toUpperCase() +
+                        '.'
                 );
 
                 if (daily) {
@@ -229,8 +193,8 @@ const styles = StyleSheet.create({
         marginVertical: SMALLSCREEN
             ? 0
             : MEDIUMCREEN || VERYLARGESCREEN
-                ? 1
-                : 6,
+            ? 1
+            : 6,
         width: '100%'
     }
 });
