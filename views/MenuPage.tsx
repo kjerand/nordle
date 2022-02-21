@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         borderRadius: 4
     },
     buttonStyle: {
-        width: '70%',
+        width: '65%',
         borderRadius: 5,
         marginBottom: !SMALLSCREEN ? 40 : 20
     },

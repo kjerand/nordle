@@ -24,7 +24,7 @@ import {
     MEDIUMCREEN,
     VERYLARGESCREEN
 } from '../utils/constants';
-import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
+import { useSelector, RootStateOrAny } from 'react-redux';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
 
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
             ? 0
             : MEDIUMCREEN || VERYLARGESCREEN
             ? 1
-            : 6,
+            : 5,
         width: '100%'
     }
 });
