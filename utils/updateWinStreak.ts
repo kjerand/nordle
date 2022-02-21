@@ -2,7 +2,7 @@ import { getDayOfYear } from './getDayOfYear';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const updateWinStreak = (setPopupTimeout: CallableFunction) => {
-    const dayOfYear = getDayOfYear() + 5;
+    const dayOfYear = getDayOfYear();
     AsyncStorage.getItem('@streak')
         .then((data) => {
             if (data) {
@@ -24,11 +24,6 @@ export const updateWinStreak = (setPopupTimeout: CallableFunction) => {
                             ' på rad!'
                     );
                 } else if (dayOfYear === parsedDay) {
-                    AsyncStorage.setItem(
-                        '@streak',
-                        parsedStreak + ':' + dayOfYear
-                    );
-
                     if (parsedStreak === 0) {
                         setPopupTimeout('Du tippet riktig!');
                         return;

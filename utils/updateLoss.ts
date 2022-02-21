@@ -1,7 +1,7 @@
 import { getDayOfYear } from './getDayOfYear';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export const updateLoss = () => {
-    const dayOfYear = getDayOfYear() + 5;
+    const dayOfYear = getDayOfYear();
     AsyncStorage.getItem('@streak')
         .then((data) => {
             if (data) {
