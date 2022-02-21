@@ -1,13 +1,10 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, Text, Pressable, Image, StyleSheet } from 'react-native';
-import { useEffect, useState } from 'react';
-
+import { useSelector, RootStateOrAny } from 'react-redux';
 import * as Haptics from 'expo-haptics';
-import { Asset } from 'expo-asset';
-import AppLoading from 'expo-app-loading';
 
 import { getRandomWord } from '../utils/getRandomWord';
 import { getDailyWord } from '../utils/getDailyWord';
+
 import {
     BACKGROUND,
     BUTTONS,
@@ -16,7 +13,6 @@ import {
     SMALLSCREEN,
     TEXT
 } from '../utils/constants';
-import { useSelector, RootStateOrAny } from 'react-redux';
 
 const MenuPage = ({ navigation }: { navigation: any }) => {
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
@@ -77,7 +73,6 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-
         alignItems: 'center',
         paddingTop: !SMALLSCREEN ? 40 : 0
     },

@@ -1,9 +1,3 @@
-type KeyboardStatus = {
-    green: string[];
-    yellow: string[];
-    gray: string[];
-};
-
 type Letter = {
     char: string;
     status: number;
@@ -21,6 +15,4 @@ type Theme = { [name: string]: string };
 type SavedGame = {
     currGrid: Letter[][];
     currKeyboard: Letter[][];
-    col: number;
-    row: number;
 }

@@ -15,11 +15,6 @@ import { setTheme } from '../store/theme';
 const TutorialPage = () => {
     const dispatch = useDispatch();
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
-    const { currGrid, currKeyboard, row, col } = useSelector((state: RootStateOrAny) => state.save);
-
-    console.log(currGrid)
-
-    console.log(theme)
 
     const ThemeButton = ({
         themeValue,

@@ -2,17 +2,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: SavedGame = {
     currGrid: [],
-    currKeyboard: [],
-    col: -1,
-    row: -1
-};
+    currKeyboard: []
+}
 
 const saveSlice = createSlice({
     name: 'save',
     initialState,
     reducers: {
         setSavedGame(state, action: PayloadAction<SavedGame>) {
-            state = action.payload;
+            state.currGrid = action.payload.currGrid;
+            state.currKeyboard = action.payload.currKeyboard;
         }
     }
 });

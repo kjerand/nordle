@@ -2,7 +2,7 @@
     "expo": {
         "name": "Gjett ordet!",
         "slug": "GjettOrdet",
-        "version": "1.0.12",
+        "version": "1.0.13",
         "orientation": "portrait",
         "icon": "./assets/images/icon.png",
         "splash": {
@@ -15,10 +15,11 @@
         "ios": {
             "supportsTablet": true,
             "bundleIdentifier": "com.kjerandevje.wordlenorge",
-            "buildNumber": "1.0.12"
+            "buildNumber": "1.0.13"
         },
         "android": {
-            "package": "com.kjerandevje.wordlenorge"
+            "package": "com.kjerandevje.wordlenorge",
+            "versionCode": 2
         }
     }
 }

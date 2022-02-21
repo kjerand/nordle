@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LetterContainer from '../components/LetterContainer';
 import KeyboardContainer from '../components/KeyboardContainer';
@@ -12,6 +11,8 @@ import { generateGrid } from '../utils/generateGrid';
 import { checkWordValidity } from '../utils/checkWordValidity';
 import { initializeKeyboard } from '../utils/initializeKeyboard';
 import { updateColors } from '../utils/updateColors';
+import { updateWinStreak } from '../utils/updateWinStreak';
+import { updateLoss } from '../utils/updateLoss';
 
 import {
     BACKGROUND,
@@ -24,12 +25,6 @@ import {
     VERYLARGESCREEN
 } from '../utils/constants';
 import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
-import { updateWinStreak } from '../utils/updateWinStreak';
-import { getCurrentDate } from '../utils/getCurrentDate';
-import { getDayOfYear } from '../utils/getDayOfYear';
-import { updateLoss } from '../utils/updateLoss';
-import { setSavedGame } from '../store/save';
-import { setTheme } from '../store/theme';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
 
@@ -46,7 +41,6 @@ const GamePage = ({
     const { gridLength } = route.params;
     const { gridWidth } = route.params;
     const { currentWord } = route.params;
-    //let currentWord = 'panne';
     const { daily } = route.params;
 
     const [currentLevel, setCurrentLevel] = useState<number>(0);
@@ -63,9 +57,9 @@ const GamePage = ({
         generateGrid(gridLength, gridWidth)
     );
 
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
-    const { currGrid, currKeyboard, row, col } = useSelector((state: RootStateOrAny) => state.save);
+    //const { currGrid, currKeyboard } = useSelector((state: RootStateOrAny) => state.save);
 
     useEffect(() => {
         setShowPopup(true);
@@ -85,26 +79,36 @@ const GamePage = ({
     /*
     useEffect(() => {
         if (daily) {
-            if (row != -1 && col != -1) {
+            if (currGrid.length > 0) {
                 setGrid(currGrid);
                 setKeyboard(currKeyboard);
-                setCurrentColumn(col);
-                setCurrentLevel(row);
+
+                let found = false;
+                currGrid.forEach((row: Letter[], rowIndex: number) => {
+                    row.forEach((letter, colIndex) => {
+                        if (letter.char === '' && !found) {
+
+                            setCurrentLevel(rowIndex);
+                            setCurrentColumn(colIndex);
+
+                            found = true;
+                        }
+                    })
+                });
+
             }
             return () => {
                 let tmp: SavedGame = {
                     currGrid: grid,
                     currKeyboard: keyboard,
-                    row: currentLevel,
-                    col: currentColumn
                 }
-
-                dispatch(setSavedGame(tmp));
+                dispatch(setSavedGame(tmp))
             }
         }
 
     }, [])
     */
+
 
     const updateGrid = () => {
         let empty = false;
@@ -134,7 +138,7 @@ const GamePage = ({
             setCurrentLevel(currentLevel + 1);
             setCurrentColumn(0);
 
-            if (currentWord === guess.toLowerCase()) {
+            if (currentWord === guess) {
                 setDisabled(true);
 
                 if (daily) {
