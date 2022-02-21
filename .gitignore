@@ -1,6 +1,7 @@
 node_modules/
 .expo/
 .vscode/
+.expo-shared/
 dist/
 npm-debug.*
 *.jks
@@ -14,6 +15,4 @@ web-build/
 
 # macOS
 .DS_Store
-
 .prettierrc.json
-.expo-shared/
