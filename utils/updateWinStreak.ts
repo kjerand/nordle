@@ -10,7 +10,10 @@ export const updateWinStreak = (setPopupTimeout: CallableFunction) => {
                 const parsedDay = parseInt(day);
                 let parsedStreak = parseInt(streak);
 
-                if (dayOfYear - parsedDay === 1) {
+                if (
+                    dayOfYear - parsedDay === 1 ||
+                    parsedDay - dayOfYear === 364
+                ) {
                     parsedStreak += 1;
                     AsyncStorage.setItem(
                         '@streak',
