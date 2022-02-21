@@ -23,11 +23,13 @@ import {
     MEDIUMCREEN,
     VERYLARGESCREEN
 } from '../utils/constants';
-import { useSelector, RootStateOrAny } from 'react-redux';
+import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
 import { updateWinStreak } from '../utils/updateWinStreak';
 import { getCurrentDate } from '../utils/getCurrentDate';
 import { getDayOfYear } from '../utils/getDayOfYear';
 import { updateLoss } from '../utils/updateLoss';
+import { setSavedGame } from '../store/save';
+import { setTheme } from '../store/theme';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
 
@@ -44,6 +46,7 @@ const GamePage = ({
     const { gridLength } = route.params;
     const { gridWidth } = route.params;
     const { currentWord } = route.params;
+    //let currentWord = 'panne';
     const { daily } = route.params;
 
     const [currentLevel, setCurrentLevel] = useState<number>(0);
@@ -60,7 +63,9 @@ const GamePage = ({
         generateGrid(gridLength, gridWidth)
     );
 
+    const dispatch = useDispatch();
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
+    const { currGrid, currKeyboard, row, col } = useSelector((state: RootStateOrAny) => state.save);
 
     useEffect(() => {
         setShowPopup(true);
@@ -76,6 +81,30 @@ const GamePage = ({
         setPopupUpdate(!popupUpdate);
         setPopupMessage(message);
     };
+
+    /*
+    useEffect(() => {
+        if (daily) {
+            if (row != -1 && col != -1) {
+                setGrid(currGrid);
+                setKeyboard(currKeyboard);
+                setCurrentColumn(col);
+                setCurrentLevel(row);
+            }
+            return () => {
+                let tmp: SavedGame = {
+                    currGrid: grid,
+                    currKeyboard: keyboard,
+                    row: currentLevel,
+                    col: currentColumn
+                }
+
+                dispatch(setSavedGame(tmp));
+            }
+        }
+
+    }, [])
+    */
 
     const updateGrid = () => {
         let empty = false;
@@ -105,7 +134,7 @@ const GamePage = ({
             setCurrentLevel(currentLevel + 1);
             setCurrentColumn(0);
 
-            if (currentWord === guess.toLocaleLowerCase()) {
+            if (currentWord === guess.toLowerCase()) {
                 setDisabled(true);
 
                 if (daily) {
@@ -117,8 +146,8 @@ const GamePage = ({
                 setDisabled(true);
                 setPopupTimeout(
                     'Du klarte det ikke. Riktig svar var ' +
-                        currentWord.toLocaleUpperCase() +
-                        '.'
+                    currentWord.toUpperCase() +
+                    '.'
                 );
 
                 if (daily) {
@@ -196,8 +225,8 @@ const styles = StyleSheet.create({
         marginVertical: SMALLSCREEN
             ? 0
             : MEDIUMCREEN || VERYLARGESCREEN
-            ? 1
-            : 6,
+                ? 1
+                : 6,
         width: '100%'
     }
 });

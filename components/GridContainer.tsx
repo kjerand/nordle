@@ -18,7 +18,7 @@ const GridContainer = ({ letter }: { letter: string }) => {
                     fontSize: 32
                 }}
             >
-                {letter.toLocaleUpperCase()}
+                {letter.toUpperCase()}
             </Text>
         </View>
     );

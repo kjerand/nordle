@@ -48,7 +48,7 @@ const KeyboardContainer = ({
                                             Haptics.ImpactFeedbackStyle.Medium
                                         );
                                         onKeyboardPress(
-                                            letter.char.toLocaleLowerCase()
+                                            letter.char.toLowerCase()
                                         );
                                     }}
                                     style={{

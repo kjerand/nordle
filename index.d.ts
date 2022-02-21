@@ -17,3 +17,10 @@ type Route = {
 };
 
 type Theme = { [name: string]: string };
+
+type SavedGame = {
+    currGrid: Letter[][];
+    currKeyboard: Letter[][];
+    col: number;
+    row: number;
+}

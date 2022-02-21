@@ -6,8 +6,17 @@ export const updateColors = (
     currentLevel: number,
     currentWord: string
 ) => {
+    let remanining: string[] = [];
+
+    for (let i = 0; i < currentWord.length; i++) {
+        if (currentWord[i] !== grid[currentLevel][i].char) {
+            remanining.push(currentWord[i]);
+        }
+    }
+
     grid[currentLevel].forEach((letter, index) => {
-        if (letter.char.toLocaleLowerCase() === currentWord[index]) {
+
+        if (letter.char.toLowerCase() === currentWord[index]) {
             let tmp = grid;
             tmp[currentLevel][index].status = 3;
             setGrid(tmp);
@@ -15,16 +24,9 @@ export const updateColors = (
             return;
         }
 
-        let remanining: string[] = [];
-
-        for (let i = 0; i < currentWord.length; i++) {
-            if (currentWord[i] !== grid[currentLevel][i].char) {
-                remanining.push(currentWord[i]);
-            }
-        }
-
         for (let i = 0; i < remanining.length; i++) {
-            if (letter.char.toLocaleLowerCase() === remanining[i]) {
+            if (letter.char.toLowerCase() === remanining[i]) {
+                remanining.splice(i, 1);
                 let tmp = grid;
                 tmp[currentLevel][index].status = 2;
                 setGrid(tmp);
@@ -47,7 +49,7 @@ const updateKeyboard = (
 ) => {
     keyboard.forEach((row, rowIndex) => {
         row.forEach((col, colIndex) => {
-            if (col.char === letter.toLocaleUpperCase()) {
+            if (col.char === letter.toUpperCase()) {
                 let tmp = keyboard;
                 if (status > tmp[rowIndex][colIndex].status) {
                     tmp[rowIndex][colIndex].status = status;
