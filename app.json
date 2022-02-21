@@ -16,6 +16,9 @@
             "supportsTablet": true,
             "bundleIdentifier": "com.kjerandevje.wordlenorge",
             "buildNumber": "1.0.11"
+        },
+        "android": {
+            "package": "com.kjerandevje.wordlenorge"
         }
     }
 }

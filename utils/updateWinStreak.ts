@@ -17,19 +17,28 @@ export const updateWinStreak = (setPopupTimeout: CallableFunction) => {
                         parsedStreak + ':' + dayOfYear
                     );
                     setPopupTimeout(
-                        'Riktig tippet ' + parsedStreak + ' dager på rad!'
+                        'Riktig tippet ' +
+                            parsedStreak +
+                            ' ' +
+                            (parsedStreak === 1 ? 'dag' : 'dager') +
+                            ' på rad!'
                     );
                 } else if (dayOfYear === parsedDay) {
                     AsyncStorage.setItem(
                         '@streak',
                         parsedStreak + ':' + dayOfYear
                     );
+
+                    if (parsedStreak === 0) {
+                        setPopupTimeout('Du tippet riktig!');
+                        return;
+                    }
                     setPopupTimeout(
                         'Riktig tippet ' +
-                        parsedStreak +
-                        ' ' +
-                        (parsedStreak === 1 ? 'dag' : 'dager') +
-                        ' på rad!'
+                            parsedStreak +
+                            ' ' +
+                            (parsedStreak === 1 ? 'dag' : 'dager') +
+                            ' på rad!'
                     );
                 } else {
                     AsyncStorage.setItem('@streak', '1:' + dayOfYear);

@@ -25,6 +25,9 @@ import {
 } from '../utils/constants';
 import { useSelector, RootStateOrAny } from 'react-redux';
 import { updateWinStreak } from '../utils/updateWinStreak';
+import { getCurrentDate } from '../utils/getCurrentDate';
+import { getDayOfYear } from '../utils/getDayOfYear';
+import { updateLoss } from '../utils/updateLoss';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
 
@@ -117,6 +120,10 @@ const GamePage = ({
                         currentWord.toLocaleUpperCase() +
                         '.'
                 );
+
+                if (daily) {
+                    updateLoss();
+                }
             }
         } else {
             setPopupTimeout('Dette ordet finnes ikke i listene våre.');

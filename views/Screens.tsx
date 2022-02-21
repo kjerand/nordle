@@ -52,7 +52,8 @@ export default function Screens() {
                     },
                     headerBackTitleVisible: false,
                     gestureEnabled: false,
-                    animation: 'slide_from_bottom'
+                    animation: 'slide_from_bottom',
+                    headerTitleAlign: 'center'
                 }}
             >
                 <Stack.Screen
@@ -79,7 +80,8 @@ export default function Screens() {
                                     navigation.navigate('Menu');
                                 }}
                             />
-                        )
+                        ),
+                        title: getCurrentDate()
                     })}
                 />
                 <Stack.Screen
@@ -99,7 +101,8 @@ export default function Screens() {
                                     navigation.navigate('Menu');
                                 }}
                             />
-                        )
+                        ),
+                        title: 'Gjett ordet!'
                     })}
                 />
                 <Stack.Screen

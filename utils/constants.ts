@@ -17,7 +17,6 @@ export const BUTTONS: Theme = {
     blue: '#263252',
     green: '#00420f',
     joker: '#0d6b04'
-
 };
 export const KEYBOARD = '#8e9094';
 export const SEND = '#5ec4d6';
