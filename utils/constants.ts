@@ -9,14 +9,14 @@ export const BACKGROUND: Theme = {
     black: '#171717',
     blue: '#052273',
     green: '#034d1e',
-    joker: '#720575'
+    red: '#590206'
 };
 export const BUTTONS: Theme = {
     default: '#8e9094',
     black: '#2b2b2b',
     blue: '#263252',
     green: '#00420f',
-    joker: '#0d6b04'
+    red: '#85040a'
 };
 export const KEYBOARD = '#8e9094';
 export const SEND = '#5ec4d6';

@@ -78,7 +78,7 @@ const TutorialPage = () => {
                 <ThemeButton themeValue="black" text="Svart" />
                 <ThemeButton themeValue="green" text="Grønn" />
                 <ThemeButton themeValue="blue" text="Blå" />
-                <ThemeButton themeValue="joker" text="Joker" />
+                <ThemeButton themeValue="red" text="Rød" />
             </View>
             <Text style={styles.signature}>Laget av Kjerand Evje</Text>
         </View>

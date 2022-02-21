@@ -2,7 +2,7 @@ import { getDayOfYear } from './getDayOfYear';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const updateWinStreak = (setPopupTimeout: CallableFunction) => {
-    const dayOfYear = getDayOfYear();
+    const dayOfYear = getDayOfYear() + 5;
     AsyncStorage.getItem('@streak')
         .then((data) => {
             if (data) {
