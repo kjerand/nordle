@@ -159,8 +159,7 @@ const GamePage = ({
             } else if (letter === '<') {
                 if (currentColumn > 0) {
                     tmp[currentLevel][currentColumn - 1].char = '';
-                    let curr = currentColumn.valueOf();
-                    setCurrentColumn(curr + 1);
+                    setCurrentColumn(currentColumn - 1);
                 }
             } else {
                 if (currentColumn < gridWidth) {
