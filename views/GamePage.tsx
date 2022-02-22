@@ -24,7 +24,8 @@ import {
     MEDIUMCREEN,
     VERYLARGESCREEN
 } from '../utils/constants';
-import { useSelector, RootStateOrAny } from 'react-redux';
+import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
+import { setSavedGame } from '../store/save';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
 
@@ -42,9 +43,17 @@ const GamePage = ({
     const { gridWidth } = route.params;
     const { currentWord } = route.params;
     const { daily } = route.params;
+    const { initialPosition } = route.params;
+    const { savedGame } = route.params;
 
-    const [currentLevel, setCurrentLevel] = useState<number>(0);
-    const [currentColumn, setCurrentColumn] = useState<number>(0);
+    const [currentLevel, setCurrentLevel] = useState<number>(
+        savedGame ? initialPosition.row.valueOf() : 0
+    );
+    const [currentColumn, setCurrentColumn] = useState<number>(
+        savedGame ? initialPosition.col.valueOf() : 0
+    );
+
+    console.log(currentColumn);
 
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [popupUpdate, setPopupUpdate] = useState<boolean>(false);
@@ -52,12 +61,27 @@ const GamePage = ({
 
     const [disabled, setDisabled] = useState<boolean>(false);
 
-    const [keyboard, setKeyboard] = useState<Letter[][]>(initializeKeyboard());
+    const [keyboard, setKeyboard] = useState<Letter[][]>(
+        savedGame ? savedGame.savedKeyboard : initializeKeyboard()
+    );
     const [grid, setGrid] = useState<Letter[][]>(
-        generateGrid(gridLength, gridWidth)
+        savedGame ? savedGame.savedGrid : generateGrid(gridLength, gridWidth)
     );
 
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        return () => {
+            let tmp: SavedGame = {
+                savedGrid: grid,
+                savedKeyboard: keyboard
+            };
+
+            dispatch(setSavedGame(tmp));
+        };
+    }, []);
 
     useEffect(() => {
         setShowPopup(true);
@@ -135,7 +159,8 @@ const GamePage = ({
             } else if (letter === '<') {
                 if (currentColumn > 0) {
                     tmp[currentLevel][currentColumn - 1].char = '';
-                    setCurrentColumn(currentColumn - 1);
+                    let curr = currentColumn.valueOf();
+                    setCurrentColumn(curr + 1);
                 }
             } else {
                 if (currentColumn < gridWidth) {

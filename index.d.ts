@@ -8,11 +8,18 @@ type Route = {
     gridWidth: number;
     currentWord: string;
     daily?: boolean;
+    initialPosition: Position;
+    savedGame: SavedGame;
+};
+
+type Position = {
+    row: number;
+    col: number;
 };
 
 type Theme = { [name: string]: string };
 
 type SavedGame = {
-    currGrid: Letter[][];
-    currKeyboard: Letter[][];
+    savedGrid: Letter[][];
+    savedKeyboard: Letter[][];
 };

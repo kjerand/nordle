@@ -13,9 +13,11 @@ import {
     SMALLSCREEN,
     TEXT
 } from '../utils/constants';
+import { getInitialPosition } from '../utils/getInitialPosition';
 
 const MenuPage = ({ navigation }: { navigation: any }) => {
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
+    const save = useSelector((state: RootStateOrAny) => state.save);
 
     const MenuButton = ({
         navigate,
@@ -39,7 +41,9 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
                         gridLength: gridLength,
                         gridWidth: 5,
                         currentWord: daily ? getDailyWord() : getRandomWord(),
-                        daily: daily
+                        daily: daily,
+                        initialPosition: getInitialPosition(save.savedGrid),
+                        savedGame: daily && save.savedGrid.length > 0 && save
                     });
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                 }}
