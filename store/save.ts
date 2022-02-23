@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: SavedGame = {
+let initialState: SavedGame = {
     savedGrid: [],
     savedKeyboard: []
 };

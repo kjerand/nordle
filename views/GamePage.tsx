@@ -53,8 +53,6 @@ const GamePage = ({
         savedGame ? initialPosition.col.valueOf() : 0
     );
 
-    console.log(currentColumn);
-
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [popupUpdate, setPopupUpdate] = useState<boolean>(false);
     const [popupMessage, setPopupMessage] = useState<string>('');
@@ -62,10 +60,10 @@ const GamePage = ({
     const [disabled, setDisabled] = useState<boolean>(false);
 
     const [keyboard, setKeyboard] = useState<Letter[][]>(
-        savedGame ? savedGame.savedKeyboard : initializeKeyboard()
+        initializeKeyboard(savedGame.savedKeyboard)
     );
     const [grid, setGrid] = useState<Letter[][]>(
-        savedGame ? savedGame.savedGrid : generateGrid(gridLength, gridWidth)
+        generateGrid(gridLength, gridWidth, savedGame.savedGrid)
     );
 
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
@@ -73,6 +71,8 @@ const GamePage = ({
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if (!daily) return;
+
         return () => {
             let tmp: SavedGame = {
                 savedGrid: grid,
@@ -152,23 +152,23 @@ const GamePage = ({
     };
 
     const onKeyboardPress = (letter: string) => {
-        if (!disabled) {
-            let tmp = grid;
-            if (letter === '!') {
-                updateGrid();
-            } else if (letter === '<') {
-                if (currentColumn > 0) {
-                    tmp[currentLevel][currentColumn - 1].char = '';
-                    setCurrentColumn(currentColumn - 1);
-                }
-            } else {
-                if (currentColumn < gridWidth) {
-                    tmp[currentLevel][currentColumn].char = letter;
-                    setCurrentColumn(currentColumn + 1);
-                }
+        if (disabled) return;
+
+        let tmp = grid;
+        if (letter === '!') {
+            updateGrid();
+        } else if (letter === '<') {
+            if (currentColumn > 0) {
+                tmp[currentLevel][currentColumn - 1].char = '';
+                setCurrentColumn(currentColumn - 1);
             }
-            setGrid(tmp);
+        } else {
+            if (currentColumn < gridWidth) {
+                tmp[currentLevel][currentColumn].char = letter;
+                setCurrentColumn(currentColumn + 1);
+            }
         }
+        setGrid(tmp);
     };
 
     return (

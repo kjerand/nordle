@@ -10,6 +10,7 @@ type Route = {
     daily?: boolean;
     initialPosition: Position;
     savedGame: SavedGame;
+    gameIndex: number;
 };
 
 type Position = {
