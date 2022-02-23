@@ -14,6 +14,7 @@ import {
     TEXT
 } from '../utils/constants';
 import { getInitialPosition } from '../utils/getInitialPosition';
+import { getDayOfYear } from '../utils/getDayOfYear';
 
 const MenuPage = ({ navigation }: { navigation: any }) => {
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
@@ -42,8 +43,14 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
                         gridWidth: 5,
                         currentWord: daily ? getDailyWord() : getRandomWord(),
                         daily: daily,
-                        initialPosition: getInitialPosition(save.savedGrid),
-                        savedGame: daily && save.savedGrid.length > 0 && save
+                        initialPosition: getInitialPosition(
+                            getDayOfYear() === save.date ? save.savedGrid : {}
+                        ),
+                        savedGame:
+                            daily &&
+                            save.savedGrid.length > 0 &&
+                            getDayOfYear() === save.date &&
+                            save
                     });
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                 }}

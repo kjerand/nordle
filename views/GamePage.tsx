@@ -26,6 +26,7 @@ import {
 } from '../utils/constants';
 import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
 import { setSavedGame } from '../store/save';
+import { getDayOfYear } from '../utils/getDayOfYear';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
 
@@ -71,17 +72,27 @@ const GamePage = ({
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!daily) return;
-
         return () => {
-            let tmp: SavedGame = {
-                savedGrid: grid,
-                savedKeyboard: keyboard
-            };
-
-            dispatch(setSavedGame(tmp));
+            if (!daily) return;
+            if (disabled) {
+                dispatch(
+                    setSavedGame({
+                        savedGrid: [],
+                        savedKeyboard: [],
+                        date: getDayOfYear()
+                    })
+                );
+            } else {
+                dispatch(
+                    setSavedGame({
+                        savedGrid: grid,
+                        savedKeyboard: keyboard,
+                        date: getDayOfYear()
+                    })
+                );
+            }
         };
-    }, []);
+    }, [disabled]);
 
     useEffect(() => {
         setShowPopup(true);
@@ -136,14 +147,15 @@ const GamePage = ({
                 }
             } else if (currentLevel + 1 === gridLength) {
                 setDisabled(true);
-                setPopupTimeout(
-                    'Du klarte det ikke. Riktig svar var ' +
-                        currentWord.toUpperCase() +
-                        '.'
-                );
 
                 if (daily) {
                     updateLoss();
+
+                    setPopupTimeout(
+                        'Du klarte det ikke. Riktig svar var ' +
+                            currentWord.toUpperCase() +
+                            '.'
+                    );
                 }
             }
         } else {

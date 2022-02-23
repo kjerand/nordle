@@ -23,4 +23,5 @@ type Theme = { [name: string]: string };
 type SavedGame = {
     savedGrid: Letter[][];
     savedKeyboard: Letter[][];
+    date: number;
 };

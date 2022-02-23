@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getDayOfYear } from '../utils/getDayOfYear';
 
 let initialState: SavedGame = {
     savedGrid: [],
-    savedKeyboard: []
+    savedKeyboard: [],
+    date: getDayOfYear()
 };
 
 const saveSlice = createSlice({
