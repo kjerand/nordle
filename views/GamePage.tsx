@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LetterContainer from '../components/LetterContainer';
 import KeyboardContainer from '../components/KeyboardContainer';
@@ -82,6 +83,9 @@ const GamePage = ({
                         date: getDayOfYear()
                     })
                 );
+
+                AsyncStorage.setItem('@keyboardStorage', '');
+                AsyncStorage.setItem('@gridStorage', '');
             } else {
                 dispatch(
                     setSavedGame({
@@ -90,6 +94,12 @@ const GamePage = ({
                         date: getDayOfYear()
                     })
                 );
+
+                AsyncStorage.setItem(
+                    '@keyboardStorage',
+                    JSON.stringify(keyboard)
+                );
+                AsyncStorage.setItem('@gridStorage', JSON.stringify(grid));
             }
         };
     }, [disabled]);

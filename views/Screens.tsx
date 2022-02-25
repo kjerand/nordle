@@ -17,6 +17,8 @@ import { getCurrentDate } from '../utils/getCurrentDate';
 import GamePage from './GamePage';
 import MenuPage from './MenuPage';
 import TutorialPage from './TutorialPage';
+import { setSavedGame } from '../store/save';
+import { getDayOfYear } from '../utils/getDayOfYear';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +29,25 @@ export default function Screens() {
     useEffect(() => {
         AsyncStorage.getItem('@theme').then((data) => {
             if (data) dispatch(setTheme(data));
+        });
+
+        AsyncStorage.getItem('@keyboardStorage').then((keyboard) => {
+            AsyncStorage.getItem('@gridStorage').then((grid) => {
+                if (keyboard && grid) {
+                    if (keyboard !== '' && grid !== '') {
+                        let savedGrid: Letter[][] = JSON.parse(grid);
+                        let savedKeyboard: Letter[][] = JSON.parse(keyboard);
+
+                        dispatch(
+                            setSavedGame({
+                                savedGrid: savedGrid,
+                                savedKeyboard: savedKeyboard,
+                                date: getDayOfYear()
+                            })
+                        );
+                    }
+                }
+            });
         });
     }, []);
 

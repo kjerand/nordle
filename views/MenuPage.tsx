@@ -44,7 +44,7 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
                         currentWord: daily ? getDailyWord() : getRandomWord(),
                         daily: daily,
                         initialPosition: getInitialPosition(
-                            getDayOfYear() === save.date ? save.savedGrid : {}
+                            getDayOfYear() === save.date ? save.savedGrid : []
                         ),
                         savedGame:
                             daily &&
