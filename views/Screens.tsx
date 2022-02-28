@@ -19,6 +19,7 @@ import MenuPage from './MenuPage';
 import TutorialPage from './TutorialPage';
 import { setSavedGame } from '../store/save';
 import { getDayOfYear } from '../utils/getDayOfYear';
+import { setHardMode } from '../store/settings';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,10 @@ export default function Screens() {
     useEffect(() => {
         AsyncStorage.getItem('@theme').then((data) => {
             if (data) dispatch(setTheme(data));
+        });
+
+        AsyncStorage.getItem('@hardMode').then((data) => {
+            if (data && data === '1') dispatch(setHardMode(true));
         });
 
         AsyncStorage.getItem('@keyboardStorage').then((keyboard) => {
