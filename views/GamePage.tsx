@@ -87,9 +87,15 @@ const GamePage = ({
                 AsyncStorage.setItem('@keyboardStorage', '');
                 AsyncStorage.setItem('@gridStorage', '');
             } else {
+                let tmp = grid;
+
+                [...Array(gridWidth)].forEach((_, i) => {
+                    tmp[currentLevel][i] = { char: '', status: 0 };
+                });
+
                 dispatch(
                     setSavedGame({
-                        savedGrid: grid,
+                        savedGrid: tmp,
                         savedKeyboard: keyboard,
                         date: getDayOfYear()
                     })
