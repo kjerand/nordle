@@ -18,8 +18,6 @@ const TutorialPage = () => {
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
     const { hardMode } = useSelector((state: RootStateOrAny) => state.settings);
 
-    console.log(hardMode);
-
     const ThemeButton = ({
         themeValue,
         text

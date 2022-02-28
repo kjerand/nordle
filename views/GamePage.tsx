@@ -47,7 +47,6 @@ const GamePage = ({
     const { gridWidth } = route.params;
     const { currentWord } = route.params;
     const { daily } = route.params;
-    const { hardMode } = route.params;
     const { initialPosition } = route.params;
     const { savedGame } = route.params;
 
@@ -72,6 +71,7 @@ const GamePage = ({
     );
 
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
+    const { hardMode } = useSelector((state: RootStateOrAny) => state.settings);
 
     const dispatch = useDispatch();
 
