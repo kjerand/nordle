@@ -28,6 +28,8 @@ import {
 import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
 import { setSavedGame } from '../store/save';
 import { getDayOfYear } from '../utils/getDayOfYear';
+import { savedGrid } from '../utils/savedGrid';
+import { checkHardMode } from '../utils/checkHardMode';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
 
@@ -45,6 +47,7 @@ const GamePage = ({
     const { gridWidth } = route.params;
     const { currentWord } = route.params;
     const { daily } = route.params;
+    const { hardMode } = route.params;
     const { initialPosition } = route.params;
     const { savedGame } = route.params;
 
@@ -87,15 +90,10 @@ const GamePage = ({
                 AsyncStorage.setItem('@keyboardStorage', '');
                 AsyncStorage.setItem('@gridStorage', '');
             } else {
-                let tmp = grid;
-
-                [...Array(gridWidth)].forEach((_, i) => {
-                    tmp[currentLevel][i] = { char: '', status: 0 };
-                });
-
+                const save: Letter[][] = savedGrid(grid, currentLevel);
                 dispatch(
                     setSavedGame({
-                        savedGrid: tmp,
+                        savedGrid: save,
                         savedKeyboard: keyboard,
                         date: getDayOfYear()
                     })
@@ -105,10 +103,10 @@ const GamePage = ({
                     '@keyboardStorage',
                     JSON.stringify(keyboard)
                 );
-                AsyncStorage.setItem('@gridStorage', JSON.stringify(grid));
+                AsyncStorage.setItem('@gridStorage', JSON.stringify(save));
             }
         };
-    }, [disabled]);
+    }, [disabled, currentLevel]);
 
     useEffect(() => {
         setShowPopup(true);
@@ -142,6 +140,13 @@ const GamePage = ({
         const valid = checkWordValidity(guess);
 
         if (valid) {
+            if (hardMode) {
+                if (!checkHardMode(grid, currentLevel)) {
+                    setPopupTimeout('Du må bruke de grønne bokstavene!');
+                    return;
+                }
+            }
+
             updateColors(
                 keyboard,
                 setKeyboard,

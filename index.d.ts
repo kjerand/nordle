@@ -11,6 +11,7 @@ type Route = {
     initialPosition: Position;
     savedGame: SavedGame;
     gameIndex: number;
+    hardMode: boolean;
 };
 
 type Position = {

@@ -9,12 +9,16 @@ import {
 } from '../utils/constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { setTheme } from '../store/theme';
+import { setHardMode } from '../store/settings';
 
 const TutorialPage = () => {
     const dispatch = useDispatch();
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
+    const { hardMode } = useSelector((state: RootStateOrAny) => state.settings);
+
+    console.log(hardMode);
 
     const ThemeButton = ({
         themeValue,
@@ -72,6 +76,28 @@ const TutorialPage = () => {
                     Målet er å tippe ordet før man har brukt opp forsøkene sine!
                 </Text>
             </View>
+
+            <Text style={styles.header}>
+                Vanskelig modus{' '}
+                <BouncyCheckbox
+                    fillColor={BUTTONS[theme]}
+                    isChecked={hardMode}
+                    onPress={(isChecked: boolean) => {
+                        dispatch(setHardMode(isChecked));
+
+                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+                        if (isChecked) AsyncStorage.setItem('@hardMode', '1');
+                        else if (!isChecked)
+                            AsyncStorage.setItem('@hardMode', '0');
+                    }}
+                />
+            </Text>
+            <View style={styles.textContainer}>
+                <Text style={styles.textStyle}>
+                    Vanskelig modus krever at du må bruke alle grønne bokstaver.
+                </Text>
+            </View>
             <Text style={styles.header}>Fargetema</Text>
             <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
                 <ThemeButton themeValue="default" text="Grå" />
@@ -80,6 +106,7 @@ const TutorialPage = () => {
                 <ThemeButton themeValue="blue" text="Blå" />
                 <ThemeButton themeValue="red" text="Rød" />
             </View>
+
             <Text style={styles.signature}>Laget av Kjerand Evje</Text>
         </View>
     );
@@ -88,22 +115,22 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        paddingTop: 20,
+        paddingTop: 10,
         paddingBottom: 50,
         flexGrow: 1
     },
     header: {
         color: TEXT,
-        fontSize: 30,
+        fontSize: 26,
         fontFamily: FONT,
         fontWeight: 'bold',
-        marginBottom: 15
+        marginBottom: 10
     },
     textStyle: {
         color: TEXT,
         fontSize: 20,
         fontFamily: FONT,
-        marginBottom: 15
+        marginBottom: 10
     },
     textContainer: {
         marginHorizontal: 30
