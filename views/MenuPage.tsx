@@ -66,6 +66,7 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
             <MenuButton navigate="Standard" text="Standard" gridLength={6} />
             <MenuButton navigate="Standard" text="Utfordring" gridLength={4} />
             <MenuButton navigate="Help" text="Hjelp" />
+            <MenuButton navigate="Settings" text="Innstillinger" />
         </View>
     );
 };
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     buttonStyle: {
         width: '65%',
         borderRadius: 5,
-        marginBottom: !SMALLSCREEN ? 40 : 20
+        marginBottom: !SMALLSCREEN ? 30 : 20
     },
     textStyle: {
         fontSize: 24,

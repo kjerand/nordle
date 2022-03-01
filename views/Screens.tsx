@@ -17,6 +17,8 @@ import { getCurrentDate } from '../utils/getCurrentDate';
 import GamePage from './GamePage';
 import MenuPage from './MenuPage';
 import TutorialPage from './TutorialPage';
+import SettingsPage from './SettingsPage';
+import { setMode } from '../store/settings';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +27,10 @@ export default function Screens() {
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
 
     useEffect(() => {
+        AsyncStorage.getItem('@mode').then((data) => {
+            if (data) dispatch(setMode(parseInt(data)));
+        });
+
         AsyncStorage.getItem('@theme').then((data) => {
             if (data) dispatch(setTheme(data));
         });
@@ -109,7 +115,27 @@ export default function Screens() {
                     name="Help"
                     component={TutorialPage}
                     options={({ navigation }) => ({
-                        headerTitle: '',
+                        headerTitle: 'Hjelp',
+                        headerLeft: () => (
+                            <Feather
+                                name="home"
+                                size={24}
+                                color={TEXT}
+                                onPress={() => {
+                                    Haptics.impactAsync(
+                                        Haptics.ImpactFeedbackStyle.Medium
+                                    );
+                                    navigation.navigate('Menu');
+                                }}
+                            />
+                        )
+                    })}
+                />
+                <Stack.Screen
+                    name="Settings"
+                    component={SettingsPage}
+                    options={({ navigation }) => ({
+                        headerTitle: 'Innstillinger',
                         headerLeft: () => (
                             <Feather
                                 name="home"

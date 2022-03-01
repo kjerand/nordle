@@ -13,43 +13,7 @@ import { useEffect, useState } from 'react';
 import { setTheme } from '../store/theme';
 
 const TutorialPage = () => {
-    const dispatch = useDispatch();
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
-
-    const ThemeButton = ({
-        themeValue,
-        text
-    }: {
-        themeValue: string;
-        text: string;
-    }) => {
-        return (
-            <Pressable
-                onPress={() => {
-                    dispatch(setTheme(themeValue));
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                    AsyncStorage.setItem('@theme', themeValue);
-                }}
-                style={[
-                    styles.buttonStyle,
-                    { backgroundColor: BUTTONS[theme] }
-                ]}
-            >
-                <Text
-                    style={{
-                        textAlign: 'center',
-                        justifyContent: 'center',
-                        flex: 1,
-                        color: TEXT,
-                        fontSize: 18,
-                        fontFamily: FONT
-                    }}
-                >
-                    {text}
-                </Text>
-            </Pressable>
-        );
-    };
 
     return (
         <View
@@ -69,17 +33,11 @@ const TutorialPage = () => {
                     del av ordet og at den er riktig plassert.
                 </Text>
                 <Text style={styles.textStyle}>
-                    Målet er å tippe ordet før man har brukt opp forsøkene sine!
+                    Målet er å tippe ordet før man har brukt opp alle forsøkene
+                    sine!
                 </Text>
             </View>
-            <Text style={styles.header}>Fargetema</Text>
-            <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
-                <ThemeButton themeValue="default" text="Grå" />
-                <ThemeButton themeValue="black" text="Svart" />
-                <ThemeButton themeValue="green" text="Grønn" />
-                <ThemeButton themeValue="blue" text="Blå" />
-                <ThemeButton themeValue="red" text="Rød" />
-            </View>
+
             <Text style={styles.signature}>Laget av Kjerand Evje</Text>
         </View>
     );

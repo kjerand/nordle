@@ -25,6 +25,8 @@ import {
     VERYLARGESCREEN
 } from '../utils/constants';
 import { useSelector, RootStateOrAny } from 'react-redux';
+import { checkHardMode } from '../utils/checkHardMode';
+import { checkExtremeMode } from '../utils/checkExtremeMode';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
 
@@ -43,6 +45,9 @@ const GamePage = ({
     const { currentWord } = route.params;
     const { daily } = route.params;
 
+    const { theme } = useSelector((state: RootStateOrAny) => state.theme);
+    const { mode } = useSelector((state: RootStateOrAny) => state.settings);
+
     const [currentLevel, setCurrentLevel] = useState<number>(0);
     const [currentColumn, setCurrentColumn] = useState<number>(0);
 
@@ -56,8 +61,6 @@ const GamePage = ({
     const [grid, setGrid] = useState<Letter[][]>(
         generateGrid(gridLength, gridWidth)
     );
-
-    const { theme } = useSelector((state: RootStateOrAny) => state.theme);
 
     useEffect(() => {
         setShowPopup(true);
@@ -91,6 +94,22 @@ const GamePage = ({
         const valid = checkWordValidity(guess);
 
         if (valid) {
+            if (mode >= 1) {
+                if (!checkHardMode(grid, currentLevel)) {
+                    setPopupTimeout('Du må bruke de grønne bokstavene!');
+                    return;
+                }
+
+                if (mode === 2) {
+                    if (!checkExtremeMode(keyboard, guess.split(''))) {
+                        setPopupTimeout(
+                            'Du kan ikke bruke mørk grå bokstaver!'
+                        );
+                        return;
+                    }
+                }
+            }
+
             updateColors(
                 keyboard,
                 setKeyboard,
