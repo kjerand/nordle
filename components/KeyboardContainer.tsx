@@ -16,6 +16,7 @@ import {
     TEXT,
     YELLOW
 } from '../utils/constants';
+import { useSelector, RootStateOrAny } from 'react-redux';
 
 const COLORS = [KEYBOARD, DARKGRAY, YELLOW, GREEN, SEND, BACKSPACE];
 
@@ -60,7 +61,7 @@ const KeyboardContainer = ({
                                     <Text
                                         style={{
                                             textAlign: 'center',
-                                            color: TEXT,
+                                            color: TEXT['default'],
                                             fontSize: 20
                                         }}
                                     >
@@ -68,14 +69,14 @@ const KeyboardContainer = ({
                                             <Feather
                                                 name="send"
                                                 size={24}
-                                                color={TEXT}
+                                                color={TEXT['default']}
                                             />
                                         )}
                                         {letter.char === '<' && (
                                             <Ionicons
                                                 name="backspace-outline"
                                                 size={24}
-                                                color={TEXT}
+                                                color={TEXT['default']}
                                             />
                                         )}
                                         {letter.char !== '!' &&

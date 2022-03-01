@@ -94,7 +94,7 @@ const GamePage = ({
         const valid = checkWordValidity(guess);
 
         if (valid) {
-            if (mode >= 1) {
+            if (mode === 1 || mode === 2) {
                 if (!checkHardMode(grid, currentLevel)) {
                     setPopupTimeout('Du må bruke de grønne bokstavene!');
                     return;

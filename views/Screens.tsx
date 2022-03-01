@@ -50,7 +50,7 @@ export default function Screens() {
                     headerStyle: {
                         backgroundColor: BACKGROUND[theme]
                     },
-                    headerTintColor: TEXT,
+                    headerTintColor: TEXT[theme],
                     headerTitleStyle: {
                         fontWeight: 'bold',
                         fontFamily: FONT,
@@ -74,11 +74,12 @@ export default function Screens() {
                     component={GamePage}
                     options={({ navigation }) => ({
                         headerTitle: getCurrentDate(),
+                        title: getCurrentDate(),
                         headerLeft: () => (
                             <Feather
                                 name="home"
                                 size={26}
-                                color={TEXT}
+                                color={TEXT[theme]}
                                 onPress={() => {
                                     Haptics.impactAsync(
                                         Haptics.ImpactFeedbackStyle.Medium
@@ -86,8 +87,7 @@ export default function Screens() {
                                     navigation.navigate('Menu');
                                 }}
                             />
-                        ),
-                        title: getCurrentDate()
+                        )
                     })}
                 />
                 <Stack.Screen
@@ -95,11 +95,12 @@ export default function Screens() {
                     component={GamePage}
                     options={({ navigation }) => ({
                         headerTitle: 'Gjett ordet!',
+                        title: 'Gjett ordet!',
                         headerLeft: () => (
                             <Feather
                                 name="home"
                                 size={24}
-                                color={TEXT}
+                                color={TEXT[theme]}
                                 onPress={() => {
                                     Haptics.impactAsync(
                                         Haptics.ImpactFeedbackStyle.Medium
@@ -107,20 +108,20 @@ export default function Screens() {
                                     navigation.navigate('Menu');
                                 }}
                             />
-                        ),
-                        title: 'Gjett ordet!'
+                        )
                     })}
                 />
                 <Stack.Screen
                     name="Help"
                     component={TutorialPage}
                     options={({ navigation }) => ({
-                        headerTitle: 'Hjelp',
+                        headerTitle: 'Hjelp!',
+                        title: 'Hjelp!',
                         headerLeft: () => (
                             <Feather
                                 name="home"
                                 size={24}
-                                color={TEXT}
+                                color={TEXT[theme]}
                                 onPress={() => {
                                     Haptics.impactAsync(
                                         Haptics.ImpactFeedbackStyle.Medium
@@ -136,11 +137,12 @@ export default function Screens() {
                     component={SettingsPage}
                     options={({ navigation }) => ({
                         headerTitle: 'Innstillinger',
+                        title: 'Innstillinger',
                         headerLeft: () => (
                             <Feather
                                 name="home"
                                 size={24}
-                                color={TEXT}
+                                color={TEXT[theme]}
                                 onPress={() => {
                                     Haptics.impactAsync(
                                         Haptics.ImpactFeedbackStyle.Medium

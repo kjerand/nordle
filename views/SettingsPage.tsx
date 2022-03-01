@@ -1,19 +1,20 @@
-import { View, Text, StyleSheet, Button, Pressable } from 'react-native';
+import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
+import CheckBox from 'react-native-check-box';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import * as Haptics from 'expo-haptics';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {
     BACKGROUND,
     BUTTONS,
     FONT,
-    KEYBOARD,
     SMALLSCREEN,
     TEXT
 } from '../utils/constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import CheckBox from 'react-native-check-box';
+
 import { setTheme } from '../store/theme';
 import { setMode } from '../store/settings';
-import { useState } from 'react';
+
 const SettingsPage = () => {
     const dispatch = useDispatch();
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
@@ -42,7 +43,7 @@ const SettingsPage = () => {
                         textAlign: 'center',
                         justifyContent: 'center',
                         flex: 1,
-                        color: TEXT,
+                        color: TEXT[theme],
                         fontSize: 18,
                         fontFamily: FONT
                     }}
@@ -57,7 +58,9 @@ const SettingsPage = () => {
             style={[styles.container, { backgroundColor: BACKGROUND[theme] }]}
         >
             <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.header}>Vanskelig modus </Text>
+                <Text style={[styles.header, { color: TEXT[theme] }]}>
+                    Vanskelig modus
+                </Text>
                 <CheckBox
                     disabled={false}
                     isChecked={mode === 1}
@@ -72,18 +75,20 @@ const SettingsPage = () => {
                         }
                     }}
                     style={styles.checkBoxStyle}
-                    checkBoxColor={TEXT}
+                    checkBoxColor={TEXT[theme]}
                 />
             </View>
 
             <View style={styles.textContainer}>
-                <Text style={styles.textStyle}>
+                <Text style={[styles.textStyle, { color: TEXT[theme] }]}>
                     Vanskelig modus krever at du må bruke alle bokstaver som er
                     blitt grønne.
                 </Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.header}>Ekstrem modus</Text>
+                <Text style={[styles.header, { color: TEXT[theme] }]}>
+                    Ekstrem modus
+                </Text>
                 <CheckBox
                     disabled={false}
                     isChecked={mode === 2}
@@ -98,26 +103,30 @@ const SettingsPage = () => {
                         }
                     }}
                     style={styles.checkBoxStyle}
-                    checkBoxColor={TEXT}
+                    checkBoxColor={TEXT[theme]}
                 />
             </View>
             <View style={styles.textContainer}>
-                <Text style={styles.textStyle}>
+                <Text style={[styles.textStyle, { color: TEXT[theme] }]}>
                     Ekstrem modus krever at du må bruke alle bokstaver som er
                     blitt grønne og du kan ikke bruke bokstaver som er blitt
                     mørk grå.
                 </Text>
             </View>
-            <Text style={styles.header}>Fargetema</Text>
+            <Text style={[styles.header, { color: TEXT[theme] }]}>
+                Fargetema
+            </Text>
             <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
                 <ThemeButton themeValue="default" text="Grå" />
                 <ThemeButton themeValue="black" text="Svart" />
-                <ThemeButton themeValue="green" text="Grønn" />
+                <ThemeButton themeValue="white" text="Hvit" />
                 <ThemeButton themeValue="blue" text="Blå" />
-                <ThemeButton themeValue="red" text="Rød" />
+                <ThemeButton themeValue="green" text="Grønn" />
             </View>
 
-            <Text style={styles.signature}>Laget av Kjerand Evje</Text>
+            <Text style={[styles.signature, { color: TEXT[theme] }]}>
+                Laget av Kjerand Evje
+            </Text>
         </View>
     );
 };
@@ -131,7 +140,6 @@ const styles = StyleSheet.create({
         flexGrow: 1
     },
     header: {
-        color: TEXT,
         fontSize: 26,
         fontFamily: FONT,
         fontWeight: 'bold',
@@ -142,7 +150,6 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
     textStyle: {
-        color: TEXT,
         fontSize: 19,
         fontFamily: FONT,
         marginBottom: 10
@@ -154,7 +161,6 @@ const styles = StyleSheet.create({
     signature: {
         fontSize: 16,
         fontFamily: FONT,
-        color: TEXT,
         justifyContent: 'flex-end',
         marginTop: 'auto'
     },

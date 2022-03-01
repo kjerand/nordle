@@ -12,7 +12,7 @@ const GridContainer = ({ letter }: { letter: string }) => {
         >
             <Text
                 style={{
-                    color: TEXT,
+                    color: TEXT['default'],
                     textAlign: 'center',
                     fontFamily: FONT,
                     fontSize: 32

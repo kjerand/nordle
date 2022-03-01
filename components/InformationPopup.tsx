@@ -1,4 +1,6 @@
 import { View, Text } from 'react-native';
+import { useSelector, RootStateOrAny } from 'react-redux';
+import { FONT, TEXT } from '../utils/constants';
 
 const InformationPopup = ({
     message,
@@ -7,6 +9,7 @@ const InformationPopup = ({
     message: string;
     showPopup: boolean;
 }) => {
+    const { theme } = useSelector((state: RootStateOrAny) => state.theme);
     if (!showPopup) {
         return <></>;
     }
@@ -21,7 +24,7 @@ const InformationPopup = ({
                 style={{
                     fontFamily: 'Oswald',
                     fontSize: 20,
-                    color: 'white',
+                    color: TEXT[theme],
                     textAlign: 'center'
                 }}
             >

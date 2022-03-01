@@ -32,7 +32,9 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
             <Pressable
                 style={[
                     styles.buttonStyle,
-                    { backgroundColor: BUTTONS[theme] }
+                    {
+                        backgroundColor: BUTTONS[theme]
+                    }
                 ]}
                 onPress={() => {
                     navigation.navigate(navigate, {
@@ -44,7 +46,9 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                 }}
             >
-                <Text style={styles.textStyle}>{text}</Text>
+                <Text style={[styles.textStyle, { color: TEXT[theme] }]}>
+                    {text}
+                </Text>
             </Pressable>
         );
     };
@@ -54,7 +58,11 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
             style={[styles.container, { backgroundColor: BACKGROUND[theme] }]}
         >
             <Image
-                source={require('../assets/images/logo.png')}
+                source={
+                    theme === 'white'
+                        ? require('../assets/images/logo_black.png')
+                        : require('../assets/images/logo.png')
+                }
                 style={styles.imageStyle}
             />
             <MenuButton
@@ -63,9 +71,13 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
                 gridLength={6}
                 daily={true}
             />
-            <MenuButton navigate="Standard" text="Standard" gridLength={6} />
+            <MenuButton
+                navigate="Standard"
+                text="Tilfeldig oppgave"
+                gridLength={6}
+            />
             <MenuButton navigate="Standard" text="Utfordring" gridLength={4} />
-            <MenuButton navigate="Help" text="Hjelp" />
+            <MenuButton navigate="Help" text="Hjelp!" />
             <MenuButton navigate="Settings" text="Innstillinger" />
         </View>
     );
@@ -78,20 +90,19 @@ const styles = StyleSheet.create({
         paddingTop: !SMALLSCREEN ? 40 : 0
     },
     imageStyle: {
-        height: 300,
-        width: 300,
-        borderRadius: 4
+        height: 285,
+        width: 285
     },
     buttonStyle: {
         width: '65%',
         borderRadius: 5,
-        marginBottom: !SMALLSCREEN ? 30 : 20
+        marginBottom: !SMALLSCREEN ? 30 : 15
     },
     textStyle: {
         fontSize: 24,
         textAlign: 'center',
         paddingVertical: 10,
-        color: TEXT,
+
         fontFamily: FONT
     }
 });
