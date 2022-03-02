@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Share } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
+import * as Haptics from 'expo-haptics';
 
 import LetterContainer from '../components/LetterContainer';
 import KeyboardContainer from '../components/KeyboardContainer';
@@ -27,6 +28,7 @@ import {
 import { useSelector, RootStateOrAny } from 'react-redux';
 import { checkHardMode } from '../utils/checkHardMode';
 import { checkExtremeMode } from '../utils/checkExtremeMode';
+import { shareGame } from '../utils/shareGame';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
 
@@ -56,6 +58,7 @@ const GamePage = ({
     const [popupMessage, setPopupMessage] = useState<string>('');
 
     const [disabled, setDisabled] = useState<boolean>(false);
+    const [share, setShare] = useState<boolean>(false);
 
     const [keyboard, setKeyboard] = useState<Letter[][]>(initializeKeyboard());
     const [grid, setGrid] = useState<Letter[][]>(
@@ -75,6 +78,13 @@ const GamePage = ({
     const setPopupTimeout = (message: string) => {
         setPopupUpdate(!popupUpdate);
         setPopupMessage(message);
+    };
+
+    const onShare = async () => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        await Share.share({
+            message: shareGame(grid, currentLevel)
+        });
     };
 
     const updateGrid = () => {
@@ -125,6 +135,7 @@ const GamePage = ({
                 setDisabled(true);
 
                 if (daily) {
+                    setShare(true);
                     updateWinStreak(setPopupTimeout);
                 } else {
                     setPopupTimeout('Du tippet riktig!');
@@ -190,6 +201,8 @@ const GamePage = ({
                 <InformationPopup
                     message={popupMessage}
                     showPopup={showPopup}
+                    onShare={onShare}
+                    share={share}
                 />
 
                 <KeyboardContainer

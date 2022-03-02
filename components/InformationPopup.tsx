@@ -1,15 +1,21 @@
-import { View, Text } from 'react-native';
+import { View, Text, Button, Pressable } from 'react-native';
 import { useSelector, RootStateOrAny } from 'react-redux';
-import { FONT, TEXT } from '../utils/constants';
+import { TEXT } from '../utils/constants';
+import { Feather } from '@expo/vector-icons';
 
 const InformationPopup = ({
     message,
-    showPopup
+    showPopup,
+    onShare,
+    share
 }: {
     message: string;
     showPopup: boolean;
+    onShare: CallableFunction;
+    share: boolean;
 }) => {
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
+
     if (!showPopup) {
         return <></>;
     }
@@ -28,7 +34,25 @@ const InformationPopup = ({
                     textAlign: 'center'
                 }}
             >
-                {message}
+                {!share ? (
+                    message
+                ) : (
+                    <>
+                        {message}
+                        <Pressable
+                            onPress={() => {
+                                onShare();
+                            }}
+                            style={{ paddingLeft: 8 }}
+                        >
+                            <Feather
+                                name="share"
+                                size={24}
+                                color={TEXT[theme]}
+                            />
+                        </Pressable>
+                    </>
+                )}
             </Text>
         </View>
     );
