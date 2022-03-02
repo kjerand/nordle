@@ -1,7 +1,7 @@
 import { Dimensions } from 'react-native';
 
-export const GREEN = '#3d6637';
-export const YELLOW = '#9b870C';
+export const GREEN = '#157d31';
+export const YELLOW = '#b08e07';
 export const DARKGRAY = '#383836';
 export const LIGHTGRAY = '#5F645D';
 export const BACKGROUND: Theme = {
