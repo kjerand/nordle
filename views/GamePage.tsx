@@ -81,10 +81,14 @@ const GamePage = ({
     };
 
     const onShare = async () => {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-        await Share.share({
-            message: shareGame(grid, currentLevel, mode)
-        });
+        try {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            await Share.share({
+                message: shareGame(grid, currentLevel, mode)
+            });
+        } catch (error) {
+            console.warn(error);
+        }
     };
 
     const updateGrid = () => {
