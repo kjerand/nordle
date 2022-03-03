@@ -6,9 +6,10 @@ export const shareGame = (
     mode: number
 ) => {
     let gameMode = ['', '[Vanskelig]', '[Ekstrem]'];
-    let shareString = 'Gjett ordet! ' + gameMode[mode] + '\n';
+    let shareString = 'Gjett ordet! \n';
     shareString += getCurrentDate() + '\n';
-    shareString += currentLevel + '/' + grid.length + '\n\n';
+    shareString +=
+        currentLevel + '/' + grid.length + ' ' + gameMode[mode] + '\n\n';
 
     grid.forEach((row, rowIndex) => {
         if (rowIndex <= currentLevel) {
