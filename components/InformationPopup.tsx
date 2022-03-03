@@ -34,25 +34,25 @@ const InformationPopup = ({
                     textAlign: 'center'
                 }}
             >
-                {!share ? (
-                    message
-                ) : (
-                    <>
-                        {message}
-                        <Pressable
-                            onPress={() => {
-                                onShare();
-                            }}
-                            style={{ paddingLeft: 8 }}
-                        >
-                            <Feather
-                                name="share"
-                                size={24}
-                                color={TEXT[theme]}
-                            />
-                        </Pressable>
-                    </>
-                )}
+                {!share
+                    ? message
+                    : message !== '' && (
+                          <>
+                              {message}
+                              <Pressable
+                                  onPress={() => {
+                                      onShare();
+                                  }}
+                                  style={{ paddingLeft: 8 }}
+                              >
+                                  <Feather
+                                      name="share"
+                                      size={24}
+                                      color={TEXT[theme]}
+                                  />
+                              </Pressable>
+                          </>
+                      )}
             </Text>
         </View>
     );
