@@ -10,6 +10,7 @@ import {
     BUTTONS,
     FONT,
     KEYBOARD,
+    LARGESCREEN,
     SMALLSCREEN,
     TEXT
 } from '../utils/constants';
@@ -90,8 +91,8 @@ const styles = StyleSheet.create({
         paddingTop: !SMALLSCREEN ? 40 : 0
     },
     imageStyle: {
-        height: 285,
-        width: 285
+        height: LARGESCREEN ? 310 : 270,
+        width: LARGESCREEN ? 310 : 270
     },
     buttonStyle: {
         width: '65%',
