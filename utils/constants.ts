@@ -1,6 +1,6 @@
 import { Dimensions } from 'react-native';
 
-export const GREEN = '#157d31';
+export const GREEN = '#327830';
 export const YELLOW = '#b08e07';
 export const DARKGRAY = '#383836';
 export const LIGHTGRAY = '#5F645D';
@@ -18,6 +18,7 @@ export const BUTTONS: Theme = {
     green: '#00420f',
     white: '#e6e6e6'
 };
+
 export const KEYBOARD = '#8e9094';
 export const SEND = '#5ec4d6';
 export const BACKSPACE = '#5c5c5c';

@@ -1,7 +1,13 @@
 import { getCurrentDate } from './getCurrentDate';
 
-export const shareGame = (grid: Letter[][], currentLevel: number) => {
-    let shareString = getCurrentDate() + '\n';
+export const shareGame = (
+    grid: Letter[][],
+    currentLevel: number,
+    mode: number
+) => {
+    let gameMode = ['', '[Vanskelig]', '[Ekstrem]'];
+    let shareString = 'Gjett ordet! ' + gameMode[mode] + '\n';
+    shareString += getCurrentDate() + '\n';
     shareString += currentLevel + '/' + grid.length + '\n\n';
 
     grid.forEach((row, rowIndex) => {
