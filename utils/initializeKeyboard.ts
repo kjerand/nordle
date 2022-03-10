@@ -1,4 +1,16 @@
-export const initializeKeyboard = (): Letter[][] => {
+export const initializeKeyboard = (savedKeyboard: Letter[][]): Letter[][] => {
+    if (savedKeyboard) {
+        let newKeyboard: Letter[][] = [];
+        savedKeyboard.forEach((row) => {
+            let tmp: Letter[] = [];
+            row.forEach((col) => {
+                tmp.push({ char: col.char, status: col.status });
+            });
+            newKeyboard.push(tmp);
+        });
+        return newKeyboard;
+    }
+
     const keyboard: Letter[][] = [
         [
             { char: 'Q', status: 0 },

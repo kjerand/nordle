@@ -25,10 +25,13 @@ import {
     MEDIUMCREEN,
     VERYLARGESCREEN
 } from '../utils/constants';
-import { useSelector, RootStateOrAny } from 'react-redux';
+import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
 import { checkHardMode } from '../utils/checkHardMode';
 import { checkExtremeMode } from '../utils/checkExtremeMode';
 import { shareGame } from '../utils/shareGame';
+import { setSavedGame } from '../store/save';
+import { getCurrentDate } from '../utils/getCurrentDate';
+import { createSavedGrid } from '../utils/createSavedGrid';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
 
@@ -46,12 +49,19 @@ const GamePage = ({
     const { gridWidth } = route.params;
     const { currentWord } = route.params;
     const { daily } = route.params;
+    const { initialPosition } = route.params;
+    const { savedGame } = route.params;
 
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
     const { mode } = useSelector((state: RootStateOrAny) => state.settings);
+    const dispatch = useDispatch();
 
-    const [currentLevel, setCurrentLevel] = useState<number>(0);
-    const [currentColumn, setCurrentColumn] = useState<number>(0);
+    const [currentLevel, setCurrentLevel] = useState<number>(
+        initialPosition.row
+    );
+    const [currentColumn, setCurrentColumn] = useState<number>(
+        initialPosition.col
+    );
 
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [popupUpdate, setPopupUpdate] = useState<boolean>(false);
@@ -60,10 +70,36 @@ const GamePage = ({
     const [disabled, setDisabled] = useState<boolean>(false);
     const [share, setShare] = useState<boolean>(false);
 
-    const [keyboard, setKeyboard] = useState<Letter[][]>(initializeKeyboard());
-    const [grid, setGrid] = useState<Letter[][]>(
-        generateGrid(gridLength, gridWidth)
+    const [keyboard, setKeyboard] = useState<Letter[][]>(
+        initializeKeyboard(savedGame.savedKeyboard)
     );
+    const [grid, setGrid] = useState<Letter[][]>(
+        generateGrid(gridLength, gridWidth, savedGame.savedGrid)
+    );
+
+    useEffect(() => {
+        return () => {
+            if (!daily) return;
+            if (disabled) {
+                dispatch(
+                    setSavedGame({
+                        savedGrid: [],
+                        savedKeyboard: [],
+                        date: getCurrentDate()
+                    })
+                );
+            } else {
+                const save: Letter[][] = createSavedGrid(grid, currentLevel);
+                dispatch(
+                    setSavedGame({
+                        savedGrid: save,
+                        savedKeyboard: keyboard,
+                        date: getCurrentDate()
+                    })
+                );
+            }
+        };
+    }, [disabled, currentLevel]);
 
     useEffect(() => {
         setShowPopup(true);
