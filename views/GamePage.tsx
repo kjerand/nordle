@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, StyleSheet, Share } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LetterContainer from '../components/LetterContainer';
 import KeyboardContainer from '../components/KeyboardContainer';
@@ -88,6 +89,9 @@ const GamePage = ({
                         date: getCurrentDate()
                     })
                 );
+                AsyncStorage.setItem('@grid', JSON.stringify([]));
+                AsyncStorage.setItem('@keyboard', JSON.stringify([]));
+                AsyncStorage.setItem('@date', getCurrentDate());
             } else {
                 const save: Letter[][] = createSavedGrid(grid, currentLevel);
                 dispatch(
@@ -97,6 +101,10 @@ const GamePage = ({
                         date: getCurrentDate()
                     })
                 );
+
+                AsyncStorage.setItem('@grid', JSON.stringify(save));
+                AsyncStorage.setItem('@keyboard', JSON.stringify(keyboard));
+                AsyncStorage.setItem('@date', getCurrentDate());
             }
         };
     }, [disabled, currentLevel]);

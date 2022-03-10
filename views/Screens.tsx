@@ -19,6 +19,7 @@ import MenuPage from './MenuPage';
 import TutorialPage from './TutorialPage';
 import SettingsPage from './SettingsPage';
 import { setMode } from '../store/settings';
+import { setSavedGame } from '../store/save';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,26 @@ export default function Screens() {
 
         AsyncStorage.getItem('@theme').then((data) => {
             if (data) dispatch(setTheme(data));
+        });
+
+        AsyncStorage.getItem('@grid').then((grid) => {
+            if (grid) {
+                AsyncStorage.getItem('@keyboard').then((keyboard) => {
+                    if (keyboard) {
+                        AsyncStorage.getItem('@date').then((date) => {
+                            if (date) {
+                                const savedGame: SavedGame = {
+                                    savedGrid: JSON.parse(grid),
+                                    savedKeyboard: JSON.parse(keyboard),
+                                    date: date
+                                };
+
+                                dispatch(setSavedGame(savedGame));
+                            }
+                        });
+                    }
+                });
+            }
         });
     }, []);
 
