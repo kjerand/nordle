@@ -79,6 +79,14 @@ const GamePage = ({
     );
 
     useEffect(() => {
+        if (disabled) {
+            AsyncStorage.setItem('@grid', JSON.stringify([]));
+            AsyncStorage.setItem('@keyboard', JSON.stringify([]));
+            AsyncStorage.setItem('@date', getCurrentDate());
+        }
+    }, [disabled]);
+
+    useEffect(() => {
         return () => {
             if (!daily) return;
             if (disabled) {
@@ -89,9 +97,6 @@ const GamePage = ({
                         date: getCurrentDate()
                     })
                 );
-                AsyncStorage.setItem('@grid', JSON.stringify([]));
-                AsyncStorage.setItem('@keyboard', JSON.stringify([]));
-                AsyncStorage.setItem('@date', getCurrentDate());
             } else {
                 const save: Letter[][] = createSavedGrid(grid, currentLevel);
                 dispatch(
