@@ -79,42 +79,6 @@ const GamePage = ({
     );
 
     useEffect(() => {
-        if (disabled) {
-            AsyncStorage.setItem('@grid', JSON.stringify([]));
-            AsyncStorage.setItem('@keyboard', JSON.stringify([]));
-            AsyncStorage.setItem('@date', getCurrentDate());
-        }
-    }, [disabled]);
-
-    useEffect(() => {
-        return () => {
-            if (!daily) return;
-            if (disabled) {
-                dispatch(
-                    setSavedGame({
-                        savedGrid: [],
-                        savedKeyboard: [],
-                        date: getCurrentDate()
-                    })
-                );
-            } else {
-                const save: Letter[][] = createSavedGrid(grid, currentLevel);
-                dispatch(
-                    setSavedGame({
-                        savedGrid: save,
-                        savedKeyboard: keyboard,
-                        date: getCurrentDate()
-                    })
-                );
-
-                AsyncStorage.setItem('@grid', JSON.stringify(save));
-                AsyncStorage.setItem('@keyboard', JSON.stringify(keyboard));
-                AsyncStorage.setItem('@date', getCurrentDate());
-            }
-        };
-    }, [disabled, currentLevel]);
-
-    useEffect(() => {
         setShowPopup(true);
         if (!disabled) {
             const timer = setTimeout(() => {
