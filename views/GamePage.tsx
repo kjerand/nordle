@@ -242,9 +242,12 @@ const GamePage = ({
     };
 
     const onKeyboardPress = (letter: string) => {
-        checkIfNewDay('active');
-
         if (!disabled) {
+            if (initialDate !== getCurrentDate() && daily) {
+                setDisabled(true);
+                navigation.navigate('Menu');
+            }
+
             let tmp = grid;
             if (letter === '!') {
                 updateGrid();
