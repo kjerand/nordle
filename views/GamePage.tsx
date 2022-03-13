@@ -112,31 +112,38 @@ const GamePage = ({
     };
 
     useEffect(() => {
-        return () => {
-            if (!daily) return;
-            if (disabled) {
-                dispatch(
-                    setSavedGame({
-                        savedGrid: [],
-                        savedKeyboard: [],
-                        date: getCurrentDate()
-                    })
-                );
-            } else {
-                dispatch(
-                    setSavedGame({
-                        savedGrid: createSavedGrid(grid, currentLevel),
-                        savedKeyboard: createSavedKeyboard(keyboard),
-                        date: getCurrentDate()
-                    })
-                );
-                /*
-                AsyncStorage.setItem('@grid', JSON.stringify(save));
-                AsyncStorage.setItem('@keyboard', JSON.stringify(keyboard));
-                AsyncStorage.setItem('@date', getCurrentDate());
-                */
-            }
-        };
+        if (!daily) return;
+        if (disabled) {
+            dispatch(
+                setSavedGame({
+                    savedGrid: [],
+                    savedKeyboard: [],
+                    date: getCurrentDate()
+                })
+            );
+
+            AsyncStorage.setItem('@grid', JSON.stringify([]));
+            AsyncStorage.setItem('@keyboard', JSON.stringify([]));
+            AsyncStorage.setItem('@date', getCurrentDate());
+        } else {
+            dispatch(
+                setSavedGame({
+                    savedGrid: createSavedGrid(grid, currentLevel),
+                    savedKeyboard: createSavedKeyboard(keyboard),
+                    date: getCurrentDate()
+                })
+            );
+
+            AsyncStorage.setItem(
+                '@grid',
+                JSON.stringify(createSavedGrid(grid, currentLevel))
+            );
+            AsyncStorage.setItem(
+                '@keyboard',
+                JSON.stringify(createSavedKeyboard(keyboard))
+            );
+            AsyncStorage.setItem('@date', getCurrentDate());
+        }
     }, [disabled, currentLevel]);
 
     useEffect(() => {
