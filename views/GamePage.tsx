@@ -91,19 +91,19 @@ const GamePage = ({
     const appState = useRef(AppState.currentState);
 
     useEffect(() => {
-        AppState.addEventListener('change', handleAppStateChange);
+        AppState.addEventListener('change', checkIfNewDay);
 
         return () => {
-            AppState.removeEventListener('change', handleAppStateChange);
+            AppState.removeEventListener('change', checkIfNewDay);
         };
     }, []);
 
-    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+    const checkIfNewDay = (nextAppState: AppStateStatus) => {
         if (
             appState.current.match(/inactive|background/) &&
             nextAppState === 'active'
         ) {
-            if (initialDate !== getCurrentDate()) {
+            if (initialDate !== getCurrentDate() && daily) {
                 setDisabled(true);
                 navigation.navigate('Menu');
             }
@@ -242,6 +242,8 @@ const GamePage = ({
     };
 
     const onKeyboardPress = (letter: string) => {
+        checkIfNewDay('active');
+
         if (!disabled) {
             let tmp = grid;
             if (letter === '!') {
