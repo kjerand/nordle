@@ -10,6 +10,7 @@ type Route = {
     daily?: boolean;
     initialPosition: Position;
     savedGame: SavedGame;
+    initialDate: string;
 };
 
 type Theme = { [name: string]: string };

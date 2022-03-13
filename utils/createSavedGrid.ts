@@ -1,4 +1,7 @@
-export const createSavedGrid = (grid: Letter[][], currentLevel: number) => {
+export const createSavedGrid = (
+    grid: Letter[][],
+    currentLevel: number
+): Letter[][] => {
     let newGrid: Letter[][] = [];
 
     grid.forEach((row, rowIndex) => {

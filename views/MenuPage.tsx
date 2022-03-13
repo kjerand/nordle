@@ -48,10 +48,15 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
                         daily: daily,
                         initialPosition: getInitialPosition(
                             save.savedGrid,
-                            true,
+                            save.date !== getCurrentDate(),
                             daily
                         ),
-                        savedGame: getCurrentDate() === '' && save
+                        savedGame:
+                            daily &&
+                            save.savedGrid.length > 0 &&
+                            getCurrentDate() === save.date &&
+                            save,
+                        initialDate: getCurrentDate()
                     });
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                 }}

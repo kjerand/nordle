@@ -36,6 +36,7 @@ export default function Screens() {
             if (data) dispatch(setTheme(data));
         });
 
+        /*
         AsyncStorage.getItem('@grid').then((grid) => {
             if (grid) {
                 AsyncStorage.getItem('@keyboard').then((keyboard) => {
@@ -55,6 +56,7 @@ export default function Screens() {
                 });
             }
         });
+        */
     }, []);
 
     const [loaded] = useFonts({

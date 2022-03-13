@@ -1,5 +1,11 @@
-import { useEffect, useState } from 'react';
-import { View, StyleSheet, Share } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import {
+    View,
+    StyleSheet,
+    Share,
+    AppState,
+    AppStateStatus
+} from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -33,11 +39,13 @@ import { shareGame } from '../utils/shareGame';
 import { setSavedGame } from '../store/save';
 import { getCurrentDate } from '../utils/getCurrentDate';
 import { createSavedGrid } from '../utils/createSavedGrid';
+import { createSavedKeyboard } from '../utils/createSavedKeyboard';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
 
 const GamePage = ({
-    route
+    route,
+    navigation
 }: {
     route: RouteProp<
         {
@@ -45,12 +53,14 @@ const GamePage = ({
         },
         'params'
     >;
+    navigation: any;
 }) => {
     const { gridLength } = route.params;
     const { gridWidth } = route.params;
     const { currentWord } = route.params;
     const { daily } = route.params;
     const { initialPosition } = route.params;
+    const { initialDate } = route.params;
     const { savedGame } = route.params;
 
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
@@ -77,6 +87,57 @@ const GamePage = ({
     const [grid, setGrid] = useState<Letter[][]>(
         generateGrid(gridLength, gridWidth, savedGame.savedGrid)
     );
+
+    const appState = useRef(AppState.currentState);
+
+    useEffect(() => {
+        AppState.addEventListener('change', handleAppStateChange);
+
+        return () => {
+            AppState.removeEventListener('change', handleAppStateChange);
+        };
+    }, []);
+
+    const handleAppStateChange = (nextAppState: AppStateStatus) => {
+        if (
+            appState.current.match(/inactive|background/) &&
+            nextAppState === 'active'
+        ) {
+            if (initialDate !== getCurrentDate()) {
+                setDisabled(true);
+                navigation.navigate('Menu');
+            }
+        }
+        appState.current = nextAppState;
+    };
+
+    useEffect(() => {
+        return () => {
+            if (!daily) return;
+            if (disabled) {
+                dispatch(
+                    setSavedGame({
+                        savedGrid: [],
+                        savedKeyboard: [],
+                        date: getCurrentDate()
+                    })
+                );
+            } else {
+                dispatch(
+                    setSavedGame({
+                        savedGrid: createSavedGrid(grid, currentLevel),
+                        savedKeyboard: createSavedKeyboard(keyboard),
+                        date: getCurrentDate()
+                    })
+                );
+                /*
+                AsyncStorage.setItem('@grid', JSON.stringify(save));
+                AsyncStorage.setItem('@keyboard', JSON.stringify(keyboard));
+                AsyncStorage.setItem('@date', getCurrentDate());
+                */
+            }
+        };
+    }, [disabled, currentLevel]);
 
     useEffect(() => {
         setShowPopup(true);
@@ -115,9 +176,8 @@ const GamePage = ({
         }
 
         let guess = '';
-        grid[currentLevel].forEach((letter) => {
-            guess += letter.char;
-        });
+        grid[currentLevel].forEach((letter) => (guess += letter.char));
+
         const valid = checkWordValidity(guess);
 
         if (valid) {
