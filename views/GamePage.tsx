@@ -118,19 +118,19 @@ const GamePage = ({
                 setSavedGame({
                     savedGrid: [],
                     savedKeyboard: [],
-                    date: getCurrentDate()
+                    date: initialDate
                 })
             );
 
             AsyncStorage.setItem('@grid', JSON.stringify([]));
             AsyncStorage.setItem('@keyboard', JSON.stringify([]));
-            AsyncStorage.setItem('@date', getCurrentDate());
+            AsyncStorage.setItem('@date', initialDate);
         } else {
             dispatch(
                 setSavedGame({
                     savedGrid: createSavedGrid(grid, currentLevel),
                     savedKeyboard: createSavedKeyboard(keyboard),
-                    date: getCurrentDate()
+                    date: initialDate
                 })
             );
 
@@ -142,7 +142,7 @@ const GamePage = ({
                 '@keyboard',
                 JSON.stringify(createSavedKeyboard(keyboard))
             );
-            AsyncStorage.setItem('@date', getCurrentDate());
+            AsyncStorage.setItem('@date', initialDate);
         }
     }, [disabled, currentLevel]);
 

@@ -16,6 +16,7 @@ import {
 } from '../utils/constants';
 import { getInitialPosition } from '../utils/getInitialPosition';
 import { getCurrentDate } from '../utils/getCurrentDate';
+import { useEffect } from 'react';
 
 const MenuPage = ({ navigation }: { navigation: any }) => {
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
