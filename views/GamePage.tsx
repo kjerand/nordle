@@ -78,9 +78,7 @@ const GamePage = ({
     const [popupUpdate, setPopupUpdate] = useState<boolean>(false);
     const [popupMessage, setPopupMessage] = useState<string>('');
 
-    const [gameStatus, setGameStatus] = useState<number>(
-        savedGame.finished ? savedGame.finished : 0
-    );
+    const [gameStatus, setGameStatus] = useState<number>(0);
     const [disabled, setDisabled] = useState<boolean>(false);
     const [share, setShare] = useState<boolean>(false);
 
