@@ -36,7 +36,7 @@ import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
 import { checkHardMode } from '../utils/checkHardMode';
 import { checkExtremeMode } from '../utils/checkExtremeMode';
 import { shareGame } from '../utils/shareGame';
-import { setSavedGame } from '../store/save';
+import save, { setSavedGame } from '../store/save';
 import { getCurrentDate } from '../utils/getCurrentDate';
 import { createSavedGrid } from '../utils/createSavedGrid';
 import { createSavedKeyboard } from '../utils/createSavedKeyboard';
@@ -78,6 +78,9 @@ const GamePage = ({
     const [popupUpdate, setPopupUpdate] = useState<boolean>(false);
     const [popupMessage, setPopupMessage] = useState<string>('');
 
+    const [gameStatus, setGameStatus] = useState<number>(
+        savedGame.finished ? savedGame.finished : 0
+    );
     const [disabled, setDisabled] = useState<boolean>(false);
     const [share, setShare] = useState<boolean>(false);
 
@@ -112,39 +115,45 @@ const GamePage = ({
     };
 
     useEffect(() => {
-        if (!daily) return;
-        if (disabled) {
-            dispatch(
-                setSavedGame({
-                    savedGrid: [],
-                    savedKeyboard: [],
-                    date: initialDate
-                })
+        if (savedGame.finished === 1) {
+            setGameStatus(1);
+            setDisabled(true);
+            setShare(true);
+            updateWinStreak(setPopupTimeout);
+        } else if (savedGame.finished === 2) {
+            setGameStatus(2);
+            setDisabled(true);
+            setPopupTimeout(
+                'Du klarte det ikke. Riktig svar var ' +
+                    currentWord.toUpperCase() +
+                    '.'
             );
-
-            AsyncStorage.setItem('@grid', JSON.stringify([]));
-            AsyncStorage.setItem('@keyboard', JSON.stringify([]));
-            AsyncStorage.setItem('@date', initialDate);
-        } else {
-            dispatch(
-                setSavedGame({
-                    savedGrid: createSavedGrid(grid, currentLevel),
-                    savedKeyboard: createSavedKeyboard(keyboard),
-                    date: initialDate
-                })
-            );
-
-            AsyncStorage.setItem(
-                '@grid',
-                JSON.stringify(createSavedGrid(grid, currentLevel))
-            );
-            AsyncStorage.setItem(
-                '@keyboard',
-                JSON.stringify(createSavedKeyboard(keyboard))
-            );
-            AsyncStorage.setItem('@date', initialDate);
         }
-    }, [disabled, currentLevel]);
+    }, []);
+
+    useEffect(() => {
+        if (!daily || savedGame.finished > 0) return;
+
+        dispatch(
+            setSavedGame({
+                savedGrid: createSavedGrid(grid, currentLevel),
+                savedKeyboard: createSavedKeyboard(keyboard),
+                date: initialDate,
+                finished: gameStatus
+            })
+        );
+
+        AsyncStorage.setItem(
+            '@grid',
+            JSON.stringify(createSavedGrid(grid, currentLevel))
+        );
+        AsyncStorage.setItem(
+            '@keyboard',
+            JSON.stringify(createSavedKeyboard(keyboard))
+        );
+        AsyncStorage.setItem('@date', initialDate);
+        AsyncStorage.setItem('@finished', gameStatus.toString());
+    }, [currentLevel]);
 
     useEffect(() => {
         setShowPopup(true);
@@ -188,7 +197,7 @@ const GamePage = ({
         const valid = checkWordValidity(guess);
 
         if (valid) {
-            if (mode === 1 || mode === 2) {
+            if (mode > 0) {
                 if (!checkHardMode(grid, currentLevel)) {
                     setPopupTimeout('Du må bruke de grønne bokstavene!');
                     return;
@@ -217,6 +226,7 @@ const GamePage = ({
 
             if (currentWord === guess) {
                 setDisabled(true);
+                setGameStatus(1);
 
                 if (daily) {
                     setShare(true);
@@ -226,6 +236,7 @@ const GamePage = ({
                 }
             } else if (currentLevel + 1 === gridLength) {
                 setDisabled(true);
+                setGameStatus(2);
                 setPopupTimeout(
                     'Du klarte det ikke. Riktig svar var ' +
                         currentWord.toUpperCase() +
@@ -242,28 +253,28 @@ const GamePage = ({
     };
 
     const onKeyboardPress = (letter: string) => {
-        if (!disabled) {
-            if (initialDate !== getCurrentDate() && daily) {
-                setDisabled(true);
-                navigation.navigate('Menu');
-            }
-
-            let tmp = grid;
-            if (letter === '!') {
-                updateGrid();
-            } else if (letter === '<') {
-                if (currentColumn > 0) {
-                    tmp[currentLevel][currentColumn - 1].char = '';
-                    setCurrentColumn(currentColumn - 1);
-                }
-            } else {
-                if (currentColumn < gridWidth) {
-                    tmp[currentLevel][currentColumn].char = letter;
-                    setCurrentColumn(currentColumn + 1);
-                }
-            }
-            setGrid(tmp);
+        if (initialDate !== getCurrentDate() && daily) {
+            setDisabled(true);
+            navigation.navigate('Menu');
         }
+
+        if (disabled) return;
+
+        let tmp = grid;
+        if (letter === '!') {
+            updateGrid();
+        } else if (letter === '<') {
+            if (currentColumn > 0) {
+                tmp[currentLevel][currentColumn - 1].char = '';
+                setCurrentColumn(currentColumn - 1);
+            }
+        } else {
+            if (currentColumn < gridWidth) {
+                tmp[currentLevel][currentColumn].char = letter;
+                setCurrentColumn(currentColumn + 1);
+            }
+        }
+        setGrid(tmp);
     };
 
     return (

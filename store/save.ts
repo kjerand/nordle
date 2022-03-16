@@ -4,7 +4,8 @@ import { getCurrentDate } from '../utils/getCurrentDate';
 let initialState: SavedGame = {
     savedGrid: [],
     savedKeyboard: [],
-    date: ''
+    date: '',
+    finished: 0
 };
 
 const saveSlice = createSlice({
@@ -15,6 +16,7 @@ const saveSlice = createSlice({
             state.savedGrid = action.payload.savedGrid;
             state.savedKeyboard = action.payload.savedKeyboard;
             state.date = action.payload.date;
+            state.finished = action.payload.finished;
         }
     }
 });

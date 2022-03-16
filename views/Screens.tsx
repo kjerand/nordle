@@ -42,13 +42,21 @@ export default function Screens() {
                     if (keyboard) {
                         AsyncStorage.getItem('@date').then((date) => {
                             if (date) {
-                                const savedGame: SavedGame = {
-                                    savedGrid: JSON.parse(grid),
-                                    savedKeyboard: JSON.parse(keyboard),
-                                    date: date
-                                };
+                                AsyncStorage.getItem('@finished').then(
+                                    (finished) => {
+                                        if (finished) {
+                                            const savedGame: SavedGame = {
+                                                savedGrid: JSON.parse(grid),
+                                                savedKeyboard:
+                                                    JSON.parse(keyboard),
+                                                date: date,
+                                                finished: parseInt(finished)
+                                            };
 
-                                dispatch(setSavedGame(savedGame));
+                                            dispatch(setSavedGame(savedGame));
+                                        }
+                                    }
+                                );
                             }
                         });
                     }

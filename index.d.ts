@@ -24,4 +24,5 @@ type SavedGame = {
     savedGrid: Letter[][];
     savedKeyboard: Letter[][];
     date: string;
+    finished: number;
 };
