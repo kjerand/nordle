@@ -3,7 +3,7 @@ export const getInitialPosition = (
     newDay: boolean,
     daily: boolean
 ): Position => {
-    let position: Position = { row: 0, col: 0 };
+    let position: Position = { col: 0, row: 0 };
 
     if (newDay || !daily) return position;
 
@@ -17,5 +17,8 @@ export const getInitialPosition = (
             }
         });
     });
+
+    if (!found) position = { col: 0, row: grid.length };
+
     return position;
 };
