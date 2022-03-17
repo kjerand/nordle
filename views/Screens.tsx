@@ -8,6 +8,7 @@ import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { setTheme } from '../store/theme';
 
 import { Feather } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useFonts } from 'expo-font';
 
@@ -20,12 +21,16 @@ import TutorialPage from './TutorialPage';
 import SettingsPage from './SettingsPage';
 import { setMode } from '../store/settings';
 import { setSavedGame } from '../store/save';
+import { setVisible } from '../store/statistics';
 
 const Stack = createNativeStackNavigator();
 
 export default function Screens() {
     const dispatch = useDispatch();
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
+    const { visible } = useSelector(
+        (state: RootStateOrAny) => state.statistics
+    );
 
     useEffect(() => {
         AsyncStorage.getItem('@mode').then((data) => {
@@ -104,6 +109,19 @@ export default function Screens() {
                     options={({ navigation }) => ({
                         headerTitle: getCurrentDate(),
                         title: getCurrentDate(),
+                        headerRight: () => (
+                            <Entypo
+                                name="bar-graph"
+                                size={26}
+                                color={TEXT[theme]}
+                                onPress={() => {
+                                    Haptics.impactAsync(
+                                        Haptics.ImpactFeedbackStyle.Medium
+                                    );
+                                    dispatch(setVisible(!visible));
+                                }}
+                            />
+                        ),
                         headerLeft: () => (
                             <Feather
                                 name="home"

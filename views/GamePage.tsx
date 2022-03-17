@@ -40,6 +40,15 @@ import save, { setSavedGame } from '../store/save';
 import { getCurrentDate } from '../utils/getCurrentDate';
 import { createSavedGrid } from '../utils/createSavedGrid';
 import { createSavedKeyboard } from '../utils/createSavedKeyboard';
+import StatisticsModal from '../components/StatisticsModal';
+import {
+    setVisible,
+    setTotalWins,
+    setTotalGames,
+    setDistribution,
+    setLongestStreak
+} from '../store/statistics';
+import { createDistribution } from '../utils/createDistribution';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
 
@@ -65,6 +74,8 @@ const GamePage = ({
 
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
     const { mode } = useSelector((state: RootStateOrAny) => state.settings);
+    const { visible, totalGames, totalWins, longestStreak, distribution } =
+        useSelector((state: RootStateOrAny) => state.statistics);
     const dispatch = useDispatch();
 
     const [currentLevel, setCurrentLevel] = useState<number>(
@@ -90,6 +101,10 @@ const GamePage = ({
     );
 
     const appState = useRef(AppState.currentState);
+
+    const setModalVisible = () => {
+        dispatch(setVisible(!visible));
+    };
 
     useEffect(() => {
         AppState.addEventListener('change', checkIfNewDay);
@@ -228,6 +243,15 @@ const GamePage = ({
 
                 if (daily) {
                     setShare(true);
+
+                    dispatch(setTotalGames(totalGames + 1));
+                    dispatch(setTotalWins(totalWins + 1));
+                    dispatch(
+                        setDistribution(
+                            createDistribution(distribution, currentLevel)
+                        )
+                    );
+
                     updateWinStreak(setPopupTimeout);
                 } else {
                     setPopupTimeout('Du tippet riktig!');
@@ -235,6 +259,7 @@ const GamePage = ({
             } else if (currentLevel + 1 === gridLength) {
                 setDisabled(true);
                 setGameStatus(2);
+                dispatch(setTotalGames(totalGames + 1));
                 setPopupTimeout(
                     'Du klarte det ikke. Riktig svar var ' +
                         currentWord.toUpperCase() +
@@ -306,6 +331,11 @@ const GamePage = ({
                 <KeyboardContainer
                     onKeyboardPress={onKeyboardPress}
                     keyboard={keyboard}
+                />
+
+                <StatisticsModal
+                    modalVisible={visible}
+                    setModalVisible={setModalVisible}
                 />
             </View>
         </View>

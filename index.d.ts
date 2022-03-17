@@ -26,3 +26,11 @@ type SavedGame = {
     date: string;
     finished: number;
 };
+
+type Statistics = {
+    visible: boolean;
+    distribution: number[];
+    totalGames: number;
+    totalWins: number;
+    longestStreak: number;
+};
