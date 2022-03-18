@@ -1,33 +1,50 @@
 import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
 const StatisticsModal = ({
-    modalVisible,
+    statistics,
     setModalVisible
 }: {
-    modalVisible: boolean;
+    statistics: Statistics;
+
     setModalVisible: CallableFunction;
 }) => {
     return (
         <Modal
             animationType="slide"
             transparent={true}
-            visible={modalVisible}
+            visible={statistics.visible}
             onRequestClose={() => {
                 Alert.alert('Modal has been closed.');
-                setModalVisible(!modalVisible);
+                setModalVisible(!statistics.visible);
             }}
         >
-            <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Hello World!</Text>
+            <Pressable
+                style={styles.centeredView}
+                onPress={() => setModalVisible(!statistics.visible)}
+            >
+                <Pressable style={styles.modalView} onPress={() => {}}>
+                    <Text style={styles.modalText}>Fordeling:</Text>
+                    {statistics.distribution.map((value, level) => {
+                        return (
+                            <Text style={styles.modalText} key={level}>
+                                {level}: {value}
+                            </Text>
+                        );
+                    })}
+                    <Text style={styles.modalText}>
+                        Antall spill: {statistics.totalGames}
+                    </Text>
+                    <Text style={styles.modalText}>
+                        Antall vunnet: {statistics.totalWins}
+                    </Text>
                     <Pressable
                         style={[styles.button, styles.buttonClose]}
-                        onPress={() => setModalVisible(!modalVisible)}
+                        onPress={() => setModalVisible(!statistics.visible)}
                     >
-                        <Text style={styles.textStyle}>Hide Modal</Text>
+                        <Text style={styles.textStyle}>Lukk</Text>
                     </Pressable>
-                </View>
-            </View>
+                </Pressable>
+            </Pressable>
         </Modal>
     );
 };

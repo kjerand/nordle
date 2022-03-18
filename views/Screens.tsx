@@ -8,7 +8,6 @@ import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { setTheme } from '../store/theme';
 
 import { Feather } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useFonts } from 'expo-font';
 
@@ -110,8 +109,8 @@ export default function Screens() {
                         headerTitle: getCurrentDate(),
                         title: getCurrentDate(),
                         headerRight: () => (
-                            <Entypo
-                                name="bar-graph"
+                            <Feather
+                                name="bar-chart"
                                 size={26}
                                 color={TEXT[theme]}
                                 onPress={() => {

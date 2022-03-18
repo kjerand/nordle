@@ -334,7 +334,13 @@ const GamePage = ({
                 />
 
                 <StatisticsModal
-                    modalVisible={visible}
+                    statistics={{
+                        visible: visible,
+                        totalWins: totalWins,
+                        totalGames: totalGames,
+                        longestStreak: longestStreak,
+                        distribution: distribution
+                    }}
                     setModalVisible={setModalVisible}
                 />
             </View>
