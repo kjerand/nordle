@@ -46,17 +46,6 @@ export default function Screens() {
             if (data) dispatch(setTheme(data));
         });
 
-        AsyncStorage.getItem('@statistics').then((data) => {
-            if (data) {
-                let stats: Statistics = JSON.parse(data);
-
-                dispatch(setTotalWins(stats.totalWins));
-                dispatch(setTotalGames(stats.totalGames));
-                dispatch(setDistribution(stats.distribution));
-                dispatch(setLongestStreak(stats.longestStreak));
-            }
-        });
-
         AsyncStorage.getItem('@grid').then((grid) => {
             if (grid) {
                 AsyncStorage.getItem('@keyboard').then((keyboard) => {
@@ -125,19 +114,6 @@ export default function Screens() {
                     options={({ navigation }) => ({
                         headerTitle: getCurrentDate(),
                         title: getCurrentDate(),
-                        headerRight: () => (
-                            <Feather
-                                name="bar-chart"
-                                size={26}
-                                color={TEXT[theme]}
-                                onPress={() => {
-                                    Haptics.impactAsync(
-                                        Haptics.ImpactFeedbackStyle.Medium
-                                    );
-                                    dispatch(setVisible(!visible));
-                                }}
-                            />
-                        ),
                         headerLeft: () => (
                             <Feather
                                 name="home"

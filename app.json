@@ -19,7 +19,7 @@
         },
         "android": {
             "package": "com.kjerandevje.wordlenorge",
-            "versionCode": 8,
+            "versionCode": 9,
             "permissions": []
         }
     }

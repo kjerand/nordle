@@ -74,8 +74,7 @@ const GamePage = ({
 
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
     const { mode } = useSelector((state: RootStateOrAny) => state.settings);
-    const { visible, totalGames, totalWins, longestStreak, distribution } =
-        useSelector((state: RootStateOrAny) => state.statistics);
+
     const dispatch = useDispatch();
 
     const [currentLevel, setCurrentLevel] = useState<number>(
@@ -101,10 +100,6 @@ const GamePage = ({
     );
 
     const appState = useRef(AppState.currentState);
-
-    const setModalVisible = () => {
-        dispatch(setVisible(!visible));
-    };
 
     useEffect(() => {
         AppState.addEventListener('change', checkIfNewDay);
@@ -194,18 +189,6 @@ const GamePage = ({
         }
     };
 
-    const saveStatistics = () => {
-        let stats: Statistics = {
-            visible: visible,
-            totalGames: totalGames,
-            totalWins: totalWins,
-            distribution: distribution,
-            longestStreak: longestStreak
-        };
-
-        AsyncStorage.setItem('@statistics', JSON.stringify(stats));
-    };
-
     const updateGrid = () => {
         let empty = false;
         grid[currentLevel].forEach((letter) => {
@@ -255,26 +238,6 @@ const GamePage = ({
 
                 if (daily) {
                     setShare(true);
-
-                    dispatch(setTotalGames(totalGames + 1));
-                    dispatch(setTotalWins(totalWins + 1));
-                    dispatch(
-                        setDistribution(
-                            createDistribution(distribution, currentLevel)
-                        )
-                    );
-                    saveStatistics();
-
-                    AsyncStorage.getItem('@streak').then((data) => {
-                        if (data) {
-                            const [streak, _] = data.split(':');
-                            let parsedStreak = parseInt(streak) + 1;
-
-                            if (parsedStreak > longestStreak)
-                                dispatch(setLongestStreak(parsedStreak));
-                        }
-                    });
-
                     updateWinStreak(setPopupTimeout);
                 } else {
                     setPopupTimeout('Du tippet riktig!');
@@ -282,9 +245,6 @@ const GamePage = ({
             } else if (currentLevel + 1 === gridLength) {
                 setDisabled(true);
                 setGameStatus(2);
-
-                dispatch(setTotalGames(totalGames + 1));
-                saveStatistics();
 
                 setPopupTimeout(
                     'Du klarte det ikke. Riktig svar var ' +
@@ -357,17 +317,6 @@ const GamePage = ({
                 <KeyboardContainer
                     onKeyboardPress={onKeyboardPress}
                     keyboard={keyboard}
-                />
-
-                <StatisticsModal
-                    statistics={{
-                        visible: visible,
-                        totalWins: totalWins,
-                        totalGames: totalGames,
-                        longestStreak: longestStreak,
-                        distribution: distribution
-                    }}
-                    setModalVisible={setModalVisible}
                 />
             </View>
         </View>
