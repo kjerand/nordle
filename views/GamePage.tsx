@@ -36,7 +36,7 @@ import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
 import { checkHardMode } from '../utils/checkHardMode';
 import { checkExtremeMode } from '../utils/checkExtremeMode';
 import { shareGame } from '../utils/shareGame';
-import save, { setSavedGame } from '../store/save';
+import { setSavedGame } from '../store/save';
 import { getCurrentDate } from '../utils/getCurrentDate';
 import { createSavedGrid } from '../utils/createSavedGrid';
 import { createSavedKeyboard } from '../utils/createSavedKeyboard';
@@ -194,6 +194,18 @@ const GamePage = ({
         }
     };
 
+    const saveStatistics = () => {
+        let stats: Statistics = {
+            visible: visible,
+            totalGames: totalGames,
+            totalWins: totalWins,
+            distribution: distribution,
+            longestStreak: longestStreak
+        };
+
+        AsyncStorage.setItem('@statistics', JSON.stringify(stats));
+    };
+
     const updateGrid = () => {
         let empty = false;
         grid[currentLevel].forEach((letter) => {
@@ -251,6 +263,17 @@ const GamePage = ({
                             createDistribution(distribution, currentLevel)
                         )
                     );
+                    saveStatistics();
+
+                    AsyncStorage.getItem('@streak').then((data) => {
+                        if (data) {
+                            const [streak, _] = data.split(':');
+                            let parsedStreak = parseInt(streak) + 1;
+
+                            if (parsedStreak > longestStreak)
+                                dispatch(setLongestStreak(parsedStreak));
+                        }
+                    });
 
                     updateWinStreak(setPopupTimeout);
                 } else {
@@ -259,7 +282,10 @@ const GamePage = ({
             } else if (currentLevel + 1 === gridLength) {
                 setDisabled(true);
                 setGameStatus(2);
+
                 dispatch(setTotalGames(totalGames + 1));
+                saveStatistics();
+
                 setPopupTimeout(
                     'Du klarte det ikke. Riktig svar var ' +
                         currentWord.toUpperCase() +

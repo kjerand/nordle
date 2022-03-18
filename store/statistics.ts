@@ -25,7 +25,7 @@ const statisticsSlice = createSlice({
             state.totalWins = action.payload;
         },
         setLongestStreak(state, action: PayloadAction<number>) {
-            state.totalWins = action.payload;
+            state.longestStreak = action.payload;
         }
     }
 });

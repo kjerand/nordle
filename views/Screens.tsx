@@ -20,7 +20,13 @@ import TutorialPage from './TutorialPage';
 import SettingsPage from './SettingsPage';
 import { setMode } from '../store/settings';
 import { setSavedGame } from '../store/save';
-import { setVisible } from '../store/statistics';
+import {
+    setDistribution,
+    setLongestStreak,
+    setTotalGames,
+    setTotalWins,
+    setVisible
+} from '../store/statistics';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +44,17 @@ export default function Screens() {
 
         AsyncStorage.getItem('@theme').then((data) => {
             if (data) dispatch(setTheme(data));
+        });
+
+        AsyncStorage.getItem('@statistics').then((data) => {
+            if (data) {
+                let stats: Statistics = JSON.parse(data);
+
+                dispatch(setTotalWins(stats.totalWins));
+                dispatch(setTotalGames(stats.totalGames));
+                dispatch(setDistribution(stats.distribution));
+                dispatch(setLongestStreak(stats.longestStreak));
+            }
         });
 
         AsyncStorage.getItem('@grid').then((grid) => {

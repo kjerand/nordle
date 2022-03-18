@@ -27,7 +27,7 @@ const StatisticsModal = ({
                     {statistics.distribution.map((value, level) => {
                         return (
                             <Text style={styles.modalText} key={level}>
-                                {level}: {value}
+                                {level + 1}: {value}
                             </Text>
                         );
                     })}
@@ -36,6 +36,9 @@ const StatisticsModal = ({
                     </Text>
                     <Text style={styles.modalText}>
                         Antall vunnet: {statistics.totalWins}
+                    </Text>
+                    <Text style={styles.modalText}>
+                        Lengste streak: {statistics.longestStreak}
                     </Text>
                     <Pressable
                         style={[styles.button, styles.buttonClose]}
