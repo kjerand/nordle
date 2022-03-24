@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-let initialState: Statistics = {
+let initialState: StatisticsState = {
     visible: false,
-    distribution: [0, 0, 0, 0, 0, 0],
-    totalGames: 0,
-    totalWins: 0,
-    longestStreak: 0
+    statistics: {
+        distribution: [0, 0, 0, 0, 0, 0],
+        totalGames: 0,
+        totalWins: 0
+    }
 };
 
 const statisticsSlice = createSlice({
@@ -16,25 +17,17 @@ const statisticsSlice = createSlice({
             state.visible = action.payload;
         },
         setDistribution(state, action: PayloadAction<number[]>) {
-            state.distribution = action.payload;
+            state.statistics.distribution = action.payload;
         },
         setTotalGames(state, action: PayloadAction<number>) {
-            state.totalGames = action.payload;
+            state.statistics.totalGames = action.payload;
         },
         setTotalWins(state, action: PayloadAction<number>) {
-            state.totalWins = action.payload;
-        },
-        setLongestStreak(state, action: PayloadAction<number>) {
-            state.longestStreak = action.payload;
+            state.statistics.totalWins = action.payload;
         }
     }
 });
 
-export const {
-    setVisible,
-    setDistribution,
-    setTotalGames,
-    setTotalWins,
-    setLongestStreak
-} = statisticsSlice.actions;
+export const { setVisible, setDistribution, setTotalGames, setTotalWins } =
+    statisticsSlice.actions;
 export default statisticsSlice.reducer;

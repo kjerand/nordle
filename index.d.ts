@@ -28,9 +28,12 @@ type SavedGame = {
 };
 
 type Statistics = {
-    visible: boolean;
     distribution: number[];
     totalGames: number;
     totalWins: number;
-    longestStreak: number;
+};
+
+type StatisticsState = {
+    visible: boolean;
+    statistics: Statistics;
 };

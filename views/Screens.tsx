@@ -22,7 +22,6 @@ import { setMode } from '../store/settings';
 import { setSavedGame } from '../store/save';
 import {
     setDistribution,
-    setLongestStreak,
     setTotalGames,
     setTotalWins,
     setVisible
@@ -44,6 +43,16 @@ export default function Screens() {
 
         AsyncStorage.getItem('@theme').then((data) => {
             if (data) dispatch(setTheme(data));
+        });
+
+        AsyncStorage.getItem('@statistics').then((data) => {
+            if (data) {
+                let statistics: Statistics = JSON.parse(data);
+
+                dispatch(setTotalGames(statistics.totalGames));
+                dispatch(setTotalWins(statistics.totalWins));
+                dispatch(setDistribution(statistics.distribution));
+            }
         });
 
         AsyncStorage.getItem('@grid').then((grid) => {
@@ -114,6 +123,19 @@ export default function Screens() {
                     options={({ navigation }) => ({
                         headerTitle: getCurrentDate(),
                         title: getCurrentDate(),
+                        headerRight: () => (
+                            <Feather
+                                name="bar-chart"
+                                size={28}
+                                color={TEXT[theme]}
+                                onPress={() => {
+                                    Haptics.impactAsync(
+                                        Haptics.ImpactFeedbackStyle.Medium
+                                    );
+                                    dispatch(setVisible(!visible));
+                                }}
+                            />
+                        ),
                         headerLeft: () => (
                             <Feather
                                 name="home"

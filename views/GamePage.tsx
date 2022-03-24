@@ -9,6 +9,7 @@ import {
 import { RouteProp } from '@react-navigation/native';
 import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as StoreReview from 'expo-store-review';
 
 import LetterContainer from '../components/LetterContainer';
 import KeyboardContainer from '../components/KeyboardContainer';
@@ -42,11 +43,10 @@ import { createSavedGrid } from '../utils/createSavedGrid';
 import { createSavedKeyboard } from '../utils/createSavedKeyboard';
 import StatisticsModal from '../components/StatisticsModal';
 import {
-    setVisible,
-    setTotalWins,
-    setTotalGames,
     setDistribution,
-    setLongestStreak
+    setTotalGames,
+    setTotalWins,
+    setVisible
 } from '../store/statistics';
 import { createDistribution } from '../utils/createDistribution';
 
@@ -73,7 +73,12 @@ const GamePage = ({
     const { savedGame } = route.params;
 
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
-    const { mode } = useSelector((state: RootStateOrAny) => state.settings);
+    const { mode, requestReview } = useSelector(
+        (state: RootStateOrAny) => state.settings
+    );
+    const { visible, statistics } = useSelector(
+        (state: RootStateOrAny) => state.statistics
+    );
 
     const dispatch = useDispatch();
 
@@ -239,6 +244,43 @@ const GamePage = ({
                 if (daily) {
                     setShare(true);
                     updateWinStreak(setPopupTimeout);
+
+                    let savedStatistics: Statistics = {
+                        totalGames: statistics.totalGames + 1,
+                        totalWins: statistics.totalWins + 1,
+                        distribution: createDistribution(
+                            statistics.distribution,
+                            currentLevel
+                        )
+                    };
+
+                    AsyncStorage.setItem(
+                        '@statistics',
+                        JSON.stringify(savedStatistics)
+                    );
+
+                    dispatch(setTotalGames(statistics.totalGames + 1));
+                    dispatch(setTotalWins(statistics.totalWins + 1));
+                    dispatch(
+                        setDistribution(
+                            createDistribution(
+                                statistics.distribution,
+                                currentLevel
+                            )
+                        )
+                    );
+
+                    AsyncStorage.getItem('@requestReview').then(
+                        async (data) => {
+                            if (!data) {
+                                AsyncStorage.setItem('@requestReview', '0');
+
+                                if (await StoreReview.hasAction()) {
+                                    StoreReview.requestReview();
+                                }
+                            }
+                        }
+                    );
                 } else {
                     setPopupTimeout('Du tippet riktig!');
                 }
@@ -253,6 +295,17 @@ const GamePage = ({
                 );
 
                 if (daily) {
+                    let savedStatistics: Statistics = {
+                        totalGames: statistics.totalGames + 1,
+                        totalWins: statistics.totalWins,
+                        distribution: statistics.distribution
+                    };
+
+                    AsyncStorage.setItem(
+                        '@statistics',
+                        JSON.stringify(savedStatistics)
+                    );
+                    dispatch(setTotalGames(statistics.totalGames + 1));
                     updateLoss();
                 }
             }
@@ -286,6 +339,10 @@ const GamePage = ({
         setGrid(tmp);
     };
 
+    const setModalVisible = () => {
+        dispatch(setVisible(!visible));
+    };
+
     return (
         <View
             style={[styles.container, { backgroundColor: BACKGROUND[theme] }]}
@@ -313,10 +370,14 @@ const GamePage = ({
                     onShare={onShare}
                     share={share}
                 />
-
                 <KeyboardContainer
                     onKeyboardPress={onKeyboardPress}
                     keyboard={keyboard}
+                />
+                <StatisticsModal
+                    visible={visible}
+                    statistics={statistics}
+                    setModalVisible={setModalVisible}
                 />
             </View>
         </View>

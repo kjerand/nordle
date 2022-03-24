@@ -74,11 +74,7 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
             style={[styles.container, { backgroundColor: BACKGROUND[theme] }]}
         >
             <Image
-                source={
-                    theme === 'white'
-                        ? require('../assets/images/logo_black.png')
-                        : require('../assets/images/logo.png')
-                }
+                source={require('../assets/images/logo.png')}
                 style={styles.imageStyle}
             />
             <MenuButton
@@ -118,7 +114,6 @@ const styles = StyleSheet.create({
         fontSize: 24,
         textAlign: 'center',
         paddingVertical: 10,
-
         fontFamily: FONT
     }
 });
