@@ -129,10 +129,14 @@ const StatisticsModal = ({
                             %
                         </Text>
                     )}
+
                     <Text
-                        style={[styles.header, { marginTop: 25, fontSize: 24 }]}
+                        style={[styles.header, { marginTop: 25, fontSize: 26 }]}
                     >
                         Fordeling:
+                    </Text>
+                    <Text style={styles.modalText}>
+                        Gjennomsnitt: {calculateAverage()}
                     </Text>
                     {statistics.distribution.map((value, level) => {
                         return (
@@ -143,9 +147,6 @@ const StatisticsModal = ({
                             />
                         );
                     })}
-                    <Text style={styles.modalText}>
-                        Gjennomsnitt: {calculateAverage()}
-                    </Text>
 
                     <Pressable
                         style={[styles.button, styles.buttonClose]}

@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 const themeSlice = createSlice({
     name: 'theme',
     initialState: {
-        theme: 'default'
+        theme: 'blue'
     },
     reducers: {
         setTheme(state, action: PayloadAction<string>) {

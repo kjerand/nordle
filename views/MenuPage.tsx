@@ -102,13 +102,22 @@ const styles = StyleSheet.create({
         paddingTop: !SMALLSCREEN ? 40 : 0
     },
     imageStyle: {
-        height: LARGESCREEN ? 310 : 270,
-        width: LARGESCREEN ? 310 : 270
+        height: LARGESCREEN ? 320 : 270,
+        width: LARGESCREEN ? 320 : 270,
+        marginVertical: LARGESCREEN ? 15 : 0
     },
     buttonStyle: {
         width: '65%',
         borderRadius: 5,
-        marginBottom: !SMALLSCREEN ? 30 : 15
+        marginBottom: !SMALLSCREEN ? 25 : 15,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4
     },
     textStyle: {
         fontSize: 24,

@@ -116,11 +116,11 @@ const SettingsPage = () => {
             <Text style={[styles.header, { color: TEXT[theme] }]}>
                 Fargetema
             </Text>
-            <View style={{ flexDirection: 'row', marginHorizontal: 20 }}>
-                <ThemeButton themeValue="default" text="Grå" />
+            <View style={{ flexDirection: 'row', marginHorizontal: 15 }}>
+                <ThemeButton themeValue="blue" text="Blå" />
                 <ThemeButton themeValue="black" text="Svart" />
                 <ThemeButton themeValue="white" text="Hvit" />
-                <ThemeButton themeValue="blue" text="Blå" />
+                <ThemeButton themeValue="default" text="Grå" />
                 <ThemeButton themeValue="green" text="Grønn" />
             </View>
 
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         flex: 1,
-        marginHorizontal: 5,
+        marginHorizontal: 4,
         flexDirection: 'row',
         justifyContent: 'center',
         padding: 5,

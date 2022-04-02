@@ -176,7 +176,7 @@ export default function Screens() {
                     name="Help"
                     component={TutorialPage}
                     options={({ navigation }) => ({
-                        headerTitle: 'Hjelp!',
+                        headerTitle: 'Hjelp',
                         title: 'Hjelp',
                         headerLeft: () => (
                             <Feather
