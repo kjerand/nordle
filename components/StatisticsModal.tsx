@@ -70,6 +70,15 @@ const StatisticsModal = ({
         }
     });
 
+    const calculateAverage = () => {
+        let total = 0;
+        statistics.distribution.forEach(
+            (value, level) => (total += value * (level + 1))
+        );
+
+        return (total / statistics.totalWins).toFixed(2);
+    };
+
     const Columns = ({ text, value }: { text: string; value: string }) => {
         return (
             <View
@@ -109,6 +118,7 @@ const StatisticsModal = ({
                     <Text style={styles.modalText}>
                         Antall vunnet: {statistics.totalWins}
                     </Text>
+
                     {statistics.totalGames > 0 && (
                         <Text style={styles.modalText}>
                             Vinnprosent:{' '}
@@ -133,6 +143,9 @@ const StatisticsModal = ({
                             />
                         );
                     })}
+                    <Text style={styles.modalText}>
+                        Gjennomsnitt: {calculateAverage()}
+                    </Text>
 
                     <Pressable
                         style={[styles.button, styles.buttonClose]}

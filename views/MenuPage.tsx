@@ -89,7 +89,7 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
                 gridLength={6}
             />
             <MenuButton navigate="Standard" text="Utfordring" gridLength={4} />
-            <MenuButton navigate="Help" text="Hjelp!" />
+            <MenuButton navigate="Help" text="Hjelp" />
             <MenuButton navigate="Settings" text="Innstillinger" />
         </View>
     );

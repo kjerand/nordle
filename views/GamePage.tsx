@@ -73,9 +73,7 @@ const GamePage = ({
     const { savedGame } = route.params;
 
     const { theme } = useSelector((state: RootStateOrAny) => state.theme);
-    const { mode, requestReview } = useSelector(
-        (state: RootStateOrAny) => state.settings
-    );
+    const { mode } = useSelector((state: RootStateOrAny) => state.settings);
     const { visible, statistics } = useSelector(
         (state: RootStateOrAny) => state.statistics
     );
