@@ -18,5 +18,5 @@ export const getCurrentDate = (): string => {
     const day = String(dateObj.getDate()).padStart(2, '0');
     const year = dateObj.getFullYear();
 
-    return 12 + '. ' + month + ' ' + year;
+    return day + '. ' + month + ' ' + year;
 };
