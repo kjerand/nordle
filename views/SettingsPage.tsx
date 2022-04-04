@@ -117,10 +117,10 @@ const SettingsPage = () => {
                 Fargetema
             </Text>
             <View style={{ flexDirection: 'row', marginHorizontal: 15 }}>
-                <ThemeButton themeValue="blue" text="Blå" />
                 <ThemeButton themeValue="black" text="Svart" />
                 <ThemeButton themeValue="white" text="Hvit" />
                 <ThemeButton themeValue="default" text="Grå" />
+                <ThemeButton themeValue="blue" text="Blå" />
                 <ThemeButton themeValue="green" text="Grønn" />
             </View>
 

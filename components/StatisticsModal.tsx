@@ -136,7 +136,7 @@ const StatisticsModal = ({
                         Fordeling:
                     </Text>
                     <Text style={styles.modalText}>
-                        Gjennomsnitt: {calculateAverage()}
+                        Snitt: {calculateAverage()}
                     </Text>
                     {statistics.distribution.map((value, level) => {
                         return (

@@ -110,14 +110,7 @@ const styles = StyleSheet.create({
         width: '65%',
         borderRadius: 5,
         marginBottom: !SMALLSCREEN ? 25 : 15,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4
+        alignItems: 'center'
     },
     textStyle: {
         fontSize: 24,

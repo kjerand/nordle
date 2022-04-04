@@ -354,6 +354,11 @@ const GamePage = ({
                                     <LetterContainer
                                         color={COLORS[col.status]}
                                         key={colIndex}
+                                        current={
+                                            currentColumn === colIndex &&
+                                            currentLevel === rowIndex &&
+                                            !disabled
+                                        }
                                     >
                                         <GridContainer letter={col.char} />
                                     </LetterContainer>

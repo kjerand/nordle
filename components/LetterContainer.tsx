@@ -1,16 +1,20 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { SMALLSCREEN } from '../utils/constants';
+import { useSelector, RootStateOrAny } from 'react-redux';
+import { BUTTONS, SMALLSCREEN, TEXT } from '../utils/constants';
 
 const LetterContainer = ({
     color,
     children,
-    keyboard = false
+    keyboard = false,
+    current = false
 }: {
     color: string;
     children: JSX.Element;
     keyboard?: boolean;
+    current?: boolean;
 }) => {
+    const { theme } = useSelector((state: RootStateOrAny) => state.theme);
     const height = () => {
         if (keyboard) {
             if (!SMALLSCREEN) {
@@ -33,7 +37,10 @@ const LetterContainer = ({
             width: keyboard ? '90%' : '17%',
             marginHorizontal: keyboard ? 0 : 6,
             marginVertical: 3,
-            borderRadius: 5
+            borderRadius: 5,
+            borderColor: TEXT[theme],
+            borderStyle: 'solid',
+            borderWidth: current ? 2 : 0
         }
     });
     return <View style={styles.container}>{children}</View>;
