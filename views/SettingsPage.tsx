@@ -87,7 +87,7 @@ const SettingsPage = () => {
             </View>
             <View style={{ flexDirection: 'row' }}>
                 <Text style={[styles.header, { color: TEXT[theme] }]}>
-                    Ekstrem modus
+                    Streng modus
                 </Text>
                 <CheckBox
                     disabled={false}
@@ -108,7 +108,7 @@ const SettingsPage = () => {
             </View>
             <View style={styles.textContainer}>
                 <Text style={[styles.textStyle, { color: TEXT[theme] }]}>
-                    Ekstrem modus krever at du må bruke alle bokstaver som er
+                    Streng modus krever at du må bruke alle bokstaver som er
                     blitt grønne og du kan ikke bruke bokstaver som er blitt
                     mørk grå.
                 </Text>

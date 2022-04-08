@@ -5,7 +5,7 @@ export const shareGame = (
     currentLevel: number,
     mode: number
 ) => {
-    let gameMode = ['', '[Vanskelig]', '[Ekstrem]'];
+    let gameMode = ['', '[Vanskelig]', '[Streng]'];
     let shareString = 'Gjett ordet! \n';
     shareString += getCurrentDate() + '\n';
     shareString +=

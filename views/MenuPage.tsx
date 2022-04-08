@@ -88,7 +88,6 @@ const MenuPage = ({ navigation }: { navigation: any }) => {
                 text="Tilfeldig oppgave"
                 gridLength={6}
             />
-            <MenuButton navigate="Standard" text="Utfordring" gridLength={4} />
             <MenuButton navigate="Help" text="Hjelp" />
             <MenuButton navigate="Settings" text="Innstillinger" />
         </View>
@@ -104,12 +103,12 @@ const styles = StyleSheet.create({
     imageStyle: {
         height: LARGESCREEN ? 320 : 270,
         width: LARGESCREEN ? 320 : 270,
-        marginVertical: LARGESCREEN ? 15 : 0
+        marginVertical: LARGESCREEN ? 25 : 0
     },
     buttonStyle: {
         width: '65%',
         borderRadius: 5,
-        marginBottom: !SMALLSCREEN ? 25 : 15,
+        marginBottom: !SMALLSCREEN ? 30 : 15,
         alignItems: 'center'
     },
     textStyle: {
