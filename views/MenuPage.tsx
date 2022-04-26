@@ -98,11 +98,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        paddingTop: !SMALLSCREEN ? 40 : 0
+        paddingTop: !SMALLSCREEN ? 40 : 20
     },
     imageStyle: {
-        height: LARGESCREEN ? 320 : 270,
-        width: LARGESCREEN ? 320 : 270,
+        height: LARGESCREEN ? 320 : 300,
+        width: LARGESCREEN ? 320 : 300,
         marginVertical: LARGESCREEN ? 25 : 0
     },
     buttonStyle: {
