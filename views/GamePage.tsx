@@ -268,10 +268,10 @@ const GamePage = ({
                         )
                     );
 
-                    AsyncStorage.getItem('@requestReview').then(
+                    AsyncStorage.getItem('@requestReview_v2').then(
                         async (data) => {
                             if (!data) {
-                                AsyncStorage.setItem('@requestReview', '0');
+                                AsyncStorage.setItem('@requestReview_v2', '0');
 
                                 if (await StoreReview.hasAction()) {
                                     StoreReview.requestReview();
