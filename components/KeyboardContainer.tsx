@@ -34,8 +34,10 @@ const KeyboardContainer = ({
                     return (
                         <View
                             style={{
-                                flex: 1,
-                                flexDirection: 'row'
+                                width:
+                                    letter.char === '!' || letter.char === '<'
+                                        ? '18%'
+                                        : '9%'
                             }}
                             key={index * 1}
                         >

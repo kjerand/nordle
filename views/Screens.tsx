@@ -155,8 +155,8 @@ export default function Screens() {
                     name="Standard"
                     component={GamePage}
                     options={({ navigation }) => ({
-                        headerTitle: 'Gjett ordet!',
-                        title: 'Gjett ordet!',
+                        headerTitle: 'Nordle!',
+                        title: 'Nordle!',
                         headerLeft: () => (
                             <Feather
                                 name="home"

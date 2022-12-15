@@ -6,7 +6,7 @@ export const shareGame = (
     mode: number
 ) => {
     let gameMode = ['', '[Vanskelig]', '[Streng]'];
-    let shareString = 'Gjett ordet! \n';
+    let shareString = 'Nordle! \n';
     shareString += getCurrentDate() + '\n';
     shareString +=
         currentLevel + '/' + grid.length + ' ' + gameMode[mode] + '\n\n';
