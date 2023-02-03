@@ -2,7 +2,7 @@
     "expo": {
         "name": "Nordle!",
         "slug": "Nordle",
-        "version": "1.5.0",
+        "version": "1.6.0",
         "orientation": "portrait",
         "icon": "./assets/images/icon.png",
         "splash": {
@@ -15,7 +15,7 @@
         "ios": {
             "supportsTablet": true,
             "bundleIdentifier": "com.kjerandevje.wordlenorge",
-            "buildNumber": "1.5.0"
+            "buildNumber": "1.6.0"
         },
         "android": {
             "package": "com.kjerandevje.wordlenorge",
