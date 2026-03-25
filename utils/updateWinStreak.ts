@@ -1,9 +1,15 @@
 import { getDayOfYear } from './getDayOfYear';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { t } from './i18n';
 
-export const updateWinStreak = (setPopupTimeout: CallableFunction) => {
+export const updateWinStreak = (
+    setPopupTimeout: CallableFunction,
+    language: Language = 'no'
+) => {
     const dayOfYear = getDayOfYear();
-    AsyncStorage.getItem('@streak')
+    const streakKey = `@streak_${language}`;
+
+    AsyncStorage.getItem(streakKey)
         .then((data) => {
             if (data) {
                 const [streak, day] = data.split(':');
@@ -16,39 +22,51 @@ export const updateWinStreak = (setPopupTimeout: CallableFunction) => {
                 ) {
                     parsedStreak += 1;
                     AsyncStorage.setItem(
-                        '@streak',
+                        streakKey,
                         parsedStreak + ':' + dayOfYear
                     );
                     setPopupTimeout(
-                        'Riktig tippet ' +
+                        t('correctStreak', language) +
                             parsedStreak +
-                            ' ' +
-                            (parsedStreak === 1 ? 'dag' : 'dager') +
-                            ' på rad!'
+                            (parsedStreak === 1
+                                ? t('daysSingular', language)
+                                : t('daysPlural', language))
                     );
                 } else if (dayOfYear === parsedDay) {
                     if (parsedStreak === 0) {
-                        setPopupTimeout('Du tippet riktig!');
+                        setPopupTimeout(t('correctGuess', language));
                         return;
                     }
                     setPopupTimeout(
-                        'Riktig tippet ' +
+                        t('correctStreak', language) +
                             parsedStreak +
-                            ' ' +
-                            (parsedStreak === 1 ? 'dag' : 'dager') +
-                            ' på rad!'
+                            (parsedStreak === 1
+                                ? t('daysSingular', language)
+                                : t('daysPlural', language))
                     );
                 } else {
-                    AsyncStorage.setItem('@streak', '1:' + dayOfYear);
-                    setPopupTimeout('Riktig tippet 1 dag på rad!');
+                    AsyncStorage.setItem(streakKey, '1:' + dayOfYear);
+                    setPopupTimeout(
+                        t('correctStreak', language) +
+                            '1' +
+                            t('daysSingular', language)
+                    );
                 }
             } else {
-                AsyncStorage.setItem('@streak', '1:' + dayOfYear);
-                setPopupTimeout('Riktig tippet 1 dag på rad!');
+                AsyncStorage.setItem(streakKey, '1:' + dayOfYear);
+                setPopupTimeout(
+                    t('correctStreak', language) +
+                        '1' +
+                        t('daysSingular', language)
+                );
             }
         })
         .catch(() => {
-            AsyncStorage.setItem('@streak', '1:' + dayOfYear);
-            setPopupTimeout('Riktig tippet 1 dag på rad!');
+            AsyncStorage.setItem(streakKey, '1:' + dayOfYear);
+            setPopupTimeout(
+                t('correctStreak', language) +
+                    '1' +
+                    t('daysSingular', language)
+            );
         });
 };

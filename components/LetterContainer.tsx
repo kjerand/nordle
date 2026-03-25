@@ -1,6 +1,7 @@
+import { RootState } from '../store/store';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useSelector, RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { BUTTONS, SMALLSCREEN, TEXT } from '../utils/constants';
 
 const LetterContainer = ({
@@ -14,7 +15,7 @@ const LetterContainer = ({
     keyboard?: boolean;
     current?: boolean;
 }) => {
-    const { theme } = useSelector((state: RootStateOrAny) => state.theme);
+    const { theme } = useSelector((state: RootState) => state.theme);
     const height = () => {
         if (keyboard) {
             if (!SMALLSCREEN) {

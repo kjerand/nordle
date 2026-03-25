@@ -1,3 +1,5 @@
+type Language = 'no' | 'en' | 'sv' | 'da';
+
 type Letter = {
     char: string;
     status: number;
@@ -36,4 +38,28 @@ type Statistics = {
 type StatisticsState = {
     visible: boolean;
     statistics: Statistics;
+};
+
+type LeaderboardEntry = {
+    rank: number;
+    displayName: string;
+    score: number;
+    isCurrentUser: boolean;
+};
+
+type LeaderboardState = {
+    optedIn: boolean;
+    displayName: string;
+    gameCenterPlayerId: string;
+    dailyStreak: number;
+    totalWordsSolved: number;
+};
+
+type RootStackParamList = {
+    Menu: undefined;
+    Daily: Route;
+    Standard: Route;
+    Help: undefined;
+    Settings: undefined;
+    Leaderboard: undefined;
 };

@@ -16,7 +16,7 @@ import {
     TEXT,
     YELLOW
 } from '../utils/constants';
-import { useSelector, RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const COLORS = [KEYBOARD, DARKGRAY, YELLOW, GREEN, SEND, BACKSPACE];
 

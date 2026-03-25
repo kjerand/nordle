@@ -1,13 +1,15 @@
 import { getCurrentDate } from './getCurrentDate';
+import { t } from './i18n';
 
 export const shareGame = (
     grid: Letter[][],
     currentLevel: number,
-    mode: number
+    mode: number,
+    language: Language = 'no'
 ) => {
-    let gameMode = ['', '[Vanskelig]', '[Streng]'];
+    let gameMode = ['', t('shareHard', language), t('shareExtreme', language)];
     let shareString = 'Nordle! \n';
-    shareString += getCurrentDate() + '\n';
+    shareString += getCurrentDate(language) + '\n';
     shareString +=
         currentLevel + '/' + grid.length + ' ' + gameMode[mode] + '\n\n';
 

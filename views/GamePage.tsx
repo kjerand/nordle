@@ -1,3 +1,4 @@
+import { RootState } from '../store/store';
 import { useEffect, useRef, useState } from 'react';
 import {
     View,
@@ -6,7 +7,7 @@ import {
     AppState,
     AppStateStatus
 } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as StoreReview from 'expo-store-review';
@@ -33,7 +34,7 @@ import {
     MEDIUMCREEN,
     VERYLARGESCREEN
 } from '../utils/constants';
-import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { checkHardMode } from '../utils/checkHardMode';
 import { checkExtremeMode } from '../utils/checkExtremeMode';
 import { shareGame } from '../utils/shareGame';
@@ -49,21 +50,14 @@ import {
     setVisible
 } from '../store/statistics';
 import { createDistribution } from '../utils/createDistribution';
+import { useInterstitialAd } from '../utils/ads';
+import { t } from '../utils/i18n';
 
 const COLORS = [LIGHTGRAY, DARKGRAY, YELLOW, GREEN];
 
-const GamePage = ({
-    route,
-    navigation
-}: {
-    route: RouteProp<
-        {
-            params: Route;
-        },
-        'params'
-    >;
-    navigation: any;
-}) => {
+type Props = NativeStackScreenProps<RootStackParamList, 'Daily' | 'Standard'>;
+
+const GamePage = ({ route, navigation }: Props) => {
     const { gridLength } = route.params;
     const { gridWidth } = route.params;
     const { currentWord } = route.params;
@@ -72,13 +66,15 @@ const GamePage = ({
     const { initialDate } = route.params;
     const { savedGame } = route.params;
 
-    const { theme } = useSelector((state: RootStateOrAny) => state.theme);
-    const { mode } = useSelector((state: RootStateOrAny) => state.settings);
+    const { theme } = useSelector((state: RootState) => state.theme);
+    const { mode } = useSelector((state: RootState) => state.settings);
     const { visible, statistics } = useSelector(
-        (state: RootStateOrAny) => state.statistics
+        (state: RootState) => state.statistics
     );
+    const { language } = useSelector((state: RootState) => state.language);
 
     const dispatch = useDispatch();
+    const { showAd } = useInterstitialAd();
 
     const [currentLevel, setCurrentLevel] = useState<number>(
         initialPosition.row
@@ -96,7 +92,7 @@ const GamePage = ({
     const [share, setShare] = useState<boolean>(false);
 
     const [keyboard, setKeyboard] = useState<Letter[][]>(
-        initializeKeyboard(savedGame.savedKeyboard)
+        initializeKeyboard(savedGame.savedKeyboard, language)
     );
     const [grid, setGrid] = useState<Letter[][]>(
         generateGrid(gridLength, gridWidth, savedGame.savedGrid)
@@ -104,11 +100,14 @@ const GamePage = ({
 
     const appState = useRef(AppState.currentState);
 
+    // Per-language storage key prefix
+    const storagePrefix = `_${language}`;
+
     useEffect(() => {
-        AppState.addEventListener('change', checkIfNewDay);
+        const subscription = AppState.addEventListener('change', checkIfNewDay);
 
         return () => {
-            AppState.removeEventListener('change', checkIfNewDay);
+            subscription.remove();
         };
     }, []);
 
@@ -117,7 +116,7 @@ const GamePage = ({
             appState.current.match(/inactive|background/) &&
             nextAppState === 'active'
         ) {
-            if (initialDate !== getCurrentDate() && daily) {
+            if (initialDate !== getCurrentDate(language) && daily) {
                 setDisabled(true);
                 navigation.navigate('Menu');
             }
@@ -130,12 +129,12 @@ const GamePage = ({
             setGameStatus(1);
             setDisabled(true);
             setShare(true);
-            updateWinStreak(setPopupTimeout);
+            updateWinStreak(setPopupTimeout, language);
         } else if (savedGame.finished === 2) {
             setGameStatus(2);
             setDisabled(true);
             setPopupTimeout(
-                'Du klarte det ikke. Riktig svar var ' +
+                t('failedAnswer', language) +
                     currentWord.toUpperCase() +
                     '.'
             );
@@ -155,15 +154,18 @@ const GamePage = ({
         );
 
         AsyncStorage.setItem(
-            '@grid',
+            `@grid${storagePrefix}`,
             JSON.stringify(createSavedGrid(grid, currentLevel))
         );
         AsyncStorage.setItem(
-            '@keyboard',
+            `@keyboard${storagePrefix}`,
             JSON.stringify(createSavedKeyboard(keyboard))
         );
-        AsyncStorage.setItem('@date', initialDate);
-        AsyncStorage.setItem('@finished', gameStatus.toString());
+        AsyncStorage.setItem(`@date${storagePrefix}`, initialDate);
+        AsyncStorage.setItem(
+            `@finished${storagePrefix}`,
+            gameStatus.toString()
+        );
     }, [currentLevel]);
 
     useEffect(() => {
@@ -185,7 +187,7 @@ const GamePage = ({
         try {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             await Share.share({
-                message: shareGame(grid, currentLevel, mode)
+                message: shareGame(grid, currentLevel, mode, language)
             });
         } catch (error) {
             console.warn(error);
@@ -198,27 +200,25 @@ const GamePage = ({
             if (letter.char === '') empty = true;
         });
         if (empty) {
-            setPopupTimeout('Du må fylle ut alle bokstavene før du gjetter!');
+            setPopupTimeout(t('fillAllLetters', language));
             return;
         }
 
         let guess = '';
         grid[currentLevel].forEach((letter) => (guess += letter.char));
 
-        const valid = checkWordValidity(guess);
+        const valid = checkWordValidity(guess, language);
 
         if (valid) {
             if (mode > 0) {
                 if (!checkHardMode(grid, currentLevel)) {
-                    setPopupTimeout('Du må bruke de grønne bokstavene!');
+                    setPopupTimeout(t('useGreenLetters', language));
                     return;
                 }
 
                 if (mode === 2) {
                     if (!checkExtremeMode(keyboard, guess.split(''))) {
-                        setPopupTimeout(
-                            'Du kan ikke bruke mørk grå bokstaver!'
-                        );
+                        setPopupTimeout(t('cantUseDarkGray', language));
                         return;
                     }
                 }
@@ -238,10 +238,11 @@ const GamePage = ({
             if (currentWord === guess) {
                 setDisabled(true);
                 setGameStatus(1);
+                showAd();
 
                 if (daily) {
                     setShare(true);
-                    updateWinStreak(setPopupTimeout);
+                    updateWinStreak(setPopupTimeout, language);
 
                     let savedStatistics: Statistics = {
                         totalGames: statistics.totalGames + 1,
@@ -253,7 +254,7 @@ const GamePage = ({
                     };
 
                     AsyncStorage.setItem(
-                        '@statistics',
+                        `@statistics${storagePrefix}`,
                         JSON.stringify(savedStatistics)
                     );
 
@@ -280,14 +281,15 @@ const GamePage = ({
                         }
                     );
                 } else {
-                    setPopupTimeout('Du tippet riktig!');
+                    setPopupTimeout(t('correctGuess', language));
                 }
             } else if (currentLevel + 1 === gridLength) {
                 setDisabled(true);
                 setGameStatus(2);
+                showAd();
 
                 setPopupTimeout(
-                    'Du klarte det ikke. Riktig svar var ' +
+                    t('failedAnswer', language) +
                         currentWord.toUpperCase() +
                         '.'
                 );
@@ -300,20 +302,20 @@ const GamePage = ({
                     };
 
                     AsyncStorage.setItem(
-                        '@statistics',
+                        `@statistics${storagePrefix}`,
                         JSON.stringify(savedStatistics)
                     );
                     dispatch(setTotalGames(statistics.totalGames + 1));
-                    updateLoss();
+                    updateLoss(language);
                 }
             }
         } else {
-            setPopupTimeout('Dette ordet finnes ikke i listene våre.');
+            setPopupTimeout(t('wordNotInList', language));
         }
     };
 
     const onKeyboardPress = (letter: string) => {
-        if (initialDate !== getCurrentDate() && daily) {
+        if (initialDate !== getCurrentDate(language) && daily) {
             setDisabled(true);
             navigation.navigate('Menu');
         }

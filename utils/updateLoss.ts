@@ -1,8 +1,11 @@
 import { getDayOfYear } from './getDayOfYear';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-export const updateLoss = () => {
+
+export const updateLoss = (language: Language = 'no') => {
     const dayOfYear = getDayOfYear();
-    AsyncStorage.getItem('@streak')
+    const streakKey = `@streak_${language}`;
+
+    AsyncStorage.getItem(streakKey)
         .then((data) => {
             if (data) {
                 const [streak, day] = data.split(':');
@@ -10,12 +13,12 @@ export const updateLoss = () => {
 
                 if (parsedDay === dayOfYear) return;
 
-                AsyncStorage.setItem('@streak', '0:' + dayOfYear);
+                AsyncStorage.setItem(streakKey, '0:' + dayOfYear);
             } else {
-                AsyncStorage.setItem('@streak', '0:' + dayOfYear);
+                AsyncStorage.setItem(streakKey, '0:' + dayOfYear);
             }
         })
         .catch(() => {
-            AsyncStorage.setItem('@streak', '0:' + dayOfYear);
+            AsyncStorage.setItem(streakKey, '0:' + dayOfYear);
         });
 };

@@ -1,6 +1,7 @@
-import dict from '../assets/words/dict.json';
-export const checkWordValidity = (word: string) => {
-    const dictionary: { [name: string]: number } = dict;
+import { getDict } from './words';
+
+export const checkWordValidity = (word: string, language: Language = 'no') => {
+    const dictionary = getDict(language);
 
     if (dictionary[word.toLowerCase()]) {
         return true;

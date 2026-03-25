@@ -4,6 +4,7 @@ node_modules/
 .expo-shared/
 dist/
 npm-debug.*
+.env
 *.jks
 *.p8
 *.p12
@@ -11,6 +12,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+/.claude
 
 
 # macOS

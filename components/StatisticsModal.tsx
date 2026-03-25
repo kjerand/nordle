@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
-import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
-import { useSelector, RootStateOrAny } from 'react-redux';
+import { RootState } from '../store/store';
+import React from 'react';
+import { Modal, StyleSheet, Text, Pressable, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import * as Haptics from 'expo-haptics';
 import { BACKGROUND, BUTTONS, FONT, TEXT } from '../utils/constants';
+import { t } from '../utils/i18n';
+
 const StatisticsModal = ({
     statistics,
     visible,
@@ -12,7 +15,8 @@ const StatisticsModal = ({
     visible: boolean;
     setModalVisible: CallableFunction;
 }) => {
-    const { theme } = useSelector((state: RootStateOrAny) => state.theme);
+    const { theme } = useSelector((state: RootState) => state.theme);
+    const { language } = useSelector((state: RootState) => state.language);
 
     const styles = StyleSheet.create({
         centeredView: {
@@ -111,17 +115,19 @@ const StatisticsModal = ({
                 }}
             >
                 <Pressable style={styles.modalView} onPress={() => {}}>
-                    <Text style={styles.header}>Statistikk</Text>
-                    <Text style={styles.modalText}>
-                        Antall spill: {statistics.totalGames}
+                    <Text style={styles.header}>
+                        {t('statistics', language)}
                     </Text>
                     <Text style={styles.modalText}>
-                        Antall vunnet: {statistics.totalWins}
+                        {t('gamesPlayed', language)}: {statistics.totalGames}
+                    </Text>
+                    <Text style={styles.modalText}>
+                        {t('gamesWon', language)}: {statistics.totalWins}
                     </Text>
 
                     {statistics.totalGames > 0 && (
                         <Text style={styles.modalText}>
-                            Vinnprosent:{' '}
+                            {t('winPercentage', language)}:{' '}
                             {Math.round(
                                 (statistics.totalWins / statistics.totalGames) *
                                     100
@@ -133,15 +139,20 @@ const StatisticsModal = ({
                     <Text
                         style={[styles.header, { marginTop: 25, fontSize: 26 }]}
                     >
-                        Fordeling:
+                        {t('distribution', language)}
                     </Text>
                     <Text style={styles.modalText}>
-                        Snitt: {calculateAverage()}
+                        {t('average', language)}: {calculateAverage()}
                     </Text>
                     {statistics.distribution.map((value, level) => {
                         return (
                             <Columns
-                                text={'Forsøk ' + (level + 1) + ':'}
+                                text={
+                                    t('attempt', language) +
+                                    ' ' +
+                                    (level + 1) +
+                                    ':'
+                                }
                                 value={String(value)}
                                 key={level}
                             />
@@ -157,7 +168,9 @@ const StatisticsModal = ({
                             setModalVisible(!visible);
                         }}
                     >
-                        <Text style={styles.textButtonStyle}>Lukk</Text>
+                        <Text style={styles.textButtonStyle}>
+                            {t('close', language)}
+                        </Text>
                     </Pressable>
                 </Pressable>
             </Pressable>

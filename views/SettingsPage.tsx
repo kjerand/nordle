@@ -1,6 +1,13 @@
-import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import CheckBox from 'react-native-check-box';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { RootState } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Pressable,
+    ScrollView,
+    Switch
+} from 'react-native';
 import * as Haptics from 'expo-haptics';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -9,169 +16,294 @@ import {
     BUTTONS,
     FONT,
     SMALLSCREEN,
-    TEXT
+    TEXT,
+    ACCENT,
+    CARD,
+    SECONDARY_TEXT
 } from '../utils/constants';
 
 import { setTheme } from '../store/theme';
 import { setMode } from '../store/settings';
+import { setLanguage } from '../store/language';
+import { t, languageNames } from '../utils/i18n';
+
+const LANGUAGES: Language[] = ['no', 'en', 'sv', 'da'];
+
+const THEMES = [
+    { value: 'black', color: '#1a0f2e' },
+    { value: 'default', color: '#0d1f2d' },
+    { value: 'blue', color: '#0a0e2e' },
+    { value: 'green', color: '#061a0f' },
+    { value: 'white', color: '#fff0f5' }
+] as const;
 
 const SettingsPage = () => {
     const dispatch = useDispatch();
-    const { theme } = useSelector((state: RootStateOrAny) => state.theme);
-    const { mode } = useSelector((state: RootStateOrAny) => state.settings);
-    const ThemeButton = ({
-        themeValue,
-        text
-    }: {
-        themeValue: string;
-        text: string;
-    }) => {
-        return (
-            <Pressable
-                onPress={() => {
-                    dispatch(setTheme(themeValue));
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                    AsyncStorage.setItem('@theme', themeValue);
-                }}
-                style={[
-                    styles.buttonStyle,
-                    { backgroundColor: BUTTONS[theme] }
-                ]}
-            >
-                <Text
-                    style={{
-                        textAlign: 'center',
-                        justifyContent: 'center',
-                        flex: 1,
-                        color: TEXT[theme],
-                        fontSize: 18,
-                        fontFamily: FONT
-                    }}
-                >
-                    {text}
-                </Text>
-            </Pressable>
-        );
+    const { theme } = useSelector((state: RootState) => state.theme);
+    const { mode } = useSelector((state: RootState) => state.settings);
+    const { language } = useSelector((state: RootState) => state.language);
+
+    const cardBg = CARD[theme];
+    const textColor = TEXT[theme];
+    const subtextColor = SECONDARY_TEXT[theme];
+
+    const toggleMode = (targetMode: number) => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        const newMode = mode === targetMode ? 0 : targetMode;
+        dispatch(setMode(newMode));
+        AsyncStorage.setItem('@mode', String(newMode));
     };
-    return (
-        <View
-            style={[styles.container, { backgroundColor: BACKGROUND[theme] }]}
-        >
-            <View style={{ flexDirection: 'row' }}>
-                <Text style={[styles.header, { color: TEXT[theme] }]}>
-                    Vanskelig modus
-                </Text>
-                <CheckBox
-                    disabled={false}
-                    isChecked={mode === 1}
-                    onClick={() => {
-                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                        if (mode === 1) {
-                            dispatch(setMode(0));
-                            AsyncStorage.setItem('@mode', '0');
-                        } else {
-                            dispatch(setMode(1));
-                            AsyncStorage.setItem('@mode', '1');
-                        }
-                    }}
-                    style={styles.checkBoxStyle}
-                    checkBoxColor={TEXT[theme]}
-                />
-            </View>
 
-            <View style={styles.textContainer}>
-                <Text style={[styles.textStyle, { color: TEXT[theme] }]}>
-                    Vanskelig modus krever at du må bruke alle bokstaver som er
-                    blitt grønne.
-                </Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-                <Text style={[styles.header, { color: TEXT[theme] }]}>
-                    Streng modus
-                </Text>
-                <CheckBox
-                    disabled={false}
-                    isChecked={mode === 2}
-                    onClick={() => {
-                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                        if (mode === 2) {
-                            dispatch(setMode(0));
-                            AsyncStorage.setItem('@mode', '0');
-                        } else {
-                            dispatch(setMode(2));
-                            AsyncStorage.setItem('@mode', '2');
-                        }
-                    }}
-                    style={styles.checkBoxStyle}
-                    checkBoxColor={TEXT[theme]}
-                />
-            </View>
-            <View style={styles.textContainer}>
-                <Text style={[styles.textStyle, { color: TEXT[theme] }]}>
-                    Streng modus krever at du må bruke alle bokstaver som er
-                    blitt grønne og du kan ikke bruke bokstaver som er blitt
-                    mørk grå.
-                </Text>
-            </View>
-            <Text style={[styles.header, { color: TEXT[theme] }]}>
-                Fargetema
+    const Section = ({
+        title,
+        children
+    }: {
+        title: string;
+        children: React.ReactNode;
+    }) => (
+        <View style={styles.section}>
+            <Text style={[styles.sectionTitle, { color: subtextColor }]}>
+                {title}
             </Text>
-            <View style={{ flexDirection: 'row', marginHorizontal: 15 }}>
-                <ThemeButton themeValue="black" text="Svart" />
-                <ThemeButton themeValue="white" text="Hvit" />
-                <ThemeButton themeValue="default" text="Grå" />
-                <ThemeButton themeValue="blue" text="Blå" />
-                <ThemeButton themeValue="green" text="Grønn" />
+            <View style={[styles.card, { backgroundColor: cardBg }]}>
+                {children}
             </View>
-
-            <Text style={[styles.signature, { color: TEXT[theme] }]}>
-                Laget av Kjerand Evje
-            </Text>
         </View>
+    );
+
+    const ToggleRow = ({
+        label,
+        description,
+        value,
+        onToggle,
+        isLast
+    }: {
+        label: string;
+        description: string;
+        value: boolean;
+        onToggle: () => void;
+        isLast?: boolean;
+    }) => (
+        <View
+            style={[
+                styles.toggleRow,
+                !isLast && { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: BACKGROUND[theme] }
+            ]}
+        >
+            <View style={styles.toggleTextContainer}>
+                <Text style={[styles.toggleLabel, { color: textColor }]}>
+                    {label}
+                </Text>
+                <Text style={[styles.toggleDescription, { color: subtextColor }]}>
+                    {description}
+                </Text>
+            </View>
+            <Switch
+                value={value}
+                onValueChange={onToggle}
+                trackColor={{ false: BUTTONS[theme], true: ACCENT }}
+                thumbColor="#fff"
+            />
+        </View>
+    );
+
+    return (
+        <ScrollView
+            style={{ backgroundColor: BACKGROUND[theme] }}
+            contentContainerStyle={styles.container}
+        >
+            <Section title={t('language', language).toUpperCase()}>
+                <View style={styles.languageGrid}>
+                    {LANGUAGES.map((lang) => {
+                        const isActive = language === lang;
+                        return (
+                            <Pressable
+                                key={lang}
+                                onPress={() => {
+                                    dispatch(setLanguage(lang));
+                                    Haptics.impactAsync(
+                                        Haptics.ImpactFeedbackStyle.Medium
+                                    );
+                                    AsyncStorage.setItem('@language', lang);
+                                }}
+                                style={[
+                                    styles.languageButton,
+                                    {
+                                        backgroundColor: isActive
+                                            ? ACCENT
+                                            : 'transparent'
+                                    }
+                                ]}
+                            >
+                                <Text
+                                    style={[
+                                        styles.languageText,
+                                        {
+                                            color: isActive
+                                                ? '#fff'
+                                                : textColor,
+                                            fontWeight: isActive
+                                                ? '700'
+                                                : '400'
+                                        }
+                                    ]}
+                                >
+                                    {languageNames[lang]}
+                                </Text>
+                            </Pressable>
+                        );
+                    })}
+                </View>
+            </Section>
+
+            <Section title={t('colorTheme', language).toUpperCase()}>
+                <View style={styles.themeRow}>
+                    {THEMES.map(({ value, color }) => {
+                        const isActive = theme === value;
+                        return (
+                            <Pressable
+                                key={value}
+                                onPress={() => {
+                                    dispatch(setTheme(value));
+                                    Haptics.impactAsync(
+                                        Haptics.ImpactFeedbackStyle.Medium
+                                    );
+                                    AsyncStorage.setItem('@theme', value);
+                                }}
+                                style={styles.themeOptionContainer}
+                            >
+                                <View
+                                    style={[
+                                        styles.themeSwatch,
+                                        { backgroundColor: color },
+                                        isActive && {
+                                            borderColor: ACCENT,
+                                            borderWidth: 2.5
+                                        }
+                                    ]}
+                                >
+                                    {isActive && (
+                                        <View style={styles.themeCheckDot} />
+                                    )}
+                                </View>
+                            </Pressable>
+                        );
+                    })}
+                </View>
+            </Section>
+
+            <Section title={t('hardMode', language).toUpperCase()}>
+                <ToggleRow
+                    label={t('hardMode', language)}
+                    description={t('hardModeDesc', language)}
+                    value={mode === 1}
+                    onToggle={() => toggleMode(1)}
+                />
+                <ToggleRow
+                    label={t('extremeMode', language)}
+                    description={t('extremeModeDesc', language)}
+                    value={mode === 2}
+                    onToggle={() => toggleMode(2)}
+                    isLast
+                />
+            </Section>
+
+            <Text style={[styles.signature, { color: subtextColor }]}>
+                {t('madeBy', language)}
+            </Text>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        alignItems: 'center',
-        paddingTop: 20,
+        paddingHorizontal: 20,
+        paddingTop: 24,
         paddingBottom: 50,
         flexGrow: 1
     },
-    header: {
-        fontSize: 26,
+    section: {
+        marginBottom: 28
+    },
+    sectionTitle: {
+        fontSize: 13,
         fontFamily: FONT,
-        fontWeight: 'bold',
-        marginBottom: 10
+        fontWeight: '600',
+        letterSpacing: 1.2,
+        marginBottom: 8,
+        marginLeft: 4
     },
-    checkBoxStyle: {
-        marginTop: 11,
-        marginLeft: 10
+    card: {
+        borderRadius: 14,
+        overflow: 'hidden'
     },
-    textStyle: {
-        fontSize: 19,
+    languageGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        padding: 8,
+        gap: 8
+    },
+    languageButton: {
+        flex: 1,
+        minWidth: '45%',
+        paddingVertical: 14,
+        alignItems: 'center',
+        borderRadius: 10
+    },
+    languageText: {
+        fontSize: 16,
+        fontFamily: FONT
+    },
+    themeRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        paddingVertical: 18,
+        paddingHorizontal: 8
+    },
+    themeOptionContainer: {
+        alignItems: 'center'
+    },
+    themeSwatch: {
+        width: 44,
+        height: 44,
+        borderRadius: 22,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    themeCheckDot: {
+        width: 12,
+        height: 12,
+        borderRadius: 6,
+        backgroundColor: ACCENT
+    },
+    toggleRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingVertical: 14,
+        paddingHorizontal: 16
+    },
+    toggleTextContainer: {
+        flex: 1,
+        marginRight: 12
+    },
+    toggleLabel: {
+        fontSize: 17,
         fontFamily: FONT,
-        marginBottom: 10
+        fontWeight: '600',
+        marginBottom: 2
     },
-    textContainer: {
-        marginHorizontal: 30,
-        marginBottom: 20
+    toggleDescription: {
+        fontSize: 13,
+        fontFamily: FONT,
+        lineHeight: 18
     },
     signature: {
-        fontSize: 16,
+        fontSize: 14,
         fontFamily: FONT,
-        justifyContent: 'flex-end',
-        marginTop: 'auto'
-    },
-    buttonStyle: {
-        flex: 1,
-        marginHorizontal: 4,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        padding: 5,
-        borderRadius: 5,
-        marginBottom: !SMALLSCREEN ? 40 : 20
+        textAlign: 'center',
+        marginTop: 'auto',
+        paddingBottom: 10
     }
 });
 

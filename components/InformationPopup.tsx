@@ -1,5 +1,6 @@
+import { RootState } from '../store/store';
 import { View, Text, Button, Pressable } from 'react-native';
-import { useSelector, RootStateOrAny } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { TEXT } from '../utils/constants';
 import { Feather } from '@expo/vector-icons';
 
@@ -14,7 +15,7 @@ const InformationPopup = ({
     onShare: CallableFunction;
     share: boolean;
 }) => {
-    const { theme } = useSelector((state: RootStateOrAny) => state.theme);
+    const { theme } = useSelector((state: RootState) => state.theme);
 
     if (!showPopup) {
         return <></>;
